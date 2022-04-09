@@ -33,9 +33,9 @@ Which (if any) progressive web app feature(s) does your app support?
 
 ## Mockup images
 
-**[Add images/photos that show your mockup](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository) along with a very brief caption:**
+**[Mock up link](https://framer.com/share/e62s7ty8lgHFULH6mc95/Oam6VvjgK) (We find that having this sort of wireframe makes our lives much easier):**
 
-![](https://media.giphy.com/media/26ufnwz3wDUli7GU0/giphy.gif)
+There are mainly 4 different sorts of pages on the app. The home page with all the views, a view page, a note page, and the profile page. In addition to the user creates view, there are some built in views like inbox, today, etc.
 
 
 ## Testing Notes
