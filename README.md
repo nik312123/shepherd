@@ -5,13 +5,16 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 ## App Info:
 
 * Team Name: TODO
-* App Name: TODO
+* App Name: Shepherd
 * App Link: <https://TODO.firebaseapp.com/>
 
 ### Students
 
-* First Last, x500@umn.edu
-* ...
+* Nikunj Chawla, chawl025@umn.edu
+* Aaron Kandikatla, kandi021@umn.edu
+* Siyad Gedi, gedi0007@umn.edu
+* Sumukh Nitundila, nitun001@umn.edu
+* Sumanth Kaushik Vishwanath, kaush047@umn.edu
 
 
 ## Key Features
@@ -33,9 +36,11 @@ Which (if any) progressive web app feature(s) does your app support?
 
 ## Mockup images
 
-**[Mock up link](https://framer.com/share/e62s7ty8lgHFULH6mc95/Oam6VvjgK) (We find that having this sort of wireframe makes our lives much easier):**
+[Mockup link](https://framer.com/share/e62s7ty8lgHFULH6mc95/Oam6VvjgK)
 
-There are mainly 4 different sorts of pages on the app. The home page with all the views, a view page, a note page, and the profile page. In addition to the user creates view, there are some built in views like inbox, today, etc.
+Note: This may be overkill, but we find that having this kind of wireframe makes our lives much easier when it comes to the implementation.
+
+There are 4 main different page types on the app. There are the home page with all the views, a view page, a note page, and the profile page. In addition to the user-created views, there are some built in views like inbox, today, etc.
 
 
 ## Testing Notes
