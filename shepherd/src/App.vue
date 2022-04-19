@@ -23,6 +23,27 @@ html {
   border-radius: 10px;
 }
 
+.breadcrumb li.is-active a {
+  color: #F8FAFC;
+}
+
+.breadcrumb li+li::before{
+  color: #F8FAFC;
+}
+
+.breadcrumb a {
+  color: #0AA5E9;
+  font-weight: 700;
+}
+
+.breadcrumb a:hover {
+  color: #0AA5E9;
+}
+
+.section {
+  padding-top: 0 !important;
+}
+
 .container {
   padding: 40px;
 }
