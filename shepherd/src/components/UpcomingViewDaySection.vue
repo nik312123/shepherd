@@ -9,7 +9,7 @@
       </p>
     </div>
     <hr class="solid">
-    <article v-for="noteObj in notes" :key="noteObj">
+    <article v-for="noteObj in notes" :key="noteObj.id">
       <note-component :note="noteObj"></note-component>
     </article>
   </div>
@@ -68,7 +68,6 @@ export default {
     let end = new Date();
     end.setDate(end.getDate() + this.offset + 1);
     end.setHours(0, 0, 0, 0);
-    console.log(start);
     return {
       notes: db.collection("notes").where("userId", "==", auth.currentUser.uid).where("isTrash", "==", false)
           .where("reminderDateTime", ">", start).where("reminderDateTime", "<", end)

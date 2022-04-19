@@ -3,13 +3,13 @@
     <header-bar></header-bar>
     <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
       <ul>
-        <li><a href="/home">Home</a></li>
+        <li @click="$router.push('/home')"><a>Home</a></li>
         <li class="is-active"><a href="/inbox" aria-current="page">Inbox</a></li>
       </ul>
     </nav>
     <h1 class="title is-2">📮 Inbox</h1>
     <div class="section">
-      <article v-for="noteObj in notes" :key="noteObj">
+      <article v-for="noteObj in notes" :key="noteObj.id">
         <note-component :note="noteObj"></note-component>
       </article>
     </div>
@@ -32,7 +32,7 @@ export default {
   firestore: function() {
     return {
       notes: db.collection("notes").where("userId", "==", auth.currentUser.uid).where("isTrash", "==", false)
-          .where("tags", "==", []).orderBy("lastModifiedDateTime")
+          .where("tags", "==", {}).orderBy("lastModifiedDateTime")
     };
   }
 };

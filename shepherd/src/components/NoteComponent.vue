@@ -7,7 +7,7 @@
          {{ note.title }}
        </p>
        <button class="card-header-icon" aria-label="more options">
-         <tag-component :tags="note.tags"></tag-component>
+         <tag-component :tag-map="note.tags"></tag-component>
        </button>
      </header>
      <div class="card-content">
@@ -39,7 +39,7 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   color: #F8FAFC;
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 800;
   padding-top: 5px;
   padding-bottom: 0;

@@ -24,7 +24,11 @@ export default {
   },
   methods: {
     goTo: function() {
+      if(this.route === "view"){
+        router.push({name: this.route, params: {name : this.title}});
+      } else {
       router.push(this.route);
+      }
     }
   }
 };

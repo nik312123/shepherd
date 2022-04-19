@@ -41,10 +41,11 @@ html {
 }
 
 .section {
-  padding-top: 0 !important;
+  padding: 0 5px 5px;
 }
 
 .container {
-  padding: 40px;
+  /*padding: 40px;*/
+  padding: 40px 5px 5px;
 }
 </style>

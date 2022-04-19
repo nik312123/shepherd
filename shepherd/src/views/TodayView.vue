@@ -3,13 +3,13 @@
     <header-bar></header-bar>
     <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
       <ul>
-        <li><a href="/home">Home</a></li>
+        <li @click="$router.push('/home')"><a>Home</a></li>
         <li class="is-active"><a href="/today" aria-current="page">Today</a></li>
       </ul>
     </nav>
     <h1 class="title is-2">☀️ {{ todayString }}</h1>
     <div class="section">
-      <article v-for="noteObj in notes" :key="noteObj">
+      <article v-for="noteObj in notes" :key="noteObj.id">
         <note-component :note="noteObj"></note-component>
       </article>
     </div>
@@ -27,8 +27,8 @@ export default {
   data() {
     return {
       notes: [],
-      todayString: new Date().toLocaleDateString()
-    };
+      todayString: new Date().toLocaleDateString("en-US", { weekday: 'short', month: 'short', day: 'numeric' })
+  };
   },
   firestore: function() {
     let yesterday = new Date(new Date().setHours(0, 0, 0, 0) - 1);

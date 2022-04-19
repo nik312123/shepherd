@@ -8,6 +8,7 @@ import TodayView from "@/views/TodayView";
 import UpcomingView from "@/views/UpcomingView";
 import AllNotesView from "@/views/AllNotesView";
 import TrashView from "@/views/TrashView";
+import ViewView from "@/views/ViewView";
 
 Vue.use(VueRouter);
 
@@ -64,6 +65,14 @@ const routes = [
             requiresAuth: true
         },
         component: TrashView
+    },
+    {
+        path: "/views/:name",
+        name: "view",
+        meta: {
+            requiresAuth: true
+        },
+        component: ViewView
     }
 ];
 
