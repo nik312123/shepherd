@@ -7,17 +7,21 @@
 <style>
 /*noinspection CssUnknownTarget*/
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
 html {
   background-color: #1A2434;
 }
+
 * {
   font-family: "Inter", sans-serif;
 }
+
 .title {
   color: #F8FAFC !important;
   font-family: "Inter", sans-serif;
   font-weight: 900;
 }
+
 .button {
   font-family: "Inter", sans-serif !important;
   border-radius: 10px;

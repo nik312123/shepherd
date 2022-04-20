@@ -16,12 +16,13 @@
 <script>
 import {auth, provider} from "@/firebaseConfig";
 import router from "@/router";
+
 export default {
   name: "SignInOut",
   components: {},
   data() {
     return {
-      user: null,
+      user: null
     };
   },
   beforeCreate: function() {
@@ -37,18 +38,18 @@ export default {
   methods: {
     signIn: function() {
       auth.signInWithRedirect(provider)
-          .then(result => {
-            this.user = result.user;
-          })
-          .catch(err => console.log(err));
+      .then(result => {
+        this.user = result.user;
+      })
+      .catch(err => console.log(err));
     },
     signOut: function() {
       auth.signOut()
-          .then(() => {
-            this.user = null;
-            router.push("/");
-          })
-          .catch(err => console.log(err));
+      .then(() => {
+        this.user = null;
+        router.push("/");
+      })
+      .catch(err => console.log(err));
     }
   }
 };
@@ -61,6 +62,7 @@ export default {
   border-radius: 50%;
   margin-right: 10px;
 }
+
 .is-info {
   background-color: #10A5E9 !important;
   color: #FFFFFF;

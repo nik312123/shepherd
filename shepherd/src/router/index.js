@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import LoginView from "../views/LoginView.vue";
 import HomeView from "../views/HomeView.vue";
 import {auth} from "@/firebaseConfig";
+import NoteView from "@/views/NoteView";
 
 Vue.use(VueRouter);
 
@@ -19,6 +20,14 @@ const routes = [
             requiresAuth: true
         },
         component: HomeView
+    },
+    {
+        path: "/note/:id",
+        name: "note",
+        meta: {
+            requiresAuth: true
+        },
+        component: NoteView
     }
 ];
 
