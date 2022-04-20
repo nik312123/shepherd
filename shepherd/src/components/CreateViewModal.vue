@@ -46,7 +46,7 @@
 
 <script>
 import VueTagsInput from "@johmun/vue-tags-input";
-import {auth, db} from "@/firebaseConfig";
+import {auth, db, fieldValue} from "@/firebaseConfig";
 
 export default {
   name: "CreateViewModal",
@@ -55,7 +55,7 @@ export default {
   },
   props: {
     userTags: Array,
-    views: Array
+    views: Array,
   },
   data() {
     return {
@@ -111,6 +111,13 @@ export default {
           sortedColumn: "title",
           tags: tagsArray,
           userId: auth.currentUser.uid
+        });
+
+        db.collection("users").where("userId", "==", auth.currentUser.uid).get().then(query => {
+          let userRef = query.docs[0].ref;
+          userRef.update({
+            "tags": fieldValue.arrayUnion(...tagsArray)
+          })
         });
         this.showModal = false;
       }
