@@ -7,7 +7,7 @@
     </div>
 
     <div v-if="tagMap" class="tags">
-      <article v-for="(key, value) in tagMap" v-bind:key="key">
+      <article v-for="(key, value) in tagMap" v-bind:key="value">
         <p class="tag">{{ value }}</p>
       </article>
     </div>

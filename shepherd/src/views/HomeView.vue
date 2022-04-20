@@ -12,14 +12,13 @@
     <div class="section">
       <div class="row">
       <h1 class="title is-3">Views</h1>
-        <button class="button is-info is-small">New</button>
+        <create-view-modal :userTags="user[0].tags"></create-view-modal>
       </div>
       <hr class="solid">
 
       <article v-for="view in views" :key="view.id">
         <home-item :title="view.name" route="view" :count="1"></home-item>
       </article>
-
     </div>
   </div>
 </template>
@@ -28,19 +27,22 @@
 import {auth, db} from "@/firebaseConfig";
 import HomeItem from "@/components/HomeItem";
 import HeaderBar from "@/components/HeaderBar";
+import CreateViewModal from "@/components/CreateViewModal";
 
 export default {
   name: "HomeView",
-  components: {HeaderBar, HomeItem},
+  components: {CreateViewModal, HeaderBar, HomeItem},
   data() {
     return {
       display: auth.currentUser.displayName,
-      views: []
+      views: [],
+      user: {}
     };
   },
   firestore: function() {
     return {
-      views: db.collection("views").where("userId", "==", auth.currentUser.uid)
+      views: db.collection("views").where("userId", "==", auth.currentUser.uid),
+      user: db.collection("users").where("userId", "==", auth.currentUser.uid)
     };
   }
 };
@@ -48,28 +50,10 @@ export default {
 
 <style scoped>
 
-.is-info{
-  background-color: #10A5E9;
-  font-weight: 800;
-  border-radius: 10px !important;
-  position: relative;
-  top: 2px
-}
-
-.is-info:hover{
-  background-color: #1282B6;
-  font-weight: 800;
-  border-radius: 10px !important;
-}
-
 .row{
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.is-2{
-  margin: 0;
 }
 
 hr.solid {
