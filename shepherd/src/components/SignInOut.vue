@@ -67,4 +67,11 @@ export default {
   background-color: #10A5E9 !important;
   color: #FFFFFF;
 }
+
+button{
+  position: relative;
+  top: -10px;
+  margin-right: 0;
+
+}
 </style>

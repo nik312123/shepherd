@@ -1,6 +1,6 @@
 <template>
   <div>
-<!--    <button class="button is-link" v-if="showSave">Save</button>-->
+    <button class="button is-link" v-if="showSave">Save</button>
     <editor class="editor" :options="options" previewStyle="tab" ref="bodyEditor" height="1000px" :initialValue="newBody" @change="onEditorChange"></editor>
 
   </div>

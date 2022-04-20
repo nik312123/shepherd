@@ -1,35 +1,41 @@
 <template>
- <div>
-   <div class="card">
-     <div>
-     <header class="card-header">
-       <p class="card-header-title">
-         {{ note.title }}
-       </p>
-       <button class="card-header-icon" aria-label="more options">
-         <tag-component :tag-map="note.tags"></tag-component>
-       </button>
-     </header>
-     <div class="card-content">
-       <div class="content">
-         {{ note.body }}
-         <br>
-       </div>
-     </div>
-   </div>
-   </div>
- </div>
+  <div>
+    <div @click="goToNote" class="card">
+      <div>
+        <header class="card-header">
+          <p class="card-header-title">
+            {{ note.title }}
+          </p>
+          <button class="card-header-icon" aria-label="more options">
+            <tag-component :tag-map="note.tags"></tag-component>
+          </button>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            {{ note.body }}
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 
 import TagComponent from "@/components/TagComponent";
+
 export default {
   name: "NoteComponent",
   components: {TagComponent},
   props: {
     note: Object
   },
+  methods: {
+    goToNote: function() {
+      this.$router.push({name: "note", params: {id: this.note.id}});
+    }
+  }
 };
 </script>
 
@@ -44,6 +50,7 @@ export default {
   padding-top: 5px;
   padding-bottom: 0;
 }
+
 .card {
   margin-left: auto;
   margin-right: auto;
@@ -53,6 +60,7 @@ export default {
   user-select: none;
   text-overflow: ellipsis;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .content {
@@ -74,7 +82,7 @@ export default {
   padding-bottom: 10px;
 }
 
-.card-header-icon{
+.card-header-icon {
   padding: 0 10px 0 0;
 }
 </style>

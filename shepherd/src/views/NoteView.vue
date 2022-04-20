@@ -1,5 +1,6 @@
 <template>
   <div>
+    <header-bar></header-bar>
     <div>
       <router-link to="/home">
         <i class="fa fa-angle-left fa-2x" aria-hidden="true"></i>
@@ -30,10 +31,11 @@
 import {db} from "@/firebaseConfig";
 import NoteBody from "@/components/NoteBody";
 import EditNote from "@/components/EditNote";
+import HeaderBar from "@/components/HeaderBar";
 
 export default {
   name: "NoteView",
-  components: {EditNote, NoteBody},
+  components: {HeaderBar, EditNote, NoteBody},
   props: ["id"],
   data() {
     return {
@@ -43,7 +45,7 @@ export default {
   },
   firestore: function() {
     return {
-      note: db.collection("notes").doc("HHtlkn8ojRIo7TUVyRO4")
+      note: db.collection("notes").doc(this.$route.params.id)
     };
   },
   methods: {
