@@ -9,6 +9,7 @@ import UpcomingView from "@/views/UpcomingView";
 import AllNotesView from "@/views/AllNotesView";
 import TrashView from "@/views/TrashView";
 import ViewView from "@/views/ViewView";
+import NoteView from "@/views/NoteView";
 
 Vue.use(VueRouter);
 
@@ -73,6 +74,14 @@ const routes = [
             requiresAuth: true
         },
         component: ViewView
+    },
+    {
+        path: "/note/:id",
+        name: "note",
+        meta: {
+            requiresAuth: true
+        },
+        component: NoteView
     }
 ];
 
