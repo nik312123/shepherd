@@ -1,7 +1,7 @@
 <template>
   <div>
-    <editor class="editor" ref="bodyEditor" :initialValue="newBody" @change="onEditorChange"></editor>
-    <button class="button is-link" v-if="showSave">Save</button>
+<!--    <button class="button is-link" v-if="showSave">Save</button>-->
+    <editor class="editor" :options="options" previewStyle="tab" ref="bodyEditor" height="1000px" :initialValue="newBody" @change="onEditorChange"></editor>
 
   </div>
 </template>
@@ -19,7 +19,10 @@ export default {
   data() {
     return {
       newBody: this.body,
-      showSave: false
+      showSave: false,
+      options: {
+        hideModeSwitch: true
+      }
     };
   },
   methods: {
@@ -34,8 +37,20 @@ export default {
 
 .editor {
   background-color: white;
-  border-radius: 15px;
+  border-radius: 10px;
   margin: 20px 0;
+}
+
+.toastui-editor-defaultUI{
+  border-radius: 10px;
+}
+
+.toastui-editor-defaultUI-toolbar{
+  border-top-right-radius: 10px;
+}
+
+.toastui-editor-defaultUI .toastui-editor-md-tab-container{
+  border-top-left-radius: 10px;
 }
 
 .button {

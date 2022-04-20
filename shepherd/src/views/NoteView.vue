@@ -68,6 +68,10 @@ export default {
   color: white;
 }
 
+.note-info {
+  font-weight: 600;
+}
+
 #content {
   margin-top: 2em;
   padding: 10px;
