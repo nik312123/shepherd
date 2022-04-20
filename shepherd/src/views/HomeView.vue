@@ -12,7 +12,7 @@
     <div class="section">
       <div class="row">
       <h1 class="title is-3">Views</h1>
-        <create-view-modal :userTags="user[0].tags"></create-view-modal>
+        <create-view-modal :userTags="user[0].tags" :views="views"></create-view-modal>
       </div>
       <hr class="solid">
 

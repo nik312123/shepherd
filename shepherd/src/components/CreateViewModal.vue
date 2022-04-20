@@ -18,7 +18,7 @@
           </header>
 
           <div class="card-content">
-            <input class="input is-medium" type="text" placeholder="Add Title">
+            <input v-model="title" class="input is-medium" type="text" placeholder="Add Title">
             <div class="control">
               <vue-tags-input
                   v-model="tag"
@@ -30,7 +30,7 @@
 
           </div>
           <footer class="card-footer">
-            <p class="card-footer-item completed">
+            <p @click="createView" class="card-footer-item create">
       <span class="title is-5">
         Create
       </span>
@@ -46,27 +46,30 @@
 
 <script>
 import VueTagsInput from "@johmun/vue-tags-input";
+import {auth, db} from "@/firebaseConfig";
 
 export default {
   name: "CreateViewModal",
   components: {
     VueTagsInput
   },
-  props:{
-    userTags: Array
+  props: {
+    userTags: Array,
+    views: Array
   },
   data() {
     return {
       showModal: false,
       tag: "",
       tags: [],
+      title: ""
     };
   },
   computed: {
     filteredItems() {
       let ac = [];
-      this.userTags.forEach(function(tag){
-        ac.push({text : tag});
+      this.userTags.forEach(function(tag) {
+        ac.push({text: tag});
       });
       return ac.filter(i => {
         return i.text.toLowerCase().indexOf(this.tag.toLowerCase()) !== -1;
@@ -74,13 +77,47 @@ export default {
     }
   },
   methods: {
-    openModal: function(){
+    openModal: function() {
       this.tag = "";
       this.tags = [];
       this.showModal = true;
+      this.title = "";
+    },
+    createView: function() {
+      let name = this.title.trim();
+      if(name.length === 0) {
+        alert("View title has to be at least 1 character long");
+        return;
+      }
+      if(this.tags.length === 0) {
+        alert("Add at least one tag");
+        return;
+      }
+      let add = true;
+      this.views.forEach(function(view) {
+        if(name.toLowerCase() === view.name.toLowerCase()) {
+          alert("You already have a view with this name");
+          add = false;
+        }
+      });
+      if(add) {
+        let tagsArray = [];
+        this.tags.forEach(function(tag){
+          tagsArray.push(tag.text);
+        });
+        db.collection("views").add({
+          name: name,
+          sortedAsc: false,
+          sortedColumn: "title",
+          tags: tagsArray,
+          userId: auth.currentUser.uid
+        });
+        this.showModal = false;
+      }
     }
   }
 };
+
 </script>
 
 <style scoped>
@@ -122,7 +159,7 @@ export default {
   margin: 0 25px 25px;
 }
 
-.completed {
+.create {
   background-color: #0DBB92;
 }
 
@@ -167,7 +204,7 @@ export default {
   padding-top: 20px;
 }
 
-.vue-tags-input {
+>>> .vue-tags-input {
   background-color: #2A3444;
   border-radius: 10px;
 }
@@ -204,7 +241,6 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
   position: relative;
 }
-
 
 >>> .vue-tags-input .ti-item.ti-selected-item {
   border-radius: 10px;

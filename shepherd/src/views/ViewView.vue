@@ -7,7 +7,12 @@
         <li class="is-active"><a aria-current="page">{{ $route.params.name }}</a></li>
       </ul>
     </nav>
-    <h1 class="title is-2">{{ $route.params.name }}</h1>
+    <div class = row>
+      <h1 class="title is-2">{{ $route.params.name }}</h1>
+      <button @click="deleteView" class="button is-info is-small">
+        <span class="fa-solid fa-trash"></span>
+      </button>
+    </div>
     <tag-component :tag-array="view[0].tags"></tag-component>
     <div class="section">
       <article v-for="noteObj in notes" :key="noteObj.id">
@@ -50,11 +55,36 @@ export default {
       view: db.collection("views").where("userId", "==", auth.currentUser.uid)
           .where("name", "==", this.$route.params.name)
     };
+  },
+  methods: {
+    deleteView: function(){
+      db.collection("views").doc(this.view[0].id).delete();
+      this.$router.push("/home");
+    }
   }
 };
 </script>
 
 <style scoped>
+
+
+.is-info{
+  background-color: #DC3F58;
+  font-weight: 800;
+  border-radius: 10px !important;
+}
+
+.is-info:hover{
+  background-color: #B23247;
+  font-weight: 800;
+  border-radius: 10px !important;
+}
+
+.row{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 
 .title.is-2 {
   margin-bottom: 5px;
