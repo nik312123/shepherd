@@ -7,18 +7,18 @@
         <li class="is-active"><a aria-current="page">{{ $route.params.name }}</a></li>
       </ul>
     </nav>
-    <div class = row>
+    <div class="row">
       <h1 class="title is-2">{{ $route.params.name }}</h1>
       <button @click="deleteView" class="button is-info is-small">
         <span class="fa-solid fa-trash"></span>
       </button>
     </div>
-    <tag-component :tag-array="view[0].tags"></tag-component>
+    <tag-component v-if="view && view.length > 0" :tag-array="view[0].tags"></tag-component>
     <div class="section">
       <article v-for="noteObj in notes" :key="noteObj.id">
         <note-component :note="noteObj"></note-component>
       </article>
-      </div>
+    </div>
   </div>
 </template>
 
@@ -42,12 +42,14 @@ export default {
   },
   watch: {
     view: function() {
-      let notesQuery = db.collection("notes").where("userId", "==", auth.currentUser.uid);
-      let tags = this.view[0].tags;
-      tags.forEach(function(tag) {
-        notesQuery = notesQuery.where("tags." + tag, "==", true);
-      });
-      this.$bind("notes", notesQuery);
+      if(this.view && this.view.length > 0) {
+        let notesQuery = db.collection("notes").where("userId", "==", auth.currentUser.uid);
+        let tags = this.view[0].tags;
+        tags.forEach(function(tag) {
+          notesQuery = notesQuery.where("tags." + tag, "==", true);
+        });
+        this.$bind("notes", notesQuery);
+      }
     }
   },
   firestore: function() {
@@ -57,7 +59,7 @@ export default {
     };
   },
   methods: {
-    deleteView: function(){
+    deleteView: function() {
       db.collection("views").doc(this.view[0].id).delete();
       this.$router.push("/home");
     }
@@ -67,20 +69,19 @@ export default {
 
 <style scoped>
 
-
-.is-info{
+.is-info {
   background-color: #DC3F58;
   font-weight: 800;
   border-radius: 10px !important;
 }
 
-.is-info:hover{
+.is-info:hover {
   background-color: #B23247;
   font-weight: 800;
   border-radius: 10px !important;
 }
 
-.row{
+.row {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -90,7 +91,7 @@ export default {
   margin-bottom: 5px;
 }
 
-.section{
+.section {
   padding-top: 10px;
 }
 

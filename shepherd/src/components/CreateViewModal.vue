@@ -55,7 +55,7 @@ export default {
   },
   props: {
     userTags: Array,
-    views: Array,
+    views: Array
   },
   data() {
     return {
@@ -102,7 +102,7 @@ export default {
       });
       if(add) {
         let tagsArray = [];
-        this.tags.forEach(function(tag){
+        this.tags.forEach(function(tag) {
           tagsArray.push(tag.text);
         });
         db.collection("views").add({
@@ -112,12 +112,10 @@ export default {
           tags: tagsArray,
           userId: auth.currentUser.uid
         });
-
-        db.collection("users").where("userId", "==", auth.currentUser.uid).get().then(query => {
-          let userRef = query.docs[0].ref;
-          userRef.update({
+        db.collection("users").doc(auth.currentUser.uid).get().then((doc) => {
+          doc.ref.update({
             "tags": fieldValue.arrayUnion(...tagsArray)
-          })
+          });
         });
         this.showModal = false;
       }
@@ -288,5 +286,4 @@ export default {
 ::-ms-input-placeholder { /* Microsoft Edge */
   color: #A4B1B6;
 }
-
 </style>

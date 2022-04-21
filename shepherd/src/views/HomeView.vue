@@ -11,8 +11,8 @@
 
     <div class="section">
       <div class="row">
-      <h1 class="title is-3">Views</h1>
-        <create-view-modal :userTags="user[0].tags" :views="views"></create-view-modal>
+        <h1 class="title is-3">Views</h1>
+        <create-view-modal v-if="user" :userTags="user.tags" :views="views"></create-view-modal>
       </div>
       <hr class="solid">
 
@@ -34,15 +34,23 @@ export default {
   components: {CreateViewModal, HeaderBar, HomeItem},
   data() {
     return {
-      display: auth.currentUser.displayName,
       views: [],
-      user: {}
+      user: null
     };
   },
   firestore: function() {
+    let userQuery = db.collection("users").doc(auth.currentUser.uid);
+    userQuery.get().then((doc) => {
+      if(doc.exists) {
+        this.$bind("user", userQuery);
+      }
+      else {
+        userQuery.set({tags: []});
+      }
+    });
+
     return {
-      views: db.collection("views").where("userId", "==", auth.currentUser.uid),
-      user: db.collection("users").where("userId", "==", auth.currentUser.uid)
+      views: db.collection("views").where("userId", "==", auth.currentUser.uid)
     };
   }
 };
@@ -50,7 +58,7 @@ export default {
 
 <style scoped>
 
-.row{
+.row {
   display: flex;
   align-items: center;
   gap: 10px;
