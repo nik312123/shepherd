@@ -8,8 +8,10 @@
       </ul>
     </nav>
     <h1 class="title is-2">📮 Inbox</h1>
+    <search-bar :notes="notes" :returnResults="setResults" />
     <div class="section">
-      <article v-for="noteObj in notes" :key="noteObj.id">
+      <article v-for="noteObj in searchNotes" :key="noteObj.id">
+        
         <note-component :note="noteObj"></note-component>
       </article>
     </div>
@@ -20,13 +22,20 @@
 import HeaderBar from "@/components/HeaderBar";
 import {auth, db} from "@/firebaseConfig";
 import NoteComponent from "@/components/NoteComponent";
+import SearchBar from '../components/SearchBar.vue';
 
 export default {
   name: "InboxView",
-  components: {NoteComponent, HeaderBar},
+  components: {NoteComponent, HeaderBar,SearchBar},
   data() {
     return {
-      notes: []
+      notes: [],
+      searchNotes : []
+    }
+  },
+  methods: {
+    setResults : function(value){
+      this.searchNotes = value
     }
   },
   firestore: function() {

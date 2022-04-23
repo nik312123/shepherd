@@ -14,7 +14,9 @@
       </button>
     </div>
     <tag-component v-if="view && view.length > 0" :tag-array="view[0].tags"></tag-component>
+    
     <div class="section">
+      <search-bar :notes="notes" :returnResults="setResults"/>
       <article v-for="noteObj in notes" :key="noteObj.id">
         <note-component :note="noteObj"></note-component>
       </article>
@@ -27,10 +29,11 @@ import HeaderBar from "@/components/HeaderBar";
 import {auth, db} from "@/firebaseConfig";
 import TagComponent from "@/components/TagComponent";
 import NoteComponent from "@/components/NoteComponent";
+import SearchBar from '../components/SearchBar.vue';
 
 export default {
   name: "ViewView",
-  components: {NoteComponent, TagComponent, HeaderBar},
+  components: {NoteComponent, TagComponent, HeaderBar, SearchBar},
   data() {
     return {
       view: {},
@@ -62,6 +65,9 @@ export default {
     deleteView: function() {
       db.collection("views").doc(this.view[0].id).delete();
       this.$router.push("/home");
+    },
+    setResults : function(value){
+      this.searchNotes = value
     }
   }
 };
@@ -93,6 +99,7 @@ export default {
 
 .section {
   padding-top: 10px;
+  margin-top: 2%;
 }
 
 </style>
