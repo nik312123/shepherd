@@ -68,7 +68,7 @@ const routes = [
         component: TrashView
     },
     {
-        path: "/views/:name",
+        path: "/view/:id",
         name: "view",
         meta: {
             requiresAuth: true

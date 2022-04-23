@@ -20,12 +20,13 @@ export default {
   props: {
     title: String,
     route: String,
-    count: Number
+    count: Number,
+    id: String
   },
   methods: {
     goTo: function() {
       if(this.route === "view"){
-        router.push({name: this.route, params: {name : this.title}});
+        router.push("/view/" + this.id);
       } else {
       router.push(this.route);
       }

@@ -12,16 +12,16 @@
     <div class="section">
       <div class="row">
         <h1 class="title is-3">Views</h1>
-        <create-view-modal v-if="user" :userTags="user.tags" :views="views"></create-view-modal>
+        <CreateViewModal v-if="user" mode="Create" :userTags="user.tags" :views="views"/>
       </div>
       <hr class="solid">
 
       <article v-for="view in views" :key="view.id">
-        <home-item :title="view.name" route="view" :count="1"></home-item>
+        <home-item :title="view.name" route="view" :id="view.id" :count="1"></home-item>
       </article>
     </div>
   </div>
-</template>
+</template>¬
 
 <script>
 import {auth, db} from "@/firebaseConfig";

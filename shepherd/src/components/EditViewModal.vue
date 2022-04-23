@@ -1,7 +1,8 @@
 <template>
   <div>
-    <button @click="openModal" class="button is-info is-add">
-      <span class="fa-solid fa-circle-plus"></span>
+
+    <button @click="openModal" class="button is-info is-small is-gray">
+      <span class="fa-solid fa-edit"></span>
     </button>
 
     <div :class="`${(showModal?'modal is-active':'modal')}`">
@@ -13,7 +14,7 @@
           <header class="card-header">
             <p class="title card-header-title is-centered">
           <span>
-          Create View
+          Edit View
             </span>
             </p>
           </header>
@@ -31,9 +32,9 @@
 
           </div>
           <footer class="card-footer">
-            <p @click="createView" class="card-footer-item create">
+            <p @click="updateView" class="card-footer-item create">
       <span class="title is-5">
-        Create
+        Update
       </span>
             </p>
           </footer>
@@ -50,20 +51,21 @@ import VueTagsInput from "@johmun/vue-tags-input";
 import {auth, db, fieldValue} from "@/firebaseConfig";
 
 export default {
-  name: "CreateViewModal",
+  name: "EditViewModal",
   components: {
     VueTagsInput
   },
   props: {
     userTags: Array,
     views: Array,
+    viewObj: Object
   },
   data() {
     return {
       showModal: false,
       tag: "",
-      tags: [],
-      title: ""
+      tags: getTagsMap(this.viewObj.tags),
+      title: this.viewObj.name
     };
   },
   computed: {
@@ -80,49 +82,67 @@ export default {
   methods: {
     openModal: function() {
       this.tag = "";
-      this.tags = [];
+      this.tags = getTagsMap(this.viewObj.tags);
+      this.title = this.viewObj.name;
       this.showModal = true;
-      this.title = "";
     },
-    createView: function() {
+    updateView: function() {
       let name = this.title.trim();
-      if(name.length === 0) {
-        alert("View title has to be at least 1 character long");
-        return;
-      }
-      if(this.tags.length === 0) {
-        alert("Add at least one tag");
-        return;
-      }
-      let add = true;
-      this.views.forEach(function(view) {
-        if(name.toLowerCase() === view.name.toLowerCase()) {
-          alert("You already have a view with this name");
-          add = false;
-        }
-      });
-      if(add) {
-        let tagsArray = [];
-        this.tags.forEach(function(tag) {
-          tagsArray.push(tag.text);
-        });
-        db.collection("views").add({
+
+      if(updateName(this.viewObj.name, name, this.views)) {
+        db.collection("views").doc(this.viewObj.id).update({
           name: name,
-          sortedAsc: false,
-          sortedColumn: "title",
-          tags: tagsArray,
-          userId: auth.currentUser.uid
-        });
-        db.collection("users").doc(auth.currentUser.uid).get().then((doc) => {
-          doc.ref.update({
-            "tags": fieldValue.arrayUnion(...tagsArray)
-          });
         });
         this.showModal = false;
       }
+
+      if(this.tags.length === 0) {
+        alert("Add at least one tag");
+        this.showModal = true;
+        return;
+      }
+      let tagsArray = [];
+      this.tags.forEach(function(tag) {
+        tagsArray.push(tag.text);
+      });
+      db.collection("views").doc(this.viewObj.id).update({
+        tags: tagsArray
+      });
+      db.collection("users").doc(auth.currentUser.uid).get().then((doc) => {
+        doc.ref.update({
+          "tags": fieldValue.arrayUnion(...tagsArray)
+        });
+      });
+      this.showModal = false;
     }
   }
 };
+
+function getTagsMap(tags) {
+  let array = [];
+  tags.forEach((tag) => {
+    array.push({text: tag});
+  });
+  return array;
+}
+
+function updateName(oldName, newName, views) {
+  if(newName.length === 0) {
+    alert("View title has to be at least 1 character long");
+    return false;
+  }
+  if(oldName.toLowerCase() === newName.toLowerCase()){
+    return false;
+  }
+  let add = true;
+  views.forEach(function(view) {
+    if(newName.toLowerCase() === view.name.toLowerCase()) {
+      alert("You already have a view with this name");
+      add = false;
+    }
+  });
+  return add;
+}
 
 </script>
 
@@ -294,13 +314,13 @@ export default {
   color: #A4B1B6;
 }
 
-.is-gray{
+.is-gray {
   background-color: #68778F;
   font-weight: 800;
   border-radius: 10px !important;
 }
 
-.is-gray:hover{
+.is-gray:hover {
   background-color: #5A667A;
   font-weight: 800;
   border-radius: 10px !important;
