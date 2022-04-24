@@ -79,6 +79,11 @@ export default {
       });
     }
   },
+  watch: {
+    tag: function(){
+      this.tag = this.tag.toLowerCase();
+    }
+  },
   methods: {
     openModal: function() {
       this.tag = "";
@@ -93,7 +98,6 @@ export default {
         db.collection("views").doc(this.viewObj.id).update({
           name: name,
         });
-        this.showModal = false;
       }
 
       if(this.tags.length === 0) {

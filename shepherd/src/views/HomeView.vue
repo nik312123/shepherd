@@ -9,10 +9,13 @@
       <home-item title="🗑 Trash" route="trash" :count="0"></home-item>
     </div>
 
+    <CreateNoteModal v-if="user" :userTags="user.tags" :views="views"/>
+
+
     <div class="section">
       <div class="row">
         <h1 class="title is-3">Views</h1>
-        <CreateViewModal v-if="user" mode="Create" :userTags="user.tags" :views="views"/>
+        <CreateViewModal v-if="user" :userTags="user.tags" :views="views"/>
       </div>
       <hr class="solid">
 
@@ -21,17 +24,18 @@
       </article>
     </div>
   </div>
-</template>¬
+</template>
 
 <script>
 import {auth, db} from "@/firebaseConfig";
 import HomeItem from "@/components/HomeItem";
 import HeaderBar from "@/components/HeaderBar";
 import CreateViewModal from "@/components/CreateViewModal";
+import CreateNoteModal from "@/components/CreateNoteModal";
 
 export default {
   name: "HomeView",
-  components: {CreateViewModal, HeaderBar, HomeItem},
+  components: {CreateNoteModal, CreateViewModal, HeaderBar, HomeItem},
   data() {
     return {
       views: [],
