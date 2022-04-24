@@ -11,13 +11,6 @@
         </a>
       </div>
 
-      <p class="title is-3">{{ note.title }}</p>
-<!--      <div class="tags">-->
-<!--        <span class="tag is-info" v-for="tag in displayTags(note.tags)[0]" :key="tag">{{ tag }}</span>-->
-<!--        <span class="tag is-info is-light is-rounded" v-if="displayTags(note.tags)[1] > 0">{{-->
-<!--            displayTags(note.tags)[1]-->
-<!--                                                                                           }}+</span>-->
-<!--      </div>-->
       <TagComponent :tag-map="note.tags" class="tags"/>
 
       <div>

@@ -192,6 +192,7 @@ export default {
   border-radius: 10px;
 }
 
+
 .inputMargin {
   margin-top: 20px;
 }
