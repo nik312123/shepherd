@@ -180,6 +180,10 @@ export default {
   border-radius: 10px;
 }
 
+input::placeholder {
+  color: #69747E;
+}
+
 .inputMargin {
   margin-top: 20px;
 }

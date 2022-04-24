@@ -1,13 +1,17 @@
 <template>
   <div>
-    <div @click="goToNote" class="card">
-      <div>
+    <div @click="goToNote" class="card" ref="singlenote">
+      <div class="card-content date">
+        <p>{{note.reminderDateTime.toDate().toDateString().slice(4,7)}}</p>
+        <p class="date-day">{{note.reminderDateTime.toDate().toDateString().slice(8,10)}}</p>
+      </div>
+      <div class="note-info">
         <header class="card-header">
           <p class="card-header-title">
             {{ note.title }}
           </p>
           <button class="card-header-icon" aria-label="more options">
-            <tag-component :tag-map="note.tags"></tag-component>
+            <tag-component :tag-map="note.tags" :char-limit="10"></tag-component>
           </button>
         </header>
         <div class="card-content">
@@ -61,6 +65,9 @@ export default {
   text-overflow: ellipsis;
   overflow: hidden;
   cursor: pointer;
+  display: inline-flex;
+  flex-direction: row;
+  width: 100%;
 }
 
 .content {
@@ -84,5 +91,24 @@ export default {
 
 .card-header-icon {
   padding: 0 10px 0 0;
+}
+
+.date {
+  color: white;
+  padding: 5px 15px;
+  width: 75px;
+  background-color: #181d26;
+  /*word-wrap: break-word;*/
+  font-size: 1em;
+  text-align: center;
+}
+
+.date-day {
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+.note-info {
+  width: 100%;
 }
 </style>

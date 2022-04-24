@@ -12,15 +12,12 @@
 
     <p class="title is-3">{{ note.title }}</p>
     <div class="tags">
-      <span class="tag is-info" v-for="tag in displayTags(note.tags)[0]" :key="tag">{{ tag }}</span>
-      <span class="tag is-info is-light is-rounded" v-if="displayTags(note.tags)[1] > 0">{{
-          displayTags(note.tags)[1]
-                                                                                         }}+</span>
+      <tag-component :tag-array="Object.keys(note.tags)"></tag-component>
     </div>
     <div>
-      <p class="note-info">Reminder: April 1</p>
-      <p class="note-info">Created on : 11/11/11</p>
-      <p class="note-info">Last Modified: 11/11/11</p>
+      <p class="note-info">Reminder: {{note.reminderDateTime.toDate().toDateString()}}</p>
+      <p class="note-info">Created: {{note.createdDateTime.toDate().toDateString()}}</p>
+      <p class="note-info">Last Modified: {{note.lastModifiedDateTime.toDate().toDateString()}}</p>
     </div>
     <NoteBody :body="note.body"></NoteBody>
     <EditNote v-if="showModal" @close="showModal = false" v-bind:class="{ 'is-active': showModal }"></EditNote>
@@ -32,10 +29,11 @@ import {db} from "@/firebaseConfig";
 import NoteBody from "@/components/NoteBody";
 import EditNote from "@/components/EditNote";
 import HeaderBar from "@/components/HeaderBar";
+import TagComponent from "@/components/TagComponent";
 
 export default {
   name: "NoteView",
-  components: {HeaderBar, EditNote, NoteBody},
+  components: {TagComponent, HeaderBar, EditNote, NoteBody},
   props: ["id"],
   data() {
     return {
@@ -47,20 +45,6 @@ export default {
     return {
       note: db.collection("notes").doc(this.$route.params.id)
     };
-  },
-  methods: {
-    displayTags: function(tags) {
-      let totalChars = 20;
-      let i = 0;
-      let displayedTags = [];
-      while(totalChars > 0 && i < tags.length) {
-        totalChars -= tags[i].length;
-        displayedTags.push(tags[i]);
-        i += 1;
-      }
-      let remainingTags = tags.length - displayedTags.length;
-      return [displayedTags, remainingTags];
-    }
   }
 };
 </script>
