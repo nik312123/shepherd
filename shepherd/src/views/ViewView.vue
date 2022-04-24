@@ -1,22 +1,25 @@
 <template>
   <div>
-    <header-bar></header-bar>
+    <HeaderBar/>
     <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
       <ul>
         <li @click="$router.push('/home')"><a>Home</a></li>
-        <li class="is-active"><a aria-current="page">{{ $route.params.name }}</a></li>
+        <li v-if="view" class="is-active"><a aria-current="page">{{ view.name }}</a></li>
       </ul>
     </nav>
     <div class="row">
-      <h1 class="title is-2">{{ $route.params.name }}</h1>
-      <button @click="deleteView" class="button is-info is-small">
-        <span class="fa-solid fa-trash"></span>
-      </button>
+      <h1 v-if="view" class="title is-2">{{ view.name }}</h1>
+      <div class="row smaller-gap">
+        <button @click="deleteView" class="button is-info is-small">
+          <span class="fa-solid fa-trash"></span>
+        </button>
+        <EditViewModal v-if="user && view" :userTags="user.tags" :views="views" :viewObj="view"/>
+      </div>
     </div>
-    <tag-component v-if="view && view.length > 0" :tag-array="view[0].tags"></tag-component>
+    <TagComponent v-if="view" :tag-array="view.tags"/>
     <div class="section">
       <article v-for="noteObj in notes" :key="noteObj.id">
-        <note-component :note="noteObj"></note-component>
+        <NoteComponent :note="noteObj"/>
       </article>
     </div>
   </div>
@@ -27,24 +30,29 @@ import HeaderBar from "@/components/HeaderBar";
 import {auth, db} from "@/firebaseConfig";
 import TagComponent from "@/components/TagComponent";
 import NoteComponent from "@/components/NoteComponent";
+import EditViewModal from "@/components/EditViewModal";
 
 export default {
   name: "ViewView",
-  components: {NoteComponent, TagComponent, HeaderBar},
+  components: {EditViewModal, NoteComponent, TagComponent, HeaderBar},
   data() {
     return {
-      view: {},
-      notes: []
+      view: null,
+      notes: [],
+      user: null,
+      views: [],
+      test: {}
     };
   },
   props: {
-    name: String
+    id: String
   },
   watch: {
     view: function() {
-      if(this.view && this.view.length > 0) {
+      if(this.view) {
+        this.test = this.view.ref;
         let notesQuery = db.collection("notes").where("userId", "==", auth.currentUser.uid);
-        let tags = this.view[0].tags;
+        let tags = this.view.tags;
         tags.forEach(function(tag) {
           notesQuery = notesQuery.where("tags." + tag, "==", true);
         });
@@ -54,14 +62,18 @@ export default {
   },
   firestore: function() {
     return {
-      view: db.collection("views").where("userId", "==", auth.currentUser.uid)
-          .where("name", "==", this.$route.params.name)
+      view: db.collection("views").doc(this.$route.params.id),
+      views: db.collection("views").where("userId", "==", auth.currentUser.uid),
+      user: db.collection("users").doc(auth.currentUser.uid)
     };
   },
   methods: {
     deleteView: function() {
-      db.collection("views").doc(this.view[0].id).delete();
+      db.collection("views").doc(this.view.id).delete();
       this.$router.push("/home");
+    },
+    editView: function() {
+      alert("edit");
     }
   }
 };
@@ -93,6 +105,10 @@ export default {
 
 .section {
   padding-top: 10px;
+}
+
+.smaller-gap {
+  gap: 0;
 }
 
 </style>
