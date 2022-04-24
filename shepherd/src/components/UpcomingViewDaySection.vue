@@ -63,7 +63,7 @@ export default {
   firestore: function() {
     let start = new Date();
     start.setDate(start.getDate() + (this.offset - 1));
-    start.setHours(0, 0, 0, 0);
+    start.setHours(23, 59, 59, 0);
 
     let end = new Date();
     end.setDate(end.getDate() + this.offset + 1);
