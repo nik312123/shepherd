@@ -10,7 +10,7 @@
           <i class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></i>
         </a>
       </div>
-
+      <p class="title is-3">{{ note.title }}</p>
       <TagComponent :tag-map="note.tags" class="tags"/>
 
       <div>
