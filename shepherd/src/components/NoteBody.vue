@@ -29,7 +29,7 @@ export default {
         toolbarItems: [
           ["hr", "quote"],
           ["task"],
-          ["image", "link"],
+          ["link"],
           ["code", "codeblock"]
         ]
       }
