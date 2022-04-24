@@ -11,7 +11,7 @@
             {{ note.title }}
           </p>
           <button class="card-header-icon" aria-label="more options">
-            <tag-component :tag-map="note.tags" :char-limit="10"></tag-component>
+            <tag-component :tag-map="note.tags"></tag-component>
           </button>
         </header>
         <div class="card-content">

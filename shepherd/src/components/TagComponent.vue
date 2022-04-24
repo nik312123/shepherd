@@ -23,7 +23,6 @@ export default {
   props: {
     tagArray: Array,
     tagMap: Object,
-    charLimit: Number
   },
   data() {
     return {
