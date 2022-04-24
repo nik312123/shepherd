@@ -42,7 +42,8 @@ export default {
     },
     saveNote: function() {
       db.collection("notes").doc(this.id).update({
-        body: this.newBody
+        body: this.newBody,
+        lastModifiedDateTime: new Date()
       });
       this.showSave = false;
     }
