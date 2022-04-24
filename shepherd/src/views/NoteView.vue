@@ -21,9 +21,11 @@
       <p class="note-info">Reminder: April 1</p>
       <p class="note-info">Created on : 11/11/11</p>
       <p class="note-info">Last Modified: 11/11/11</p>
+      <add-image />
     </div>
     <NoteBody :body="note.body"></NoteBody>
     <EditNote v-if="showModal" @close="showModal = false" v-bind:class="{ 'is-active': showModal }"></EditNote>
+    
   </div>
 </template>
 
@@ -32,10 +34,11 @@ import {db} from "@/firebaseConfig";
 import NoteBody from "@/components/NoteBody";
 import EditNote from "@/components/EditNote";
 import HeaderBar from "@/components/HeaderBar";
+import AddImage from '../components/AddImage.vue';
 
 export default {
   name: "NoteView",
-  components: {HeaderBar, EditNote, NoteBody},
+  components: {HeaderBar, EditNote, NoteBody, AddImage},
   props: ["id"],
   data() {
     return {
