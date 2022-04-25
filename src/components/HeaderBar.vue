@@ -10,6 +10,7 @@
 
 <script>
 import SignInOut from '@/components/SignInOut';
+import HomeView from '@/views/HomeView';
 
 export default {
     name: 'HeaderBar',
@@ -26,7 +27,7 @@ export default {
     },
     methods: {
         redirectToHome() {
-            this.$router.push('/home');
+            this.$router.push({name: HomeView.name});
         },
         checkScreen() {
             const windowWidth = window.innerWidth;

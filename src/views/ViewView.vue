@@ -3,7 +3,7 @@
         <HeaderBar/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push('/home')"><a>Home</a></li>
+                <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
                 <li v-if="view" class="is-active"><a aria-current="page">{{ view.name }}</a></li>
             </ul>
         </nav>
@@ -31,12 +31,14 @@ import {auth, db} from '@/firebaseConfig';
 import TagComponent from '@/components/TagComponent';
 import NoteComponent from '@/components/NoteComponent';
 import EditViewModal from '@/components/EditViewModal';
+import HomeView from '@/views/HomeView';
 
 export default {
     name: 'ViewView',
     components: {EditViewModal, NoteComponent, TagComponent, HeaderBar},
     data() {
         return {
+            homeViewName: HomeView.name,
             view: null,
             notes: [],
             user: null,
@@ -70,7 +72,7 @@ export default {
     methods: {
         deleteView: function() {
             db.collection('views').doc(this.view.id).delete();
-            this.$router.push('/home');
+            this.$router.push({name: HomeView.name});
         },
         editView: function() {
             alert('edit');

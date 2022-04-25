@@ -30,6 +30,7 @@
 <script>
 
 import TagComponent from '@/components/TagComponent';
+import NoteView from '@/views/NoteView';
 
 export default {
     name: 'NoteComponent',
@@ -39,7 +40,7 @@ export default {
     },
     methods: {
         goToNote: function() {
-            this.$router.push({name: 'note', params: {id: this.note.id}});
+            this.$router.push({name: NoteView.name, params: {id: this.note.id}});
         }
     }
 };

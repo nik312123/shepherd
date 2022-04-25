@@ -3,20 +3,20 @@
         <HeaderBar/>
         <div v-if="note.userId===userId">
             <div>
-                <router-link to="/home">
-                    <i class="fa fa-angle-left fa-2x" aria-hidden="true"></i>
+                <router-link :to="{name: homeViewName}">
+                    <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
                 </router-link>
                 <a class="edit-menu" @click="showModal = true">
-                    <i class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></i>
+                    <span class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></span>
                 </a>
             </div>
             <p class="title is-3">{{ note.title }}</p>
             <TagComponent :tag-array="Object.keys(note.tags)" class="tags"/>
             
             <div>
-                <p v-if="note.reminderDateTime" class="note-info">Reminder: {{
-                        note.reminderDateTime.toDate().toLocaleDateString('en-US')
-                                                                  }}</p>
+                <p v-if="note.reminderDateTime" class="note-info">
+                    Reminder: {{ note.reminderDateTime.toDate().toLocaleDateString('en-US') }}
+                </p>
                 <p class="note-info">Created on: {{ note.createdDateTime.toDate().toLocaleDateString('en-US') }}</p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }} ago</p>
             </div>
@@ -32,6 +32,7 @@ import NoteBody from '@/components/NoteBody';
 import EditNote from '@/components/EditNote';
 import HeaderBar from '@/components/HeaderBar';
 import TagComponent from '@/components/TagComponent';
+import HomeView from '@/views/HomeView';
 
 export default {
     name: 'NoteView',
@@ -39,6 +40,7 @@ export default {
     props: ['id'],
     data() {
         return {
+            homeViewName: HomeView.name,
             note: false,
             showModal: false,
             userId: auth.currentUser.uid

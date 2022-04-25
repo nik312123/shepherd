@@ -67,6 +67,7 @@
 import VueTagsInput from '@johmun/vue-tags-input';
 import {auth, db, fieldValue} from '@/firebaseConfig';
 import DatePicker from 'v-calendar/lib/components/date-picker.umd';
+import NoteView from '@/views/NoteView';
 
 export default {
     name: 'CreateNoteModal',
@@ -146,7 +147,7 @@ export default {
                 lastModifiedDateTime: new Date(),
                 reminderDateTime: this.reminderDate
             }).then((docRef) => {
-                this.$router.push('/note/' + docRef.id);
+                this.$router.push({name: NoteView.name, params: {id: docRef.id}});
             });
             this.showModal = false;
         }

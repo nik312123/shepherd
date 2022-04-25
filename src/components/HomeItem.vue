@@ -14,22 +14,23 @@
 
 <script>
 import router from '@/router';
+import ViewView from '@/views/ViewView';
 
 export default {
     name: 'HomeItem',
     props: {
         title: String,
-        route: String,
+        viewName: String,
         count: Number,
         id: String
     },
     methods: {
         goTo: function() {
-            if(this.route === 'view') {
-                router.push('/view/' + this.id);
+            if(this.viewName === ViewView.name) {
+                router.push({name: ViewView.name, params: {id: this.id}});
             }
             else {
-                router.push(this.route);
+                router.push({name: this.viewName});
             }
         }
     }

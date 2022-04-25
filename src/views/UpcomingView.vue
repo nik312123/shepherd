@@ -3,7 +3,7 @@
         <HeaderBar/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push('/home')"><a>Home</a></li>
+                <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
                 <li class="is-active"><a aria-current="page">Upcoming</a></li>
             </ul>
         </nav>
@@ -19,13 +19,15 @@
 <script>
 import HeaderBar from '@/components/HeaderBar';
 import UpcomingViewDaySection from '@/components/UpcomingViewDaySection';
+import HomeView from '@/views/HomeView';
 
 export default {
     name: 'UpcomingView',
-    components: {HeaderBar, UpcomingViewDaySection}
+    components: {HeaderBar, UpcomingViewDaySection},
+    data: function() {
+        return {
+            homeViewName: HomeView.name
+        };
+    }
 };
 </script>
-
-<style scoped>
-
-</style>

@@ -3,8 +3,10 @@
         <HeaderBar/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push('/home')"><a>Home</a></li>
-                <li class="is-active"><a href="/all-notes" aria-current="page">All Notes</a></li>
+                <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
+                <li class="is-active">
+                    <router-link :to="{name: allNotesViewName}" aria-current="page">All Notes</router-link>
+                </li>
             </ul>
         </nav>
         <h1 class="title is-2">🗄 All Notes</h1>
@@ -20,12 +22,17 @@
 import HeaderBar from '@/components/HeaderBar';
 import {auth, db} from '@/firebaseConfig';
 import NoteComponent from '@/components/NoteComponent';
+import HomeView from '@/views/HomeView';
+
+const allNotesViewName = 'AllNotesView';
 
 export default {
-    name: 'AllNotesView',
+    name: allNotesViewName,
     components: {NoteComponent, HeaderBar},
     data() {
         return {
+            allNotesViewName: allNotesViewName,
+            homeViewName: HomeView.name,
             notes: []
         };
     },

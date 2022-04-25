@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import LoginView from '../views/LoginView.vue';
-import HomeView from '../views/HomeView.vue';
+import LoginView from '@/views/LoginView.vue';
+import HomeView from '@/views/HomeView.vue';
 import {auth} from '@/firebaseConfig';
 import InboxView from '@/views/InboxView';
 import TodayView from '@/views/TodayView';
@@ -16,74 +16,86 @@ Vue.use(VueRouter);
 const routes = [
     {
         path: '/',
-        name: 'login',
-        component: LoginView
+        component: LoginView,
+        meta: {
+            title: 'Shepherd'
+        }
     },
     {
         path: '/home',
-        name: 'home',
+        component: HomeView,
         meta: {
-            requiresAuth: true
-        },
-        component: HomeView
+            requiresAuth: true,
+            title: 'Shepherd Home'
+        }
     },
     {
         path: '/inbox',
-        name: 'inbox',
+        component: InboxView,
         meta: {
-            requiresAuth: true
-        },
-        component: InboxView
+            requiresAuth: true,
+            title: 'Shepherd Inbox'
+        }
     },
     {
         path: '/today',
-        name: 'today',
+        component: TodayView,
         meta: {
-            requiresAuth: true
-        },
-        component: TodayView
+            requiresAuth: true,
+            title: 'Shepherd Today'
+        }
     },
     {
         path: '/upcoming',
-        name: 'upcoming',
+        component: UpcomingView,
         meta: {
-            requiresAuth: true
-        },
-        component: UpcomingView
+            requiresAuth: true,
+            title: 'Shepherd Upcoming'
+        }
     },
     {
         path: '/all-notes',
-        name: 'all-notes',
+        component: AllNotesView,
         meta: {
-            requiresAuth: true
-        },
-        component: AllNotesView
+            requiresAuth: true,
+            title: 'Shepherd All Notes'
+        }
     },
     {
         path: '/trash',
-        name: 'trash',
+        component: TrashView,
         meta: {
-            requiresAuth: true
-        },
-        component: TrashView
+            requiresAuth: true,
+            title: 'Shepherd Trash'
+        }
     },
     {
         path: '/view/:id',
-        name: 'view',
+        component: ViewView,
+        props: true,
         meta: {
-            requiresAuth: true
-        },
-        component: ViewView
+            requiresAuth: true,
+            title: 'Shepherd View'
+        }
     },
     {
         path: '/note/:id',
-        name: 'note',
+        component: NoteView,
+        props: true,
         meta: {
-            requiresAuth: true
-        },
-        component: NoteView
+            requiresAuth: true,
+            title: 'Shepherd Note'
+        }
     }
 ];
+
+for(let i = 0; i < routes.length; ++i) {
+    if(routes[i].component !== undefined) {
+        routes[i].name = routes[i].component.name;
+    }
+}
+
+document.title = routes[0].meta.title;
 
 const router = new VueRouter({
     mode: 'history',
@@ -92,18 +104,20 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    let currentUser = auth.currentUser;
     // noinspection JSUnresolvedVariable
     let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-    if(requiresAuth && !currentUser) {
+    
+    if(requiresAuth && !auth.currentUser) {
         next('/');
-    }
-    else if(!requiresAuth && currentUser) {
-        next('home');
     }
     else {
         next();
     }
+});
+
+router.afterEach((to) => {
+    // noinspection JSUnresolvedVariable
+    document.title = to.meta.title;
 });
 
 export default router;

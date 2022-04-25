@@ -17,6 +17,7 @@
 <script>
 import {auth, provider} from '@/firebaseConfig';
 import router from '@/router';
+import LoginView from '@/views/LoginView';
 
 export default {
     name: 'SignInOut',
@@ -49,7 +50,7 @@ export default {
             auth.signOut()
                 .then(() => {
                     this.user = null;
-                    router.push('/');
+                    router.push({name: LoginView.name});
                 })
                 .catch(err => console.log(err));
         }

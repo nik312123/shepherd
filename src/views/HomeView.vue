@@ -2,11 +2,11 @@
     <div>
         <HeaderBar/>
         <div class="section">
-            <HomeItem title="📮 Inbox" route="inbox" :count="1"/>
-            <HomeItem title="☀️ Today" route="today" :count="2"/>
-            <HomeItem title="🗓 Upcoming" route="upcoming" :count="0"/>
-            <HomeItem title="🗄 All Notes" route="all-notes" :count="3"/>
-            <HomeItem title="🗑 Trash" route="trash" :count="0"/>
+            <HomeItem title="📮 Inbox" viewName="InboxView" :count="1"/>
+            <HomeItem title="☀️ Today" viewName="TodayView" :count="2"/>
+            <HomeItem title="🗓 Upcoming" viewName="UpcomingView" :count="0"/>
+            <HomeItem title="🗄 All Notes" viewName="AllNotesView" :count="3"/>
+            <HomeItem title="🗑 Trash" viewName="TrashView" :count="0"/>
         </div>
         
         <CreateNoteModal v-if="user" :userTags="user.tags" :views="views"/>
@@ -19,7 +19,7 @@
             <hr class="solid">
             
             <article v-for="view in views" :key="view.id">
-                <HomeItem :title="view.name" route="view" :id="view.id" :count="1"/>
+                <HomeItem :title="view.name" viewName="ViewView" :id="view.id" :count="1"/>
             </article>
         </div>
     </div>

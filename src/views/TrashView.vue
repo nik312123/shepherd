@@ -3,8 +3,10 @@
         <HeaderBar/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push('/home')"><a>Home</a></li>
-                <li class="is-active"><a href="/trash" aria-current="page">Trash</a></li>
+                <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
+                <li class="is-active">
+                    <router-link :to="{name: trashViewName}" aria-current="page">Trash</router-link>
+                </li>
             </ul>
         </nav>
         <div class="row">
@@ -23,12 +25,17 @@
 import HeaderBar from '@/components/HeaderBar';
 import {auth, db} from '@/firebaseConfig';
 import NoteComponent from '@/components/NoteComponent';
+import HomeView from '@/views/HomeView';
+
+const trashViewName = 'TrashView';
 
 export default {
-    name: 'TrashView',
+    name: trashViewName,
     components: {HeaderBar, NoteComponent},
     data() {
         return {
+            trashViewName: trashViewName,
+            homeViewName: HomeView.name,
             notes: []
         };
     },

@@ -7,10 +7,17 @@
 
 <script>
 import SignInOut from '@/components/SignInOut';
+import HomeView from '@/views/HomeView';
+import {auth} from '@/firebaseConfig';
 
 export default {
     name: 'LoginView',
-    components: {SignInOut}
+    components: {SignInOut},
+    created: function() {
+        if(auth.currentUser) {
+            this.$router.replace({name: HomeView.name});
+        }
+    }
 };
 </script>
 
