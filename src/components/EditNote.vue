@@ -18,7 +18,6 @@
                     <div class="control">
                         <input class="input" type="date" placeholder="Enter title of note here">
                     </div>
-                
                 </div>
             </section>
             <footer class="modal-card-foot">

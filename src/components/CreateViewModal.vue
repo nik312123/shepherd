@@ -4,17 +4,15 @@
             <span class="fa-solid fa-circle-plus"></span>
         </button>
         
-        <div :class="`${(showModal?'modal is-active':'modal')}`">
-            <div @click="showModal=false" class="modal-background"></div>
+        <div :class="showModal ? 'modal is-active' : 'modal'">
+            <div @click="showModal = false" class="modal-background"></div>
             <div class="modal-content">
                 
                 <div class="card">
                     
                     <header class="card-header">
                         <p class="title card-header-title is-centered">
-                          <span>
-                          Create View
-                            </span>
+                            <span>Create View</span>
                         </p>
                     </header>
                     
@@ -34,15 +32,12 @@
                     </div>
                     <footer class="card-footer">
                         <p @click="createView" class="card-footer-item create">
-                          <span class="title is-5">
-                            Create
-                          </span>
+                            <span class="title is-5">Create</span>
                         </p>
                     </footer>
                 </div>
-            
             </div>
-            <button @click="showModal=false" class="modal-close is-large" aria-label="close"></button>
+            <button @click="showModal = false" class="modal-close is-large" aria-label="close"></button>
         </div>
     </div>
 </template>

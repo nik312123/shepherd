@@ -1,14 +1,11 @@
 <template>
     <div class="card">
-        <header @click="goTo" class="card-header">
+        <header @click="goToView" class="card-header">
             <p class="card-header-title">
                 {{ title }}
             </p>
-            <span v-if="count > 0" class="tag is-small">
-        {{ count }}
-      </span>
+            <span v-if="count > 0" class="tag is-small">{{ count }}</span>
         </header>
-    
     </div>
 </template>
 

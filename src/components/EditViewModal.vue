@@ -1,21 +1,16 @@
 <template>
     <div>
-        
         <button @click="openModal" class="button is-info is-small is-gray">
             <span class="fa-solid fa-edit"></span>
         </button>
         
-        <div :class="`${(showModal?'modal is-active':'modal')}`">
-            <div @click="showModal=false" class="modal-background"></div>
+        <div :class="showModal ? 'modal is-active' : 'modal'">
+            <div @click="showModal = false" class="modal-background"></div>
             <div class="modal-content">
-                
                 <div class="card">
-                    
                     <header class="card-header">
                         <p class="title card-header-title is-centered">
-                          <span>
-                          Edit View
-                            </span>
+                            <span>Edit View</span>
                         </p>
                     </header>
                     
@@ -31,19 +26,15 @@
                                 @tags-changed="newTags => {this.tags = newTags;}"
                             />
                         </div>
-                    
                     </div>
                     <footer class="card-footer">
                         <p @click="updateView" class="card-footer-item create">
-                          <span class="title is-5">
-                            Update
-                          </span>
+                            <span class="title is-5">Update</span>
                         </p>
                     </footer>
                 </div>
-            
             </div>
-            <button @click="showModal=false" class="modal-close is-large" aria-label="close"></button>
+            <button @click="showModal = false" class="modal-close is-large" aria-label="close"></button>
         </div>
     </div>
 </template>

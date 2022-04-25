@@ -7,12 +7,12 @@
         </div>
         
         <div v-if="tagMap" class="tags note-tags">
-            <article v-for="tag in displayTags(Object.keys(tagMap).sort())[0]" :key="tag.key">
+            <article v-for="tag in displayedTagsAndRemainingCount.displayedTags" :key="tag.key">
                 <p class="tag">{{ tag }}</p>
             </article>
-            <span class="tag is-info is-light is-rounded" v-if="displayTags(Object.keys(tagMap).sort())[1] > 0">
-        {{ displayTags(Object.keys(tagMap).sort())[1] }}+
-      </span>
+            <span class="tag is-info is-light is-rounded" v-if="displayedTagsAndRemainingCount.remainingTagCount > 0">
+                {{ displayedTagsAndRemainingCount.remainingTagCount }}+
+            </span>
         </div>
     </div>
 </template>

@@ -5,7 +5,7 @@
         </button>
         
         <div :class="showModal ? 'modal is-active' : 'modal'">
-            <div @click="showModal=false" class="modal-background"></div>
+            <div @click="showModal = false" class="modal-background"></div>
             <div class="modal-content">
                 <div class="card">
                     <header class="card-header">
@@ -27,12 +27,12 @@
                         </div>
                         <div class="control">
                             <input
-                                @click="reminder=!reminder" v-model="reminderDate" class="input is-medium" type="text"
+                                @click="reminder = !reminder" v-model="reminderDate" class="input is-medium" type="text"
                                 placeholder="Add reminder" readonly
                             >
                         </div>
                         
-                        <div class="modal is-active" v-if="reminder" @click="reminder=false">
+                        <div class="modal is-active" v-if="reminder" @click="reminder = false">
                         </div>
                         <div class="datepicker-container">
                             <DatePicker
@@ -46,15 +46,12 @@
                     </div>
                     <footer class="card-footer">
                         <p @click="createNote" class="card-footer-item create">
-      <span class="title is-5">
-        Create
-      </span>
+                            <span class="title is-5">Create</span>
                         </p>
                     </footer>
                 </div>
-            
             </div>
-            <button @click="showModal=false" class="modal-close is-large" aria-label="close"></button>
+            <button @click="showModal = false" class="modal-close is-large" aria-label="close"></button>
         </div>
     </div>
 </template>

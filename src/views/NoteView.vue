@@ -21,7 +21,7 @@
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }} ago</p>
             </div>
             <NoteBody :body="note.body" :id="note.id"/>
-            <EditNote v-if="showModal" @close="showModal = false" v-bind:class="{ 'is-active': showModal }"/>
+            <EditNote v-if="showModal" @close="showModal = false" :class="{ 'is-active': showModal }"/>
         </div>
     </div>
 </template>
