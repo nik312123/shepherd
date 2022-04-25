@@ -12,7 +12,7 @@
             </div>
             <p class="title is-3">{{ note.title }}</p>
             <TagComponent :tag-array="Object.keys(note.tags)" class="tags"/>
-
+            
             <div>
                 <p v-if="note.reminderDateTime" class="note-info">Reminder: {{
                         note.reminderDateTime.toDate().toLocaleDateString('en-US')
@@ -66,10 +66,10 @@ export default {
             if(typeof date !== 'object') {
                 date = new Date(date);
             }
-
+            
             const seconds = Math.floor((new Date() - date) / 1000);
             let intervalType;
-
+            
             let interval = Math.floor(seconds / 31536000);
             if(interval >= 1) {
                 intervalType = 'year';
@@ -102,11 +102,11 @@ export default {
                     }
                 }
             }
-
+            
             if(interval > 1 || interval === 0) {
                 intervalType += 's';
             }
-
+            
             return interval + ' ' + intervalType;
         }
     }

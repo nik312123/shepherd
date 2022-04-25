@@ -4,7 +4,7 @@
             <button @click="signIn" class="button is-info"><strong>Sign in with Google</strong>
             </button>
         </template>
-
+        
         <template v-if="user">
             <img class="avatar" :src="user.photoURL" alt="avatar" referrerpolicy="no-referrer">
             <button @click="signOut" class="button is-info"><strong>Log out</strong>
@@ -72,6 +72,6 @@ button {
     position: relative;
     top: -10px;
     margin-right: 0;
-
+    
 }
 </style>

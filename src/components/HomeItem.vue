@@ -8,7 +8,7 @@
         {{ count }}
       </span>
         </header>
-
+    
     </div>
 </template>
 

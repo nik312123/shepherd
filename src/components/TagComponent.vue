@@ -5,7 +5,7 @@
                 <p class="tag">{{ tag }}</p>
             </article>
         </div>
-
+        
         <div v-if="tagMap" class="tags note-tags">
             <article v-for="tag in displayTags(Object.keys(tagMap).sort())[0]" :key="tag.key">
                 <p class="tag">{{ tag }}</p>
@@ -48,7 +48,7 @@ export default {
             else {
                 totalChars = this.currentWidth / 60;
             }
-
+            
             let i = 0;
             let displayedTags = [];
             while(totalChars > 0 && i < tags.length) {

@@ -1,47 +1,46 @@
 <template>
     <div>
-
-        <button @click="openModal" class="button is-info is-small is-gray">
-            <span class="fa-solid fa-edit"></span>
+        <button @click="openModal" class="button is-info is-add">
+            <span class="fa-solid fa-circle-plus"></span>
         </button>
-
+        
         <div :class="`${(showModal?'modal is-active':'modal')}`">
             <div @click="showModal=false" class="modal-background"></div>
             <div class="modal-content">
-
+                
                 <div class="card">
-
+                    
                     <header class="card-header">
                         <p class="title card-header-title is-centered">
                           <span>
-                          Edit View
+                          Create View
                             </span>
                         </p>
                     </header>
-
+                    
                     <div class="card-content">
                         <input
                             v-model="title" class="input is-medium" type="text" placeholder="Add Title" maxlength="30"
                         >
                         <div class="control">
-                            <VueTagsInput
+                            <vue-tags-input
                                 v-model="tag"
                                 :tags="tags"
                                 :autocomplete-items="filteredItems"
                                 @tags-changed="newTags => tags = newTags"
                             />
                         </div>
-
+                    
                     </div>
                     <footer class="card-footer">
-                        <p @click="updateView" class="card-footer-item create">
+                        <p @click="createView" class="card-footer-item create">
                           <span class="title is-5">
-                            Update
+                            Create
                           </span>
                         </p>
                     </footer>
                 </div>
-
+            
             </div>
             <button @click="showModal=false" class="modal-close is-large" aria-label="close"></button>
         </div>
@@ -53,22 +52,26 @@ import VueTagsInput from '@johmun/vue-tags-input';
 import {auth, db, fieldValue} from '@/firebaseConfig';
 
 export default {
-    name: 'EditViewModal',
+    name: 'CreateViewModal',
     components: {
         VueTagsInput
     },
     props: {
         userTags: Array,
-        views: Array,
-        viewObj: Object
+        views: Array
     },
     data() {
         return {
             showModal: false,
             tag: '',
-            tags: getTagsMap(this.viewObj.tags),
-            title: this.viewObj.name
+            tags: [],
+            title: ''
         };
+    },
+    watch: {
+        tag: function() {
+            this.tag = this.tag.toLowerCase();
+        }
     },
     computed: {
         filteredItems() {
@@ -81,74 +84,52 @@ export default {
             });
         }
     },
-    watch: {
-        tag: function() {
-            this.tag = this.tag.toLowerCase();
-        }
-    },
     methods: {
         openModal: function() {
             this.tag = '';
-            this.tags = getTagsMap(this.viewObj.tags);
-            this.title = this.viewObj.name;
+            this.tags = [];
             this.showModal = true;
+            this.title = '';
         },
-        updateView: function() {
+        createView: function() {
             let name = this.title.trim();
-
-            if(updateName(this.viewObj.name, name, this.views)) {
-                db.collection('views').doc(this.viewObj.id).update({
-                    name: name
-                });
-            }
-
-            if(this.tags.length === 0) {
-                alert('Add at least one tag');
-                this.showModal = true;
+            if(name.length === 0 || name.length > 30) {
+                alert('View title has to be between 1 and 30 characters long');
                 return;
             }
-            let tagsArray = [];
-            this.tags.forEach(function(tag) {
-                tagsArray.push(tag.text);
+            if(this.tags.length === 0) {
+                alert('Add at least one tag');
+                return;
+            }
+            let add = true;
+            this.views.forEach(function(view) {
+                if(name.toLowerCase() === view.name.toLowerCase()) {
+                    alert('You already have a view with this name');
+                    add = false;
+                }
             });
-            db.collection('views').doc(this.viewObj.id).update({
-                tags: tagsArray
-            });
-            db.collection('users').doc(auth.currentUser.uid).get().then((doc) => {
-                doc.ref.update({
-                    'tags': fieldValue.arrayUnion(...tagsArray)
+            if(add) {
+                let tagsArray = [];
+                this.tags.forEach(function(tag) {
+                    tagsArray.push(tag.text);
                 });
-            });
-            this.showModal = false;
+                db.collection('views').add({
+                    name: name,
+                    sortedAsc: true,
+                    sortedColumn: 'lastModifiedDateTime',
+                    tags: tagsArray,
+                    userId: auth.currentUser.uid
+                });
+                db.collection('users').doc(auth.currentUser.uid).get().then((doc) => {
+                    doc.ref.update({
+                        'tags': fieldValue.arrayUnion(...tagsArray)
+                    });
+                });
+                this.showModal = false;
+            }
         }
     }
 };
-
-function getTagsMap(tags) {
-    let array = [];
-    tags.forEach((tag) => {
-        array.push({text: tag});
-    });
-    return array;
-}
-
-function updateName(oldName, newName, views) {
-    if(newName.length === 0 || newName.length > 30) {
-        alert('View title has to be between 1 and 30 characters long');
-        return false;
-    }
-    if(oldName.toLowerCase() === newName.toLowerCase()) {
-        return false;
-    }
-    let add = true;
-    views.forEach(function(view) {
-        if(newName.toLowerCase() === view.name.toLowerCase()) {
-            alert('You already have a view with this name');
-            add = false;
-        }
-    });
-    return add;
-}
 
 </script>
 

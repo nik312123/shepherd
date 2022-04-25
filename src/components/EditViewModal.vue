@@ -1,62 +1,47 @@
 <template>
     <div>
-        <button @click="openModal" class="button is-info is-add is-large">
-            <span class="fa-solid fa-file-circle-plus"></span>
+        
+        <button @click="openModal" class="button is-info is-small is-gray">
+            <span class="fa-solid fa-edit"></span>
         </button>
-
+        
         <div :class="`${(showModal?'modal is-active':'modal')}`">
             <div @click="showModal=false" class="modal-background"></div>
-
             <div class="modal-content">
-
+                
                 <div class="card">
+                    
                     <header class="card-header">
                         <p class="title card-header-title is-centered">
-          <span>
-          New Note
-            </span>
+                          <span>
+                          Edit View
+                            </span>
                         </p>
                     </header>
+                    
                     <div class="card-content">
                         <input
                             v-model="title" class="input is-medium" type="text" placeholder="Add Title" maxlength="30"
                         >
                         <div class="control">
-                            <vue-tags-input
+                            <VueTagsInput
                                 v-model="tag"
                                 :tags="tags"
                                 :autocomplete-items="filteredItems"
                                 @tags-changed="newTags => tags = newTags"
                             />
                         </div>
-                        <div class="control">
-                            <input
-                                @click="reminder=!reminder" v-model="reminderDate" class="input is-medium" type="text"
-                                placeholder="Add reminder" readonly
-                            >
-                        </div>
-
-                        <div class="modal is-active" v-if="reminder" @click="reminder=false">
-                        </div>
-                        <div class="datepicker-container">
-                            <DatePicker
-                                class="datepicker" :available-dates="{ start: new Date(), end: null }" mode="datetime"
-                                v-if="reminder"
-                                v-model="reminderDate"
-                                is-dark
-                            />
-                        </div>
-
+                    
                     </div>
                     <footer class="card-footer">
-                        <p @click="createNote" class="card-footer-item create">
-      <span class="title is-5">
-        Create
-      </span>
+                        <p @click="updateView" class="card-footer-item create">
+                          <span class="title is-5">
+                            Update
+                          </span>
                         </p>
                     </footer>
                 </div>
-
+            
             </div>
             <button @click="showModal=false" class="modal-close is-large" aria-label="close"></button>
         </div>
@@ -66,31 +51,24 @@
 <script>
 import VueTagsInput from '@johmun/vue-tags-input';
 import {auth, db, fieldValue} from '@/firebaseConfig';
-import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 
 export default {
-    name: 'CreateNoteModal',
+    name: 'EditViewModal',
     components: {
-        VueTagsInput, DatePicker
+        VueTagsInput
     },
     props: {
         userTags: Array,
-        views: Array
-
+        views: Array,
+        viewObj: Object
     },
     data() {
         return {
             showModal: false,
             tag: '',
-            tags: [],
-            title: '',
-            reminder: false,
-            reminderDate: null
+            tags: getTagsMap(this.viewObj.tags),
+            title: this.viewObj.name
         };
-    }, watch: {
-        tag: function() {
-            this.tag = this.tag.toLowerCase();
-        }
     },
     computed: {
         filteredItems() {
@@ -103,126 +81,98 @@ export default {
             });
         }
     },
+    watch: {
+        tag: function() {
+            this.tag = this.tag.toLowerCase();
+        }
+    },
     methods: {
         openModal: function() {
             this.tag = '';
-            this.tags = [];
+            this.tags = getTagsMap(this.viewObj.tags);
+            this.title = this.viewObj.name;
             this.showModal = true;
-            this.title = '';
-            this.reminderDate = null;
-            this.reminder = false;
         },
-        createNote: function() {
+        updateView: function() {
             let name = this.title.trim();
-            if(name.length === 0 || name.length > 30) {
-                alert('View title has to be between 1 and 30 characters long');
+            
+            if(updateName(this.viewObj.name, name, this.views)) {
+                db.collection('views').doc(this.viewObj.id).update({
+                    name: name
+                });
+            }
+            
+            if(this.tags.length === 0) {
+                alert('Add at least one tag');
+                this.showModal = true;
                 return;
             }
-
             let tagsArray = [];
             this.tags.forEach(function(tag) {
                 tagsArray.push(tag.text);
             });
-
-            let tagsMap = {};
-            this.tags.forEach(function(tag) {
-                tagsMap[tag.text] = true;
+            db.collection('views').doc(this.viewObj.id).update({
+                tags: tagsArray
             });
-
             db.collection('users').doc(auth.currentUser.uid).get().then((doc) => {
                 doc.ref.update({
                     'tags': fieldValue.arrayUnion(...tagsArray)
                 });
-            });
-
-            db.collection('notes').add({
-                userId: auth.currentUser.uid,
-                title: name,
-                body: '# New note',
-                isPublic: false,
-                isTrash: false,
-                tags: tagsMap,
-                createdDateTime: new Date(),
-                lastModifiedDateTime: new Date(),
-                reminderDateTime: this.reminderDate
-            }).then((docRef) => {
-                this.$router.push('/note/' + docRef.id);
             });
             this.showModal = false;
         }
     }
 };
 
+function getTagsMap(tags) {
+    let array = [];
+    tags.forEach((tag) => {
+        array.push({text: tag});
+    });
+    return array;
+}
+
+function updateName(oldName, newName, views) {
+    if(newName.length === 0 || newName.length > 30) {
+        alert('View title has to be between 1 and 30 characters long');
+        return false;
+    }
+    if(oldName.toLowerCase() === newName.toLowerCase()) {
+        return false;
+    }
+    let add = true;
+    views.forEach(function(view) {
+        if(newName.toLowerCase() === view.name.toLowerCase()) {
+            alert('You already have a view with this name');
+            add = false;
+        }
+    });
+    return add;
+}
+
 </script>
 
 <style scoped>
-
-.datepicker-container {
-    position: fixed !important;
-    left: 50%;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    z-index: 999999999;
-}
-
-.datepicker {
-    box-shadow: rgba(0, 0, 0, 0.50) 0px 22px 70px 4px;
-}
-
-label {
-    color: white;
-    font-weight: 700;
-    font-size: 19px;
-}
-
-label:hover {
-    color: white;
-}
-
-.checkboxes label {
-    display: inline-block;
-    padding-right: 10px;
-    white-space: nowrap;
-}
-
-.checkboxes input {
-    vertical-align: middle;
-}
-
-.checkboxes label span {
-    vertical-align: middle;
-}
-
 .is-info {
     background-color: #10A5E9;
     font-weight: 800;
+    border-radius: 10px !important;
 }
 
 .is-info:hover {
     background-color: #1282B6;
     font-weight: 800;
+    border-radius: 10px !important;
 }
 
 .is-add {
     background-color: #10A5E9;
     font-weight: 800;
-    border-radius: 99999px;
+    border-radius: 10px !important;
+    position: relative;
+    top: 2px;
     padding: 5px;
-    margin-bottom: 20px;
     height: auto;
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%);
-    width: 200px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    z-index: 30;
-}
-
-.fa-solid {
-    padding: 10px;
 }
 
 .modal-background {
@@ -261,6 +211,10 @@ label:hover {
     background-color: #2A3444;
     border-color: #344155;
     border-radius: 10px;
+}
+
+.inputMargin {
+    margin-top: 20px;
 }
 
 .title {
@@ -366,4 +320,15 @@ label:hover {
     color: #A4B1B6;
 }
 
+.is-gray {
+    background-color: #68778F;
+    font-weight: 800;
+    border-radius: 10px !important;
+}
+
+.is-gray:hover {
+    background-color: #5A667A;
+    font-weight: 800;
+    border-radius: 10px !important;
+}
 </style>
