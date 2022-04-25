@@ -6,7 +6,8 @@
         </template>
         
         <template v-if="user">
-            <img class="avatar" :src="user.photoURL" alt="avatar" referrerpolicy="no-referrer">
+            <!-- https://stackoverflow.com/a/63502512 seems to work far more consistently than referrerpolicy="no-referrer" -->
+            <img class="avatar" :src="user.photoURL" alt="avatar" rel="noreferrer" referrerpolicy="origin">
             <button @click="signOut" class="button is-info"><strong>Log out</strong>
             </button>
         </template>
