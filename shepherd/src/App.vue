@@ -1,7 +1,7 @@
 <template>
-  <div id="app" class="container is-max-desktop">
-    <router-view/>
-  </div>
+    <div id="app" class="container is-max-desktop">
+        <router-view/>
+    </div>
 </template>
 
 <style>
@@ -9,47 +9,47 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 html {
-  background-color: #1A2434;
+    background-color: #1A2434;
 }
 
 * {
-  font-family: "Inter", sans-serif;
+    font-family: "Inter", sans-serif;
 }
 
 .title {
-  color: #F8FAFC !important;
-  font-family: "Inter", sans-serif;
-  font-weight: 900;
+    color: #F8FAFC !important;
+    font-family: "Inter", sans-serif;
+    font-weight: 900;
 }
 
 .button {
-  font-family: "Inter", sans-serif !important;
-  border-radius: 10px;
+    font-family: "Inter", sans-serif !important;
+    border-radius: 10px;
 }
 
 .breadcrumb li.is-active a {
-  color: #F8FAFC;
+    color: #F8FAFC;
 }
 
-.breadcrumb li+li::before{
-  color: #F8FAFC;
+.breadcrumb li + li::before {
+    color: #F8FAFC;
 }
 
 .breadcrumb a {
-  color: #0AA5E9;
-  font-weight: 700;
+    color: #0AA5E9;
+    font-weight: 700;
 }
 
 .breadcrumb a:hover {
-  color: #0AA5E9;
+    color: #0AA5E9;
 }
 
 .section {
-  padding: 0 5px 5px;
+    padding: 0 5px 5px;
 }
 
 .container {
-  /*padding: 40px;*/
-  padding: 40px 5px 5px;
+    /*padding: 40px;*/
+    padding: 40px 5px 5px;
 }
 </style>

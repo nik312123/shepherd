@@ -1,65 +1,66 @@
 <template>
-  <div class="card">
-    <header @click="goTo" class="card-header">
-      <p class="card-header-title">
-        {{ title }}
-      </p>
-      <span v-if="count > 0" class="tag is-small">
+    <div class="card">
+        <header @click="goTo" class="card-header">
+            <p class="card-header-title">
+                {{ title }}
+            </p>
+            <span v-if="count > 0" class="tag is-small">
         {{ count }}
       </span>
-    </header>
+        </header>
 
-  </div>
+    </div>
 </template>
 
 <script>
-import router from "@/router";
+import router from '@/router';
 
 export default {
-  name: "HomeItem",
-  props: {
-    title: String,
-    route: String,
-    count: Number,
-    id: String
-  },
-  methods: {
-    goTo: function() {
-      if(this.route === "view"){
-        router.push("/view/" + this.id);
-      } else {
-      router.push(this.route);
-      }
+    name: 'HomeItem',
+    props: {
+        title: String,
+        route: String,
+        count: Number,
+        id: String
+    },
+    methods: {
+        goTo: function() {
+            if(this.route === 'view') {
+                router.push('/view/' + this.id);
+            }
+            else {
+                router.push(this.route);
+            }
+        }
     }
-  }
 };
 </script>
 
 <style scoped>
 
 .card {
-  background-color: #344155;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  cursor: pointer;
+    background-color: #344155;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
 }
 
 .card:hover {
-  background-color: #5B6A81;
+    background-color: #5B6A81;
 }
 
 .card-header-title {
-  color: #F8FAFC;
-  font-size: 1.3em;
-  user-select: none;
+    color: #F8FAFC;
+    font-size: 1.3em;
+    user-select: none;
 }
 
-.tag{
-  margin: auto 15px auto auto;
-  border-radius: 99999px;
-  background-color: #5B6A81;
-  color: #F8FAFC;
-  font-weight: 800;
+.tag {
+    margin: auto 15px auto auto;
+    border-radius: 99999px;
+    background-color: #5B6A81;
+    color: #F8FAFC;
+    font-weight: 800;
 }
 
 </style>

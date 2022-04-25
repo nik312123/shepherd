@@ -1,32 +1,32 @@
 <template>
-  <div class="home">
-    <h1 class="title is-1"><strong>Welcome to Shepherd</strong></h1>
-    <sign-in-out></sign-in-out>
-  </div>
+    <div class="home">
+        <h1 class="title is-1"><strong>Welcome to Shepherd</strong></h1>
+        <SignInOut/>
+    </div>
 </template>
 
 <script>
-import SignInOut from "@/components/SignInOut";
+import SignInOut from '@/components/SignInOut';
 
 export default {
-  name: "LoginView",
-  components: {SignInOut}
+    name: 'LoginView',
+    components: {SignInOut}
 };
 </script>
 
 <style scoped>
 img {
-  width: 100px;
+    width: 100px;
 }
 
 .title {
-  padding-bottom: 15px;
+    padding-bottom: 15px;
 }
 
 .home {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  padding-top: 70px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    padding-top: 70px;
 }
 </style>
