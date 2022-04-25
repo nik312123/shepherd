@@ -238,7 +238,6 @@ export default {
     color: #F8FAFC;
     font-size: large;
     font-weight: 700;
-    /*padding: 5px;*/
 }
 
 >>> .vue-tags-input .ti-input {
@@ -282,8 +281,6 @@ export default {
 }
 
 >>> .vue-tags-input .ti-tag {
-    /*position: relative;*/
-    /*top: 3px;*/
     height: 30px;
     border-radius: 10px;
 }

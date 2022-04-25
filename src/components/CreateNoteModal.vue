@@ -157,7 +157,6 @@ export default {
 </script>
 
 <style scoped>
-
 .datepicker-container {
     position: fixed !important;
     left: 50%;
@@ -304,7 +303,6 @@ label:hover {
     color: #F8FAFC;
     font-size: large;
     font-weight: 700;
-    /*padding: 5px;*/
 }
 
 >>> .vue-tags-input .ti-input {
@@ -348,8 +346,6 @@ label:hover {
 }
 
 >>> .vue-tags-input .ti-tag {
-    /*position: relative;*/
-    /*top: 3px;*/
     height: 30px;
     border-radius: 10px;
 }
@@ -366,5 +362,4 @@ label:hover {
 ::-ms-input-placeholder { /* Microsoft Edge */
     color: #A4B1B6;
 }
-
 </style>

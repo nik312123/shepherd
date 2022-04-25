@@ -38,7 +38,6 @@ export default {
 </script>
 
 <style scoped>
-
 .card {
     background-color: #344155;
     border-radius: 10px;
@@ -63,5 +62,4 @@ export default {
     color: #F8FAFC;
     font-weight: 800;
 }
-
 </style>

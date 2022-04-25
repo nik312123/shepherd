@@ -257,7 +257,6 @@ function updateName(oldName, newName, views) {
     color: #F8FAFC;
     font-size: large;
     font-weight: 700;
-    /*padding: 5px;*/
 }
 
 >>> .vue-tags-input .ti-input {
@@ -301,8 +300,6 @@ function updateName(oldName, newName, views) {
 }
 
 >>> .vue-tags-input .ti-tag {
-    /*position: relative;*/
-    /*top: 3px;*/
     height: 30px;
     border-radius: 10px;
 }

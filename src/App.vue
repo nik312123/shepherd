@@ -18,13 +18,11 @@ html {
 }
 
 .title {
-    color: #F8FAFC !important;
-    font-family: "Inter", sans-serif;
+    color: #F8FAFC;
     font-weight: 900;
 }
 
 .button {
-    font-family: "Inter", sans-serif !important;
     border-radius: 10px;
 }
 
@@ -50,7 +48,6 @@ html {
 }
 
 .container {
-    /*padding: 40px;*/
     padding: 40px 5px 5px;
 }
 </style>

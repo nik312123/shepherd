@@ -54,7 +54,6 @@ export default {
 </script>
 
 <style>
-
 .save {
     background-color: #0AA5E9 !important;
     font-weight: 700;
@@ -66,19 +65,6 @@ export default {
 
 .editor {
     background-color: #232428;
-    /*border-radius: 10px;*/
-}
-
-.toastui-editor-defaultUI {
-    /*border-radius: 10px;*/
-}
-
-.toastui-editor-defaultUI-toolbar {
-    /*border-top-right-radius: 10px;*/
-}
-
-.toastui-editor-defaultUI .toastui-editor-md-tab-container {
-    /*border-top-left-radius: 10px;*/
 }
 
 .button {
