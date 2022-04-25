@@ -1,9 +1,11 @@
 <template>
   <div>
     <div @click="goToNote" class="card" ref="singlenote">
-      <div class="card-content date">
+      <div  v-if="note.reminderDateTime" class="card-content date">
+        <div class="date-elements">
         <p>{{note.reminderDateTime.toDate().toDateString().slice(4,7)}}</p>
         <p class="date-day">{{note.reminderDateTime.toDate().toDateString().slice(8,10)}}</p>
+        </div>
       </div>
       <div class="note-info">
         <header class="card-header">
@@ -53,6 +55,7 @@ export default {
   font-weight: 800;
   padding-top: 5px;
   padding-bottom: 0;
+  width: auto;
 }
 
 .card {
@@ -68,6 +71,7 @@ export default {
   display: inline-flex;
   flex-direction: row;
   width: 100%;
+  height: 70px;
 }
 
 .content {
@@ -76,6 +80,9 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 700;
+  position: absolute;
+  bottom: 5px;
+  max-width: 500px;
 }
 
 .card-header {
@@ -95,12 +102,15 @@ export default {
 
 .date {
   color: white;
-  padding: 5px 15px;
-  width: 75px;
-  background-color: #181d26;
-  /*word-wrap: break-word;*/
+  min-width: 60px;
+  background-color: #1F2531;
   font-size: 1em;
   text-align: center;
+  justify-content: center;
+  align-content: center;
+  padding: 4px 0 0;
+  border: 4px solid #354155;
+  border-radius: 10px;
 }
 
 .date-day {

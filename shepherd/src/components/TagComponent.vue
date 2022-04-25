@@ -11,7 +11,7 @@
         <p class="tag">{{ tag }}</p>
       </article>
       <span class="tag is-info is-light is-rounded" v-if="displayTags(Object.keys(tagMap).sort())[1] > 0">
-        {{displayTags(Object.keys(tagMap).sort())[1]}}+
+        {{ displayTags(Object.keys(tagMap).sort())[1] }}+
       </span>
     </div>
   </div>
@@ -22,12 +22,12 @@ export default {
   name: "TagComponent",
   props: {
     tagArray: Array,
-    tagMap: Object,
+    tagMap: Object
   },
   data() {
     return {
       currentWidth: Number
-    }
+    };
   },
   created() {
     this.checkScreen();
@@ -35,13 +35,18 @@ export default {
   },
   methods: {
     displayTags: function(tags) {
-      let totalChars = 0;
-      if (this.currentWidth < 320) {
+      let totalChars;
+      if(this.currentWidth < 380) {
         totalChars = 0;
-      } else if (this.currentWidth < 500) {
+      }
+      else if(this.currentWidth < 450) {
+        totalChars = 3;
+      }
+      else if(this.currentWidth < 550) {
         totalChars = this.currentWidth / 100;
-      } else {
-        totalChars = this.currentWidth / 30;
+      }
+      else {
+        totalChars = this.currentWidth / 60;
       }
 
       let i = 0;
@@ -71,7 +76,11 @@ export default {
   margin: 6px 6px 6px 0;
 }
 
-.note-tags {
+.note-tags{
   float: right;
+  justify-content: flex-end !important;
+  flex-wrap: nowrap;
+  max-width: 50%;
 }
+
 </style>

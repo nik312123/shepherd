@@ -11,7 +11,6 @@
 
     <CreateNoteModal v-if="user" :userTags="user.tags" :views="views"/>
 
-
     <div class="section">
       <div class="row">
         <h1 class="title is-3">Views</h1>
@@ -39,7 +38,7 @@ export default {
   data() {
     return {
       views: [],
-      user: null
+      user: false
     };
   },
   firestore: function() {
@@ -56,7 +55,7 @@ export default {
     return {
       views: db.collection("views").where("userId", "==", auth.currentUser.uid)
     };
-  }
+  },
 };
 </script>
 

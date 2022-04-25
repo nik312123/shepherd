@@ -11,7 +11,7 @@
         </a>
       </div>
       <p class="title is-3">{{ note.title }}</p>
-      <TagComponent :tag-map="note.tags" class="tags"/>
+      <TagComponent :tag-array="Object.keys(note.tags)" class="tags"/>
 
       <div>
         <p v-if="note.reminderDateTime" class="note-info">Reminder: {{ note.reminderDateTime.toDate().toLocaleDateString('en-US') }}</p>

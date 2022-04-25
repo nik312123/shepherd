@@ -131,8 +131,8 @@ function getTagsMap(tags) {
 }
 
 function updateName(oldName, newName, views) {
-  if(newName.length === 0) {
-    alert("View title has to be at least 1 character long");
+  if(newName.length === 0 || newName.length > 30) {
+    alert("View title has to be between 1 and 30 characters long");
     return false;
   }
   if(oldName.toLowerCase() === newName.toLowerCase()){

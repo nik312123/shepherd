@@ -108,8 +108,8 @@ export default {
     },
     createNote: function() {
       let name = this.title.trim();
-      if(name.length === 0) {
-        alert("View title has to be at least 1 character long");
+      if(name.length === 0 || name.length > 30) {
+        alert("View title has to be between 1 and 30 characters long");
         return;
       }
 
