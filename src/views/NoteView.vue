@@ -1,7 +1,7 @@
 <template>
     <div>
         <HeaderBar/>
-        <div v-if="note.userId===userId">
+        <div v-if="note.userId === userId">
             <div>
                 <router-link :to="{name: homeViewName}">
                     <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
@@ -20,8 +20,8 @@
                 <p class="note-info">Created on: {{ note.createdDateTime.toDate().toLocaleDateString('en-US') }}</p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }} ago</p>
             </div>
-            <NoteBody :body="note.body" :id="note.id"></NoteBody>
-            <EditNote v-if="showModal" @close="showModal = false" v-bind:class="{ 'is-active': showModal }"></EditNote>
+            <NoteBody :body="note.body" :id="note.id"/>
+            <EditNote v-if="showModal" @close="showModal = false" v-bind:class="{ 'is-active': showModal }"/>
         </div>
     </div>
 </template>

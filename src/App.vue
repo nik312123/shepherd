@@ -1,6 +1,6 @@
 <template>
     <div id="app" class="container is-max-desktop">
-        <router-view/>
+        <RouterView/>
     </div>
 </template>
 

@@ -4,17 +4,13 @@
             <span class="fa-solid fa-file-circle-plus"></span>
         </button>
         
-        <div :class="`${(showModal?'modal is-active':'modal')}`">
+        <div :class="showModal ? 'modal is-active' : 'modal'">
             <div @click="showModal=false" class="modal-background"></div>
-            
             <div class="modal-content">
-                
                 <div class="card">
                     <header class="card-header">
                         <p class="title card-header-title is-centered">
-          <span>
-          New Note
-            </span>
+                            <span>New Note</span>
                         </p>
                     </header>
                     <div class="card-content">
@@ -22,7 +18,7 @@
                             v-model="title" class="input is-medium" type="text" placeholder="Add Title" maxlength="30"
                         >
                         <div class="control">
-                            <vue-tags-input
+                            <VueTagsInput
                                 v-model="tag"
                                 :tags="tags"
                                 :autocomplete-items="filteredItems"
