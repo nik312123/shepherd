@@ -26,40 +26,48 @@ export default {
     },
     data() {
         return {
-            currentWidth: Number
+            currentWidth: window.innerWidth
         };
     },
+    computed: {
+        displayedTagsAndRemainingCount: function() {
+            return this.computeDisplayedTagsAndRemainingCount(Object.keys(this.tagMap).sort());
+        }
+    },
     created() {
-        this.checkScreen();
-        window.addEventListener('resize', this.checkScreen);
+        this.updateScreenWidth();
+        window.addEventListener('resize', this.updateScreenWidth);
     },
     methods: {
-        displayTags: function(tags) {
-            let totalChars;
-            if(this.currentWidth < 380) {
-                totalChars = 0;
+        computeTotalChars: function(currentWidth) {
+            if(currentWidth < 380) {
+                return 0;
             }
-            else if(this.currentWidth < 450) {
-                totalChars = 3;
+            else if(currentWidth < 450) {
+                return 3;
             }
-            else if(this.currentWidth < 550) {
-                totalChars = this.currentWidth / 100;
+            else if(currentWidth < 550) {
+                return currentWidth / 100;
             }
-            else {
-                totalChars = this.currentWidth / 60;
-            }
+            return currentWidth / 60;
+        },
+        computeDisplayedTagsAndRemainingCount: function(tags) {
+            let totalChars = this.computeTotalChars(this.currentWidth);
             
-            let i = 0;
             let displayedTags = [];
-            while(totalChars > 0 && i < tags.length) {
+            for(let i = 0; totalChars > 0 && i < tags.length; ++i) {
                 totalChars -= tags[i].length;
                 displayedTags.push(tags[i]);
-                i += 1;
             }
-            let remainingTags = tags.length - displayedTags.length;
-            return [displayedTags, remainingTags];
+            
+            let remainingTagCount = tags.length - displayedTags.length;
+            
+            return {
+                displayedTags,
+                remainingTagCount
+            };
         },
-        checkScreen() {
+        updateScreenWidth: function() {
             this.currentWidth = window.innerWidth;
         }
     }
