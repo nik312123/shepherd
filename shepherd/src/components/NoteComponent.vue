@@ -55,7 +55,7 @@ export default {
   font-weight: 800;
   padding-top: 5px;
   padding-bottom: 0;
-  width: auto;
+  width: 100px;
 }
 
 .card {

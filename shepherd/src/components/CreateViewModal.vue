@@ -19,7 +19,7 @@
           </header>
 
           <div class="card-content">
-            <input v-model="title" class="input is-medium" type="text" placeholder="Add Title">
+            <input v-model="title" class="input is-medium" type="text" placeholder="Add Title" maxlength="30">
             <div class="control">
               <vue-tags-input
                   v-model="tag"
