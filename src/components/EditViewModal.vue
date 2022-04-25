@@ -28,7 +28,7 @@
                                 v-model="tag"
                                 :tags="tags"
                                 :autocomplete-items="filteredItems"
-                                @tags-changed="newTags => tags = newTags"
+                                @tags-changed="newTags => {this.tags = newTags;}"
                             />
                         </div>
                     

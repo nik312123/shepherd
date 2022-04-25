@@ -39,6 +39,7 @@ export default {
         signIn: function() {
             auth.signInWithRedirect(provider)
                 .then(result => {
+                    // noinspection JSUnresolvedVariable
                     this.user = result.user;
                 })
                 .catch(err => console.log(err));

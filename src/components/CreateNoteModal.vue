@@ -26,7 +26,7 @@
                                 v-model="tag"
                                 :tags="tags"
                                 :autocomplete-items="filteredItems"
-                                @tags-changed="newTags => tags = newTags"
+                                @tags-changed="newTags => {this.tags = newTags;}"
                             />
                         </div>
                         <div class="control">
@@ -168,7 +168,7 @@ export default {
 }
 
 .datepicker {
-    box-shadow: rgba(0, 0, 0, 0.50) 0px 22px 70px 4px;
+    box-shadow: rgba(0, 0, 0, 0.50) 0 22px 70px 4px;
 }
 
 label {
