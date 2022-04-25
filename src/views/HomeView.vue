@@ -42,19 +42,17 @@ export default {
         };
     },
     firestore: function() {
-        let userQuery = db.collection('users').doc(auth.currentUser.uid);
-        userQuery.get().then((doc) => {
-            if(doc.exists) {
-                this.$bind('user', userQuery);
-            }
-            else {
-                userQuery.set({tags: []});
-            }
-        });
-        
         return {
+            user: db.collection('users').doc(auth.currentUser.uid),
             views: db.collection('views').where('userId', '==', auth.currentUser.uid)
         };
+    },
+    watch: {
+        user: function(newUser) {
+            if(newUser === null) {
+                this.$firestoreRefs.user.set({tags: []});
+            }
+        }
     }
 };
 </script>
