@@ -20,7 +20,7 @@ export default {
         id: String
     },
     components: {
-        editor: Editor
+        Editor: Editor
     },
     data() {
         return {
