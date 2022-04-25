@@ -82,7 +82,7 @@ export default {
     font-weight: 700;
     position: absolute;
     bottom: 5px;
-    max-width: 500px;
+    width: 500px;
 }
 
 .card-header {
