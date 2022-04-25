@@ -38,7 +38,9 @@ export default {
     },
     firestore: function() {
         return {
-            notes: db.collection('notes').where('userId', '==', auth.currentUser.uid).where('isTrash', '==', false)
+            notes: db.collection('notes')
+                .where('userId', '==', auth.currentUser.uid)
+                .where('isTrash', '==', false)
                 .orderBy('lastModifiedDateTime')
         };
     }

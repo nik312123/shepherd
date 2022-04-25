@@ -22,7 +22,7 @@ export default {
         id: String
     },
     methods: {
-        goTo: function() {
+        goToView: function() {
             if(this.viewName === ViewView.name) {
                 router.push({name: ViewView.name, params: {id: this.id}});
             }

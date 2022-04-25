@@ -37,7 +37,9 @@ import HomeView from '@/views/HomeView';
 export default {
     name: 'NoteView',
     components: {TagComponent, HeaderBar, EditNote, NoteBody},
-    props: ['id'],
+    props: {
+        id: String
+    },
     data() {
         return {
             homeViewName: HomeView.name,
