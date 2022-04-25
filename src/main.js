@@ -3,6 +3,7 @@ import App from '@/App.vue';
 import router from '@/router';
 import {auth} from '@/firebaseConfig';
 import {firestorePlugin} from 'vuefire';
+import 'no-darkreader';
 
 Vue.config.productionTip = false;
 
