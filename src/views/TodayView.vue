@@ -38,13 +38,16 @@ export default {
         };
     },
     firestore: function() {
-        let yesterday = new Date(new Date().setHours(0, 0, 0, 0) - 1);
-        let tomorrow = new Date();
+        let today = new Date();
+        today.setHours(0, 0, 0);
+        let tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrow.setHours(0, 0, 0, 0);
         return {
-            notes: db.collection('notes').where('userId', '==', auth.currentUser.uid).where('isTrash', '==', false)
-                .where('reminderDateTime', '>', yesterday).where('reminderDateTime', '<', tomorrow)
+            notes: db.collection('notes')
+                .where('userId', '==', auth.currentUser.uid)
+                .where('isTrash', '==', false)
+                .where('reminderDateTime', '>=', today)
+                .where('reminderDateTime', '<', tomorrow)
         };
     }
 };
