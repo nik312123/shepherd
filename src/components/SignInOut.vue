@@ -28,14 +28,7 @@ export default {
         };
     },
     beforeCreate: function() {
-        auth.onAuthStateChanged(user => {
-            if(user) {
-                this.user = user;
-            }
-            else {
-                this.user = null;
-            }
-        });
+        auth.onAuthStateChanged(user => {this.user = user ? user : null;});
     },
     methods: {
         signIn: function() {
