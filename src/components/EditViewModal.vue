@@ -46,7 +46,7 @@ export default {
     data() {
         return {
             tag: '',
-            tags: getTagsMap(this.viewObj.tags),
+            tags: this.getTagsMap(this.viewObj.tags),
             title: this.viewObj.name
         };
     },
@@ -67,15 +67,39 @@ export default {
         }
     },
     methods: {
+        getTagsMap(tags) {
+            let array = [];
+            tags.forEach((tag) => {
+                array.push({text: tag});
+            });
+            return array;
+        },
         onOpenModal: function() {
             this.tag = '';
-            this.tags = getTagsMap(this.viewObj.tags);
+            this.tags = this.getTagsMap(this.viewObj.tags);
             this.title = this.viewObj.name;
+        },
+        updateName(oldName, newName, views) {
+            if(newName.length === 0 || newName.length > 30) {
+                alert('View title has to be between 1 and 30 characters long');
+                return false;
+            }
+            if(oldName.toLowerCase() === newName.toLowerCase()) {
+                return false;
+            }
+            let add = true;
+            views.forEach(function(view) {
+                if(newName.toLowerCase() === view.name.toLowerCase()) {
+                    alert('You already have a view with this name');
+                    add = false;
+                }
+            });
+            return add;
         },
         updateView: function() {
             let name = this.title.trim();
             
-            if(updateName(this.viewObj.name, name, this.views)) {
+            if(this.updateName(this.viewObj.name, name, this.views)) {
                 db.collection('views').doc(this.viewObj.id).update({
                     name: name
                 });
@@ -102,33 +126,6 @@ export default {
         }
     }
 };
-
-function getTagsMap(tags) {
-    let array = [];
-    tags.forEach((tag) => {
-        array.push({text: tag});
-    });
-    return array;
-}
-
-function updateName(oldName, newName, views) {
-    if(newName.length === 0 || newName.length > 30) {
-        alert('View title has to be between 1 and 30 characters long');
-        return false;
-    }
-    if(oldName.toLowerCase() === newName.toLowerCase()) {
-        return false;
-    }
-    let add = true;
-    views.forEach(function(view) {
-        if(newName.toLowerCase() === view.name.toLowerCase()) {
-            alert('You already have a view with this name');
-            add = false;
-        }
-    });
-    return add;
-}
-
 </script>
 
 <style scoped>
