@@ -65,7 +65,7 @@
 
 <script>
 import VueTagsInput from '@johmun/vue-tags-input';
-import {auth, db, fieldValue} from '@/firebaseConfig';
+import {auth, db, fieldValue, messaging} from '@/firebaseConfig';
 import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 
 export default {
@@ -135,7 +135,11 @@ export default {
                 });
             });
 
-            db.collection('notes').add({
+            messaging.getToken({
+                vapidKey: "***REMOVED***"
+              }).then((messageToken) => {
+              console.log("Token generated");
+              db.collection('notes').add({
                 userId: auth.currentUser.uid,
                 title: name,
                 body: '# New note',
@@ -144,10 +148,17 @@ export default {
                 tags: tagsMap,
                 createdDateTime: new Date(),
                 lastModifiedDateTime: new Date(),
-                reminderDateTime: this.reminderDate
-            }).then((docRef) => {
+                reminderDateTime: this.reminderDate,
+                messageToken: messageToken,
+                notified: false
+              }).then((docRef) => {
                 this.$router.push('/note/' + docRef.id);
+              });
+            }).catch((err) => {
+              console.log(err);
             });
+
+
             this.showModal = false;
         }
     }
