@@ -58,7 +58,6 @@ export default {
 </script>
 
 <style scoped>
-
 .row {
     display: flex;
     align-items: center;
@@ -75,5 +74,4 @@ hr.solid {
     margin-bottom: 10px;
     margin-top: 15px;
 }
-
 </style>

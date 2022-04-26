@@ -1,63 +1,46 @@
 <template>
-    <div>
-        <button @click="openModal" class="button is-info is-add">
+    <base-modal
+        id="create-view-modal"
+        button-classes="is-add"
+        modal-header="New View"
+        :max-title-length="30"
+        @modalAction="createView"
+        modal-button-text="Create"
+        @openModal="onOpenModal"
+    >
+        <template v-slot:button-contents>
             <span class="fa-solid fa-circle-plus"></span>
-        </button>
+        </template>
         
-        <div :class="showModal ? 'modal is-active' : 'modal'">
-            <div @click="showModal = false" class="modal-background"></div>
-            <div class="modal-content">
-                
-                <div class="card">
-                    
-                    <header class="card-header">
-                        <p class="title card-header-title is-centered">
-                            <span>Create View</span>
-                        </p>
-                    </header>
-                    
-                    <div class="card-content">
-                        <input
-                            v-model="title" class="input is-medium" type="text" placeholder="Add Title" maxlength="30"
-                        >
-                        <div class="control">
-                            <vue-tags-input
-                                v-model="tag"
-                                :tags="tags"
-                                :autocomplete-items="filteredItems"
-                                @tags-changed="newTags => {this.tags = newTags;}"
-                            />
-                        </div>
-                    
-                    </div>
-                    <footer class="card-footer">
-                        <p @click="createView" class="card-footer-item create">
-                            <span class="title is-5">Create</span>
-                        </p>
-                    </footer>
-                </div>
+        <template v-slot:modal-content>
+            <input v-model="title" class="input is-medium" type="text" placeholder="Add title" maxlength="30">
+            <div class="control">
+                <VueTagsInput
+                    v-model="tag"
+                    :placeholder="tags.length === 0 ? 'Add tag' : ''"
+                    :tags="tags"
+                    :autocomplete-items="filteredItems"
+                    @tags-changed="newTags => {this.tags = newTags;}"
+                />
             </div>
-            <button @click="showModal = false" class="modal-close is-large" aria-label="close"></button>
-        </div>
-    </div>
+        </template>
+    </base-modal>
 </template>
 
 <script>
 import VueTagsInput from '@johmun/vue-tags-input';
 import {auth, db, fieldValue} from '@/firebaseConfig';
+import BaseModal from '@/components/BaseModal';
 
 export default {
     name: 'CreateViewModal',
-    components: {
-        VueTagsInput
-    },
+    components: {BaseModal, VueTagsInput},
     props: {
         userTags: Array,
         views: Array
     },
     data() {
         return {
-            showModal: false,
             tag: '',
             tags: [],
             title: ''
@@ -80,10 +63,9 @@ export default {
         }
     },
     methods: {
-        openModal: function() {
+        onOpenModal: function() {
             this.tag = '';
             this.tags = [];
-            this.showModal = true;
             this.title = '';
         },
         createView: function() {
@@ -129,19 +111,7 @@ export default {
 </script>
 
 <style scoped>
-.is-info {
-    background-color: #10A5E9;
-    font-weight: 800;
-    border-radius: 10px !important;
-}
-
-.is-info:hover {
-    background-color: #1282B6;
-    font-weight: 800;
-    border-radius: 10px !important;
-}
-
-.is-add {
+#create-view-modal >>> .is-add {
     background-color: #10A5E9;
     font-weight: 800;
     border-radius: 10px !important;
@@ -149,73 +119,6 @@ export default {
     top: 2px;
     padding: 5px;
     height: auto;
-}
-
-.modal-background {
-    backdrop-filter: blur(10px);
-    background-color: rgba(10, 10, 10, .5);
-}
-
-.card {
-    background-color: #344155;
-    border-radius: 10px;
-    max-width: 500px;
-    margin: auto;
-    user-select: none;
-}
-
-.card-footer-item {
-    background-color: #10A5E9;
-    border-width: 0;
-    user-select: none;
-    cursor: pointer;
-    border-radius: 10px;
-    margin: 0 25px 25px;
-}
-
-.create {
-    background-color: #0DBB92;
-}
-
-.card-footer {
-    border-top-width: 0;
-}
-
-.input {
-    font-weight: 700;
-    color: #F8FAFC;
-    background-color: #2A3444;
-    border-color: #344155;
-    border-radius: 10px;
-}
-
-.inputMargin {
-    margin-top: 20px;
-}
-
-.title {
-    font-weight: 700;
-    user-select: none;
-    cursor: pointer;
-    font-size: x-large;
-}
-
-.is-5 {
-    font-size: large;
-}
-
-.card-header {
-    box-shadow: 0 0 0 0;
-    padding: 0;
-    margin: 0;
-}
-
-.card-content {
-    padding-top: 5px;
-}
-
-.control {
-    padding-top: 20px;
 }
 
 >>> .vue-tags-input {
@@ -278,30 +181,5 @@ export default {
 >>> .vue-tags-input .ti-tag {
     height: 30px;
     border-radius: 10px;
-}
-
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #A4B1B6;
-    opacity: 1; /* Firefox */
-}
-
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: #A4B1B6;
-}
-
-::-ms-input-placeholder { /* Microsoft Edge */
-    color: #A4B1B6;
-}
-
-.is-gray {
-    background-color: #68778F;
-    font-weight: 800;
-    border-radius: 10px !important;
-}
-
-.is-gray:hover {
-    background-color: #5A667A;
-    font-weight: 800;
-    border-radius: 10px !important;
 }
 </style>

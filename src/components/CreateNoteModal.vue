@@ -1,59 +1,49 @@
 <template>
-    <div>
-        <button @click="openModal" class="button is-info is-add is-large">
+    <base-modal
+        id="create-note-modal"
+        button-classes="is-add is-large"
+        modal-header="New Note"
+        :max-title-length="30"
+        @modalAction="createNote"
+        modal-button-text="Create"
+        @openModal="onOpenModal"
+    >
+        <template v-slot:button-contents>
             <span class="fa-solid fa-file-circle-plus"></span>
-        </button>
+        </template>
         
-        <div :class="showModal ? 'modal is-active' : 'modal'">
-            <div @click="showModal = false" class="modal-background"></div>
-            <div class="modal-content">
-                <div class="card">
-                    <header class="card-header">
-                        <p class="title card-header-title is-centered">
-                            <span>New Note</span>
-                        </p>
-                    </header>
-                    <div class="card-content">
-                        <input
-                            v-model="title" class="input is-medium" type="text" placeholder="Add Title" maxlength="30"
-                        >
-                        <div class="control">
-                            <VueTagsInput
-                                v-model="tag"
-                                :tags="tags"
-                                :autocomplete-items="filteredItems"
-                                @tags-changed="newTags => {this.tags = newTags;}"
-                            />
-                        </div>
-                        <div class="control">
-                            <input
-                                @click="reminder = !reminder" v-model="reminderDate" class="input is-medium" type="text"
-                                placeholder="Add reminder" readonly
-                            >
-                        </div>
-                        
-                        <div class="modal is-active" v-if="reminder" @click="reminder = false">
-                        </div>
-                        <div class="datepicker-container">
-                            <DatePicker
-                                class="datepicker" :available-dates="{ start: new Date(), end: null }" mode="datetime"
-                                v-if="reminder"
-                                v-model="reminderDate"
-                                is-dark
-                            />
-                        </div>
-                    
-                    </div>
-                    <footer class="card-footer">
-                        <p @click="createNote" class="card-footer-item create">
-                            <span class="title is-5">Create</span>
-                        </p>
-                    </footer>
-                </div>
+        <template v-slot:modal-content>
+            <input v-model="title" class="input is-medium" type="text" placeholder="Add title" maxlength="30">
+            
+            <div class="control">
+                <VueTagsInput
+                    v-model="tag"
+                    :placeholder="tags.length === 0 ? 'Add tag' : ''"
+                    :tags="tags"
+                    :autocomplete-items="filteredItems"
+                    @tags-changed="newTags => {console.log(this); tags = newTags;}"
+                />
             </div>
-            <button @click="showModal = false" class="modal-close is-large" aria-label="close"></button>
-        </div>
-    </div>
+            
+            <div class="control">
+                <input
+                    @click="reminder = !reminder" v-model="reminderDate" class="input is-medium" type="text"
+                    placeholder="Add reminder" readonly
+                >
+            </div>
+            
+            <div class="modal is-active" v-if="reminder" @click="reminder = false"></div>
+            
+            <div class="datepicker-container">
+                <DatePicker
+                    class="datepicker" :available-dates="{start: new Date(), end: null}" mode="datetime"
+                    v-if="reminder"
+                    v-model="reminderDate"
+                    is-dark
+                />
+            </div>
+        </template>
+    </base-modal>
 </template>
 
 <script>
@@ -61,27 +51,25 @@ import VueTagsInput from '@johmun/vue-tags-input';
 import {auth, db, fieldValue} from '@/firebaseConfig';
 import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import NoteView from '@/views/NoteView';
+import BaseModal from '@/components/BaseModal';
 
 export default {
     name: 'CreateNoteModal',
-    components: {
-        VueTagsInput, DatePicker
-    },
+    components: {BaseModal, VueTagsInput, DatePicker},
     props: {
         userTags: Array,
         views: Array
-        
     },
     data() {
         return {
-            showModal: false,
             tag: '',
             tags: [],
             title: '',
             reminder: false,
             reminderDate: null
         };
-    }, watch: {
+    },
+    watch: {
         tag: function() {
             this.tag = this.tag.toLowerCase();
         }
@@ -98,10 +86,9 @@ export default {
         }
     },
     methods: {
-        openModal: function() {
+        onOpenModal: function() {
             this.tag = '';
             this.tags = [];
-            this.showModal = true;
             this.title = '';
             this.reminderDate = null;
             this.reminder = false;
@@ -188,17 +175,7 @@ label:hover {
     vertical-align: middle;
 }
 
-.is-info {
-    background-color: #10A5E9;
-    font-weight: 800;
-}
-
-.is-info:hover {
-    background-color: #1282B6;
-    font-weight: 800;
-}
-
-.is-add {
+#create-note-modal >>> .is-add {
     background-color: #10A5E9;
     font-weight: 800;
     border-radius: 99999px;
@@ -214,71 +191,8 @@ label:hover {
     z-index: 30;
 }
 
-.fa-solid {
+#create-note-modal >>> .fa-solid {
     padding: 10px;
-}
-
-.modal-background {
-    backdrop-filter: blur(10px);
-    background-color: rgba(10, 10, 10, .5);
-}
-
-.card {
-    background-color: #344155;
-    border-radius: 10px;
-    max-width: 500px;
-    margin: auto;
-    user-select: none;
-}
-
-.card-footer-item {
-    background-color: #10A5E9;
-    border-width: 0;
-    user-select: none;
-    cursor: pointer;
-    border-radius: 10px;
-    margin: 0 25px 25px;
-}
-
-.create {
-    background-color: #0DBB92;
-}
-
-.card-footer {
-    border-top-width: 0;
-}
-
-.input {
-    font-weight: 700;
-    color: #F8FAFC;
-    background-color: #2A3444;
-    border-color: #344155;
-    border-radius: 10px;
-}
-
-.title {
-    font-weight: 700;
-    user-select: none;
-    cursor: pointer;
-    font-size: x-large;
-}
-
-.is-5 {
-    font-size: large;
-}
-
-.card-header {
-    box-shadow: 0 0 0 0;
-    padding: 0;
-    margin: 0;
-}
-
-.card-content {
-    padding-top: 5px;
-}
-
-.control {
-    padding-top: 20px;
 }
 
 >>> .vue-tags-input {
@@ -341,18 +255,5 @@ label:hover {
 >>> .vue-tags-input .ti-tag {
     height: 30px;
     border-radius: 10px;
-}
-
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #A4B1B6;
-    opacity: 1; /* Firefox */
-}
-
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: #A4B1B6;
-}
-
-::-ms-input-placeholder { /* Microsoft Edge */
-    color: #A4B1B6;
 }
 </style>
