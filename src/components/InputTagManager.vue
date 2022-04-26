@@ -5,7 +5,6 @@
         :tags="tags"
         :autocomplete-items="relevantUserTags"
         @tags-changed="updateTags"
-        ref="vueTagsInput"
     />
 </template>
 
@@ -37,10 +36,7 @@ export default {
     methods: {
         clear: function() {
             this.tag = '';
-            this.tags.length = 0;
-            while(this.$refs.vueTagsInput.tagsCopy.length !== 0) {
-                this.$refs.vueTagsInput.invokeDelete();
-            }
+            this.tags = [];
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
