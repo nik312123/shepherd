@@ -95,7 +95,7 @@ export default {
             if(typeof date !== 'object') {
                 date = new Date(date);
             }
-    
+            
             return dateToString(date);
         }
     }

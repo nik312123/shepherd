@@ -43,7 +43,7 @@ export default {
     data: function() {
         return {
             title: this.viewObj.name,
-            tags: this.viewObj.tags.map(tag => ({text: tag})),
+            tags: this.viewObj.tags.map(tag => ({text: tag}))
         };
     },
     methods: {
