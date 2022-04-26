@@ -79,7 +79,6 @@ export default {
 </script>
 
 <style scoped>
-
 .is-info {
     background-color: #DC3F58;
     font-weight: 800;
@@ -109,5 +108,4 @@ export default {
 .smaller-gap {
     gap: 0;
 }
-
 </style>

@@ -142,5 +142,4 @@ export default {
     float: right;
     top: 60px;
 }
-
 </style>

@@ -90,5 +90,4 @@ export default {
     flex-wrap: nowrap;
     max-width: 50%;
 }
-
 </style>

@@ -55,10 +55,6 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
-
 <style scoped>
 /* noinspection CssUnusedSymbol */
 .is-info {

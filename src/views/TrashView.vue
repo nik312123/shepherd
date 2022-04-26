@@ -56,7 +56,6 @@ export default {
 </script>
 
 <style scoped>
-
 .is-info {
     background-color: #DC3F58;
     font-weight: 800;
@@ -82,5 +81,4 @@ export default {
 .section {
     padding-top: 15px;
 }
-
 </style>
