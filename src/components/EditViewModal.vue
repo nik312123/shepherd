@@ -15,13 +15,12 @@
         
         <template v-slot:modal-content>
             <input v-model="title" class="input is-medium" type="text" placeholder="Add title" maxlength="30">
+            
             <div class="control">
-                <VueTagsInput
-                    v-model="tag"
-                    :placeholder="tags.length === 0 ? 'Add tag' : ''"
-                    :tags="tags"
-                    :autocomplete-items="filteredItems"
-                    @tags-changed="newTags => {this.tags = newTags;}"
+                <InputTagManager
+                    :user-tags="userTags" :initial-tags="viewObj.tags.map(tag => ({text: tag}))"
+                    @updateTags="updateTags"
+                    ref="inputTagManager"
                 />
             </div>
         </template>
@@ -29,16 +28,13 @@
 </template>
 
 <script>
-import VueTagsInput from '@johmun/vue-tags-input';
 import {auth, db, fieldValue} from '@/firebaseConfig';
 import BaseModal from '@/components/BaseModal';
+import InputTagManager from '@/components/InputTagManager';
 
 export default {
     name: 'EditViewModal',
-    components: {
-        BaseModal,
-        VueTagsInput
-    },
+    components: {InputTagManager, BaseModal},
     props: {
         userTags: Array,
         views: Array,
@@ -46,39 +42,18 @@ export default {
     },
     data: function() {
         return {
-            tag: '',
-            tags: this.getTagsMap(this.viewObj.tags),
-            title: this.viewObj.name
+            title: this.viewObj.name,
+            tags: this.viewObj.tags.map(tag => ({text: tag})),
         };
     },
-    computed: {
-        filteredItems() {
-            let ac = [];
-            this.userTags.forEach(function(tag) {
-                ac.push({text: tag});
-            });
-            return ac.filter(i => {
-                return i.text.toLowerCase().indexOf(this.tag.toLowerCase()) !== -1;
-            });
-        }
-    },
-    watch: {
-        tag: function() {
-            this.tag = this.tag.toLowerCase();
-        }
-    },
     methods: {
-        getTagsMap(tags) {
-            let array = [];
-            tags.forEach((tag) => {
-                array.push({text: tag});
-            });
-            return array;
-        },
         onOpenModal: function() {
-            this.tag = '';
-            this.tags = this.getTagsMap(this.viewObj.tags);
+            this.tags = this.viewObj.tags.map(tag => ({text: tag}));
             this.title = this.viewObj.name;
+            this.$refs.inputTagManager.clear();
+        },
+        updateTags: function(updatedTags) {
+            this.tags = updatedTags;
         },
         updateName(oldName, newName, views) {
             if(newName.length === 0 || newName.length > 30) {
