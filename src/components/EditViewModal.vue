@@ -55,49 +55,35 @@ export default {
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
         },
-        updateName(oldName, newName, views) {
+        isViewNameValid(newName, views) {
             if(newName.length === 0 || newName.length > 30) {
-                alert('View title has to be between 1 and 30 characters long');
+                alert('View name has to be between 1 and 30 characters long');
                 return false;
             }
-            if(oldName.toLowerCase() === newName.toLowerCase()) {
-                return false;
-            }
-            let add = true;
             views.forEach(function(view) {
                 if(newName.toLowerCase() === view.name.toLowerCase()) {
                     alert('You already have a view with this name');
-                    add = false;
+                    return false;
                 }
             });
-            return add;
+            return true;
         },
         updateView: function() {
             let name = this.title.trim();
             
-            if(this.updateName(this.viewObj.name, name, this.views)) {
-                db.collection('views').doc(this.viewObj.id).update({
-                    name: name
-                });
+            if(!this.isViewNameValid(this.viewObj.name, name, this.views)) {
+                return;
             }
             
             if(this.tags.length === 0) {
-                alert('Add at least one tag');
-                this.showModal = true;
+                alert('A view must have at least one tag');
                 return;
             }
-            let tagsArray = [];
-            this.tags.forEach(function(tag) {
-                tagsArray.push(tag.text);
-            });
-            db.collection('views').doc(this.viewObj.id).update({
-                tags: tagsArray
-            });
-            db.collection('users').doc(auth.currentUser.uid).get().then((doc) => {
-                doc.ref.update({
-                    'tags': fieldValue.arrayUnion(...tagsArray)
-                });
-            });
+            
+            const tagArr = this.tags.map(tag => tag.text);
+            
+            db.collection('views').doc(this.viewObj.id).update({tags: tagArr});
+            db.collection('users').doc(auth.currentUser.uid).update({'tags': fieldValue.arrayUnion(...tagArr)});
             this.$refs.baseModal.hideModal();
         }
     }

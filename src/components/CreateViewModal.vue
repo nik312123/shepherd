@@ -54,39 +54,32 @@ export default {
         createView: function() {
             let name = this.title.trim();
             if(name.length === 0 || name.length > 30) {
-                alert('View title has to be between 1 and 30 characters long');
+                alert('View name has to be between 1 and 30 characters long');
                 return;
             }
             
             if(this.tags.length === 0) {
-                alert('Add at least one tag');
+                alert('A view must have at least one tag');
                 return;
             }
-            let add = true;
-            this.views.forEach(function(view) {
-                if(name.toLowerCase() === view.name.toLowerCase()) {
+            
+            for(let i = 0; i < this.views.length; ++i) {
+                if(name.toLowerCase() === this.views[i].name.toLowerCase()) {
                     alert('You already have a view with this name');
-                    add = false;
+                    return;
                 }
-            });
-            if(add) {
-                let tagsArray = [];
-                this.tags.forEach(function(tag) {
-                    tagsArray.push(tag.text);
-                });
-                db.collection('views').add({
-                    name: name,
-                    sortedAsc: true,
-                    sortedColumn: 'lastModifiedDateTime',
-                    tags: tagsArray,
-                    userId: auth.currentUser.uid
-                });
-                db.collection('users').doc(auth.currentUser.uid).get().then((doc) => {
-                    doc.ref.update({
-                        'tags': fieldValue.arrayUnion(...tagsArray)
-                    });
-                });
             }
+            
+            const tagsArr = this.tags.map(tag => tag.text);
+            
+            db.collection('views').add({
+                name: name,
+                sortedAsc: true,
+                sortedColumn: 'lastModifiedDateTime',
+                tags: tagsArr,
+                userId: auth.currentUser.uid
+            });
+            db.collection('users').doc(auth.currentUser.uid).update({'tags': fieldValue.arrayUnion(...tagsArr)});
             this.$refs.baseModal.hideModal();
         }
     }

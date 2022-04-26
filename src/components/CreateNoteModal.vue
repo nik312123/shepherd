@@ -91,32 +91,27 @@ export default {
                 return;
             }
             
-            let tagsArray = [];
-            this.tags.forEach(function(tag) {
-                tagsArray.push(tag.text);
-            });
+            if(this.tags.length === 0) {
+                alert('A note must have at least one tag');
+                return;
+            }
             
-            let tagsMap = {};
-            this.tags.forEach(function(tag) {
-                tagsMap[tag.text] = true;
-            });
+            db.collection('users').doc(auth.currentUser.uid)
+                .update({'tags': fieldValue.arrayUnion(...this.tags.map(tag => tag.text))});
             
-            db.collection('users').doc(auth.currentUser.uid).get().then((doc) => {
-                doc.ref.update({
-                    'tags': fieldValue.arrayUnion(...tagsArray)
-                });
-            });
-            
+            const curTimestamp = firebase.firestore.FieldValue.serverTimestamp();
             db.collection('notes').add({
                 userId: auth.currentUser.uid,
                 title: name,
                 body: '# New note',
                 isPublic: false,
                 isTrash: false,
-                tags: tagsMap,
-                createdDateTime: new Date(),
-                lastModifiedDateTime: new Date(),
-                reminderDateTime: this.reminderDate
+                tags: this.tags.map(tag => ({[tag.text]: true})),
+                createdDateTime: curTimestamp,
+                lastModifiedDateTime: curTimestamp,
+                reminderDateTime:
+                    this.reminderDate === null ? this.reminderDate :
+                        firebase.firestore.Timestamp.fromDate(this.reminderDate)
             }).then((docRef) => {
                 this.$router.push({name: NoteView.name, params: {id: docRef.id}});
             });
