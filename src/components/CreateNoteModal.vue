@@ -6,7 +6,7 @@
         :max-title-length="30"
         @modalAction="createNote"
         modal-button-text="Create"
-        @openModal="onOpenModal"
+        @modalOpen="onOpenModal"
         ref="baseModal"
     >
         <template v-slot:button-contents>

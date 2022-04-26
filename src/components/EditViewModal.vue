@@ -6,7 +6,7 @@
         :max-title-length="30"
         @modalAction="updateView"
         modal-button-text="Update"
-        @openModal="onOpenModal"
+        @modalOpen="onOpenModal"
         ref="baseModal"
     >
         <template v-slot:button-contents>
