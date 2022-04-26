@@ -3,8 +3,8 @@
         <div @click="goToNote" class="card" ref="singlenote">
             <div v-if="note.reminderDateTime" class="card-content date">
                 <div class="date-elements">
-                    <p>{{ note.reminderDateTime.toDate().toDateString().slice(4, 7) }}</p>
-                    <p class="date-day">{{ note.reminderDateTime.toDate().toDateString().slice(8, 10) }}</p>
+                    <p>{{ note.reminderDateTime.toDate().toLocaleDateString('en-US', {month: 'short'}) }}</p>
+                    <p class="date-day">{{ note.reminderDateTime.toDate().getDate() }}</p>
                 </div>
             </div>
             <div class="note-info">
