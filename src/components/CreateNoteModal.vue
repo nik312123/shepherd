@@ -7,6 +7,7 @@
         @modalAction="createNote"
         modal-button-text="Create"
         @openModal="onOpenModal"
+        ref="baseModal"
     >
         <template v-slot:button-contents>
             <span class="fa-solid fa-file-circle-plus"></span>
@@ -60,7 +61,7 @@ export default {
         userTags: Array,
         views: Array
     },
-    data() {
+    data: function() {
         return {
             tag: '',
             tags: [],
@@ -129,7 +130,7 @@ export default {
             }).then((docRef) => {
                 this.$router.push({name: NoteView.name, params: {id: docRef.id}});
             });
-            this.showModal = false;
+            this.$refs.baseModal.hideModal();
         }
     }
 };

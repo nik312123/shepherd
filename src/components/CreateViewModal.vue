@@ -7,6 +7,7 @@
         @modalAction="createView"
         modal-button-text="Create"
         @openModal="onOpenModal"
+        ref="baseModal"
     >
         <template v-slot:button-contents>
             <span class="fa-solid fa-circle-plus"></span>
@@ -39,7 +40,7 @@ export default {
         userTags: Array,
         views: Array
     },
-    data() {
+    data: function() {
         return {
             tag: '',
             tags: [],
@@ -74,6 +75,7 @@ export default {
                 alert('View title has to be between 1 and 30 characters long');
                 return;
             }
+            
             if(this.tags.length === 0) {
                 alert('Add at least one tag');
                 return;
@@ -102,8 +104,8 @@ export default {
                         'tags': fieldValue.arrayUnion(...tagsArray)
                     });
                 });
-                this.showModal = false;
             }
+            this.$refs.baseModal.hideModal();
         }
     }
 };

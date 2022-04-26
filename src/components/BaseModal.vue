@@ -47,6 +47,9 @@ export default {
         openModal: function() {
             this.showModal = true;
             this.$emit('modalOpen');
+        },
+        hideModal: function() {
+            this.showModal = false;
         }
     }
 };

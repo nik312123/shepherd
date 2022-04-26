@@ -7,6 +7,7 @@
         @modalAction="updateView"
         modal-button-text="Update"
         @openModal="onOpenModal"
+        ref="baseModal"
     >
         <template v-slot:button-contents>
             <span class="fa-solid fa-edit"></span>
@@ -43,7 +44,7 @@ export default {
         views: Array,
         viewObj: Object
     },
-    data() {
+    data: function() {
         return {
             tag: '',
             tags: this.getTagsMap(this.viewObj.tags),
@@ -122,7 +123,7 @@ export default {
                     'tags': fieldValue.arrayUnion(...tagsArray)
                 });
             });
-            this.showModal = false;
+            this.$refs.baseModal.hideModal();
         }
     }
 };
