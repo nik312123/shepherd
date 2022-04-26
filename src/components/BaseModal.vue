@@ -64,6 +64,7 @@ export default {
 .is-info {
     background-color: #10A5E9;
     font-weight: 800;
+    margin: 0 0 0 0;
 }
 
 /* noinspection CssUnusedSymbol */
