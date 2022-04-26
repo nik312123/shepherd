@@ -11,7 +11,7 @@
             <h1 v-if="view" class="title is-2">{{ view.name }}</h1>
             <div class="row smaller-gap">
                 <button @click="deleteView" class="button is-info is-small">
-                    <span class="fa-solid fa-trash"></span>
+                    <span class="fa-solid fa-trash view-button"></span>
                 </button>
                 <EditViewModal v-if="user && view" :userTags="user.tags" :views="views" :viewObj="view"/>
             </div>
@@ -77,6 +77,12 @@ export default {
     }
 };
 </script>
+
+<style>
+.view-button {
+    font-size: 17px;
+}
+</style>
 
 <style scoped>
 .is-info {

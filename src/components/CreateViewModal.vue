@@ -91,11 +91,12 @@ export default {
 #create-view-modal >>> .is-add {
     background-color: #10A5E9;
     font-weight: 800;
-    border-radius: 10px !important;
+    border-radius: 10px;
     position: relative;
     top: 2px;
     padding: 5px;
     height: auto;
+    font-size: 22px;
 }
 
 >>> .vue-tags-input {

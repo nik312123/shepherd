@@ -10,7 +10,7 @@
         ref="baseModal"
     >
         <template v-slot:button-contents>
-            <span class="fa-solid fa-edit"></span>
+            <span class="fa-solid fa-edit view-button"></span>
         </template>
         
         <template v-slot:modal-content>
