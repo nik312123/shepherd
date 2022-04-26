@@ -18,7 +18,7 @@
                         <slot name="modal-content"></slot>
                     </div>
                     <footer class="card-footer">
-                        <p @click="this.$emit('modalAction')" class="card-footer-item create">
+                        <p @click="$emit('modalAction')" class="card-footer-item create">
                             <span class="title is-5">{{ modalButtonText }}</span>
                         </p>
                     </footer>
