@@ -45,15 +45,18 @@ export default {
     },
     firestore: function() {
         let start = new Date();
-        start.setDate(start.getDate() + (this.offset - 1));
-        start.setHours(23, 59, 59, 0);
+        start.setDate(start.getDate() + this.offset);
+        start.setHours(0, 0, 0, 0);
         
-        let end = new Date();
-        end.setDate(end.getDate() + this.offset + 1);
-        end.setHours(0, 0, 0, 0);
+        let end = new Date(start);
+        end.setDate(end.getDate() + 1);
+        
         return {
-            notes: db.collection('notes').where('userId', '==', auth.currentUser.uid).where('isTrash', '==', false)
-                .where('reminderDateTime', '>', start).where('reminderDateTime', '<', end)
+            notes: db.collection('notes')
+                .where('userId', '==', auth.currentUser.uid)
+                .where('isTrash', '==', false)
+                .where('reminderDateTime', '>=', start)
+                .where('reminderDateTime', '<', end)
         };
     }
 };
