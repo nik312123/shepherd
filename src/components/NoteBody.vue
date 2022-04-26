@@ -72,7 +72,7 @@ export default {
 }
 
 .toastui-editor-defaultUI .toastui-editor-md-tab-container {
-    background-color: rgb(35 35 35 / 25%) !important;
+    background-color: rgba(35, 35, 35, 0.25) !important;
 }
 
 .toastui-editor-defaultUI {

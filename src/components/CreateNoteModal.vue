@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style scoped>
-.datepicker-container {
+#create-note-modal >>> .datepicker-container {
     position: fixed !important;
     left: 50%;
     top: 50%;
@@ -133,32 +133,8 @@ export default {
     z-index: 999999999;
 }
 
-.datepicker {
+#create-note-modal >>> .datepicker {
     box-shadow: rgba(0, 0, 0, 0.50) 0 22px 70px 4px;
-}
-
-label {
-    color: white;
-    font-weight: 700;
-    font-size: 19px;
-}
-
-label:hover {
-    color: white;
-}
-
-.checkboxes label {
-    display: inline-block;
-    padding-right: 10px;
-    white-space: nowrap;
-}
-
-.checkboxes input {
-    vertical-align: middle;
-}
-
-.checkboxes label span {
-    vertical-align: middle;
 }
 
 #create-note-modal >>> .is-add {
