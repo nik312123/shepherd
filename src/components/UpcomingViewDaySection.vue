@@ -22,7 +22,7 @@ import NoteComponent from '@/components/NoteComponent';
 export default {
     name: 'UpcomingViewDaySection',
     components: {NoteComponent},
-    data() {
+    data: function() {
         return {
             notes: [],
             dayOfWeekArr: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']

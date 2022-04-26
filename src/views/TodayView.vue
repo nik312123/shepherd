@@ -29,7 +29,7 @@ const todayViewName = 'TodayView';
 export default {
     name: todayViewName,
     components: {NoteComponent, HeaderBar},
-    data() {
+    data: function() {
         return {
             todayViewName: todayViewName,
             homeViewName: HomeView.name,

@@ -15,21 +15,21 @@ import HomeView from '@/views/HomeView';
 export default {
     name: 'HeaderBar',
     components: {SignInOut},
-    data() {
+    data: function() {
         return {
             user: null,
             isMobile: false
         };
     },
-    created() {
+    created: function() {
         this.checkScreen();
         window.addEventListener('resize', this.checkScreen);
     },
     methods: {
-        redirectToHome() {
+        redirectToHome: function() {
             this.$router.push({name: HomeView.name});
         },
-        checkScreen() {
+        checkScreen: function() {
             const windowWidth = window.innerWidth;
             if(windowWidth <= 448) {
                 this.isMobile = true;

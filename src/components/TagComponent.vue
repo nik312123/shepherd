@@ -24,7 +24,7 @@ export default {
         tagArray: Array,
         tagMap: Object
     },
-    data() {
+    data: function() {
         return {
             currentWidth: window.innerWidth
         };
@@ -34,7 +34,7 @@ export default {
             return this.computeDisplayedTagsAndRemainingCount(Object.keys(this.tagMap).sort());
         }
     },
-    created() {
+    created: function() {
         this.updateScreenWidth();
         window.addEventListener('resize', this.updateScreenWidth);
     },

@@ -22,7 +22,7 @@ export default {
     components: {
         Editor: Editor
     },
-    data() {
+    data: function() {
         return {
             newBody: this.body,
             showSave: false,

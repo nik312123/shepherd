@@ -36,7 +36,7 @@ import HomeView from '@/views/HomeView';
 export default {
     name: 'ViewView',
     components: {EditViewModal, NoteComponent, TagComponent, HeaderBar},
-    data() {
+    data: function() {
         return {
             homeViewName: HomeView.name,
             view: null,

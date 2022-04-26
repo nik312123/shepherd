@@ -32,7 +32,7 @@ const trashViewName = 'TrashView';
 export default {
     name: trashViewName,
     components: {HeaderBar, NoteComponent},
-    data() {
+    data: function() {
         return {
             trashViewName: trashViewName,
             homeViewName: HomeView.name,

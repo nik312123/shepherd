@@ -35,7 +35,7 @@ import CreateNoteModal from '@/components/CreateNoteModal';
 export default {
     name: 'HomeView',
     components: {CreateNoteModal, CreateViewModal, HeaderBar, HomeItem},
-    data() {
+    data: function() {
         return {
             views: [],
             user: false

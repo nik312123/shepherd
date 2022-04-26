@@ -22,7 +22,7 @@ import LoginView from '@/views/LoginView';
 export default {
     name: 'SignInOut',
     components: {},
-    data() {
+    data: function() {
         return {
             user: null
         };

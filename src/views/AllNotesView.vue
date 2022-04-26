@@ -29,7 +29,7 @@ const allNotesViewName = 'AllNotesView';
 export default {
     name: allNotesViewName,
     components: {NoteComponent, HeaderBar},
-    data() {
+    data: function() {
         return {
             allNotesViewName: allNotesViewName,
             homeViewName: HomeView.name,

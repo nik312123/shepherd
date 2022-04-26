@@ -29,7 +29,7 @@ const inboxViewName = 'InboxView';
 export default {
     name: inboxViewName,
     components: {NoteComponent, HeaderBar},
-    data() {
+    data: function() {
         return {
             inboxViewName: inboxViewName,
             homeViewName: HomeView.name,

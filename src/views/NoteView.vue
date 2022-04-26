@@ -40,7 +40,7 @@ export default {
     props: {
         id: String
     },
-    data() {
+    data: function() {
         return {
             homeViewName: HomeView.name,
             note: false,
