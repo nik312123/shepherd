@@ -15,9 +15,9 @@
             
             <div>
                 <p v-if="note.reminderDateTime" class="note-info">
-                    Reminder: {{ note.reminderDateTime.toDate().toLocaleDateString('en-US') }}
+                    Reminder: {{ formatToDate(note.reminderDateTime.toDate()) }}
                 </p>
-                <p class="note-info">Created on: {{ note.createdDateTime.toDate().toLocaleDateString('en-US') }}</p>
+                <p class="note-info">Created: {{ formatToDate(note.createdDateTime.toDate()) }}</p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }} ago</p>
             </div>
             <NoteBody :body="note.body" :id="note.id"/>
@@ -33,6 +33,7 @@ import EditNote from '@/components/EditNote';
 import HeaderBar from '@/components/HeaderBar';
 import TagComponent from '@/components/TagComponent';
 import HomeView from '@/views/HomeView';
+import {dateToString} from '@/helpers/dateFormatter';
 
 export default {
     name: 'NoteView',
@@ -60,46 +61,42 @@ export default {
             }
             
             const seconds = Math.floor((new Date() - date) / 1000);
+            
+            let interval;
             let intervalType;
             
-            let interval = Math.floor(seconds / 31536000);
-            if(interval >= 1) {
-                intervalType = 'year';
+            const secondsInMinute = 60;
+            const secondsInHour = 60 * secondsInMinute;
+            const secondsInDay = 24 * secondsInHour;
+            
+            if(seconds >= secondsInDay) {
+                return this.formatToDate(date);
+            }
+            else if(seconds >= secondsInHour) {
+                intervalType = 'hour';
+                interval = Math.floor(seconds / secondsInHour);
+            }
+            else if(seconds >= secondsInMinute) {
+                intervalType = 'minute';
+                interval = Math.floor(seconds / secondsInMinute);
             }
             else {
-                interval = Math.floor(seconds / 2592000);
-                if(interval >= 1) {
-                    intervalType = 'month';
-                }
-                else {
-                    interval = Math.floor(seconds / 86400);
-                    if(interval >= 1) {
-                        intervalType = 'day';
-                    }
-                    else {
-                        interval = Math.floor(seconds / 3600);
-                        if(interval >= 1) {
-                            intervalType = 'hour';
-                        }
-                        else {
-                            interval = Math.floor(seconds / 60);
-                            if(interval >= 1) {
-                                intervalType = 'minute';
-                            }
-                            else {
-                                interval = seconds;
-                                intervalType = 'second';
-                            }
-                        }
-                    }
-                }
+                intervalType = 'second';
+                interval = seconds;
             }
             
-            if(interval > 1 || interval === 0) {
+            if(interval !== 1) {
                 intervalType += 's';
             }
             
             return interval + ' ' + intervalType;
+        },
+        formatToDate(date) {
+            if(typeof date !== 'object') {
+                date = new Date(date);
+            }
+    
+            return dateToString(date);
         }
     }
 };

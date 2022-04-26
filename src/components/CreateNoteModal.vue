@@ -24,7 +24,7 @@
             
             <div class="control">
                 <input
-                    @click="reminder = !reminder" v-model="reminderDate" class="input is-medium" type="text"
+                    @click="reminder = !reminder" v-model="formattedDate" class="input is-medium" type="text"
                     placeholder="Add reminder" readonly
                 >
             </div>
