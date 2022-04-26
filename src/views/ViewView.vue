@@ -73,9 +73,6 @@ export default {
         deleteView: function() {
             db.collection('views').doc(this.view.id).delete();
             this.$router.push({name: HomeView.name});
-        },
-        editView: function() {
-            alert('edit');
         }
     }
 };
