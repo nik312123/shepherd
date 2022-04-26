@@ -2,8 +2,13 @@
     <div class="body">
         <button class="button is-info save" v-if="showSave" @click="saveNote">Save</button>
         <Editor
-            class="editor" :options="options" previewStyle="tab" ref="bodyEditor" height="1000px"
-            :initialValue="newBody" @change="onEditorChange"
+            class="editor"
+            :options="options"
+            previewStyle="tab"
+            ref="bodyEditor"
+            height="1000px"
+            :initialValue="newBody"
+            @change="onEditorChange"
         />
     </div>
 </template>
@@ -48,6 +53,15 @@ export default {
                 lastModifiedDateTime: new Date()
             });
             this.showSave = false;
+        }
+    },
+    mounted: function() {
+        for(const tab of document.querySelectorAll('div.tab-item')) {
+            if(tab.textContent.includes('Preview')) {
+                // This timeout is needed, or some styles break
+                setTimeout(() => tab.click(), 10);
+                break;
+            }
         }
     }
 };
