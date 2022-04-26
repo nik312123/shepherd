@@ -1,9 +1,13 @@
 <template>
     <div>
         <SignInOut class="comp"/>
-        <img style="cursor: pointer;" @click="redirectToHome" alt="logo" src="../assets/temp.png">
-        <h1 v-if="!isMobile" style="cursor: pointer;" @click="redirectToHome" class="title is-3">Shepherd</h1>
-        <h1 v-if="isMobile" style="visibility: hidden;" @click="redirectToHome" class="title is-3">.</h1>
+        <img id="shepherd-logo" src="../assets/temp.png" @click="redirectToHome" alt="logo">
+        <h1
+            id="shepherd-header-title"
+            :style="'visibility: ' + (shepherdHeaderVisible ? 'visible' : 'hidden')"
+            @click="redirectToHome"
+            class="title is-3"
+        >Shepherd</h1>
         <hr class="solid">
     </div>
 </template>
@@ -18,7 +22,7 @@ export default {
     data: function() {
         return {
             user: null,
-            isMobile: false
+            shepherdHeaderVisible: true
         };
     },
     created: function() {
@@ -31,17 +35,17 @@ export default {
         },
         checkScreen: function() {
             const windowWidth = window.innerWidth;
-            if(windowWidth <= 448) {
-                this.isMobile = true;
-                return;
-            }
-            this.isMobile = false;
+            this.shepherdHeaderVisible = windowWidth > 448;
         }
     }
 };
 </script>
 
 <style scoped>
+#shepherd-logo, #shepherd-header-title {
+    cursor: pointer;
+}
+
 .comp {
     float: right;
 }
