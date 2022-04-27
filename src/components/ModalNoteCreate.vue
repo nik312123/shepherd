@@ -115,6 +115,7 @@ export default {
             }).then(docRef => {
                 this.$router.push({name: NoteView.name, params: {id: docRef.id}});
             });
+            
             this.$refs.baseModal.hideModal();
         }
     }

@@ -87,6 +87,7 @@ export default {
             
             db.collection('views').doc(this.viewObj.id).update({name: curName, tags: tagArr});
             db.collection('users').doc(auth.currentUser.uid).update({'tags': fieldValue.arrayUnion(...tagArr)});
+            
             this.$refs.baseModal.hideModal();
         }
     }

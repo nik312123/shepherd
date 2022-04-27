@@ -80,6 +80,7 @@ export default {
                 userId: auth.currentUser.uid
             });
             db.collection('users').doc(auth.currentUser.uid).update({'tags': fieldValue.arrayUnion(...tagsArr)});
+            
             this.$refs.baseModal.hideModal();
         }
     }
