@@ -34,7 +34,7 @@ export default {
             todayViewName: todayViewName,
             homeViewName: HomeView.name,
             notes: [],
-            todayString: new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'})
+            todayString: new Date().toLocaleDateString('en-US', {weekday: 'long', month: 'long', day: 'numeric'})
         };
     },
     firestore: function() {
