@@ -42,8 +42,7 @@ export default {
             view: null,
             notes: [],
             user: null,
-            views: [],
-            test: {}
+            views: []
         };
     },
     props: {
@@ -52,7 +51,6 @@ export default {
     watch: {
         view: function() {
             if(this.view) {
-                this.test = this.view.ref;
                 let notesQuery = db.collection('notes').where('userId', '==', auth.currentUser.uid);
                 let tags = this.view.tags;
                 tags.forEach(function(tag) {
