@@ -55,23 +55,26 @@ export default {
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
         },
-        isViewNameValid(newName, views) {
-            if(newName.length === 0 || newName.length > 30) {
+        isViewNameValid(newName, oldName, views) {
+            if(newName.length < 1 || newName.length > 30) {
                 alert('View name has to be between 1 and 30 characters long');
                 return false;
             }
-            views.forEach(function(view) {
-                if(newName.toLowerCase() === view.name.toLowerCase()) {
-                    alert('You already have a view with this name');
-                    return false;
+            
+            if(newName !== oldName) {
+                for(let i = 0; i < views.length; ++i) {
+                    if(newName.toLowerCase() === views[i].name.toLowerCase()) {
+                        alert('You already have a view with this name');
+                        return false;
+                    }
                 }
-            });
+            }
             return true;
         },
         updateView: function() {
-            let name = this.title.trim();
+            let curName = this.title.trim();
             
-            if(!this.isViewNameValid(this.viewObj.name, name, this.views)) {
+            if(!this.isViewNameValid(curName, this.viewObj.name, this.views)) {
                 return;
             }
             
@@ -82,7 +85,7 @@ export default {
             
             const tagArr = this.tags.map(tag => tag.text);
             
-            db.collection('views').doc(this.viewObj.id).update({tags: tagArr});
+            db.collection('views').doc(this.viewObj.id).update({name: curName, tags: tagArr});
             db.collection('users').doc(auth.currentUser.uid).update({'tags': fieldValue.arrayUnion(...tagArr)});
             this.$refs.baseModal.hideModal();
         }

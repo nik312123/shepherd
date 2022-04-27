@@ -112,7 +112,7 @@ export default {
                 createdDateTime: curTimestamp,
                 lastModifiedDateTime: curTimestamp,
                 reminderDateTime: this.reminderDate === null ? null : this.reminderDate
-            }).then((docRef) => {
+            }).then(docRef => {
                 this.$router.push({name: NoteView.name, params: {id: docRef.id}});
             });
             this.$refs.baseModal.hideModal();
