@@ -56,7 +56,11 @@ export default {
             
             let displayedTags = [];
             for(let i = 0; totalChars > 0 && i < tags.length; ++i) {
-                totalChars -= tags[i].length;
+                const expectedRemainingTotalChars = totalChars - tags[i].length;
+                if(expectedRemainingTotalChars < 0) {
+                    break;
+                }
+                totalChars = expectedRemainingTotalChars;
                 displayedTags.push(tags[i]);
             }
             
