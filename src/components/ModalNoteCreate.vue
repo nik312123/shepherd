@@ -98,6 +98,9 @@ export default {
             db.collection('users').doc(auth.currentUser.uid)
                 .update({'tags': fieldValue.arrayUnion(...this.tags.map(tag => tag.text))});
             
+            let tagsMap = this.tags.map(tag => ({[tag.text]: true}));
+            tagsMap = Object.assign({}, ...tagsMap);
+            
             const curTimestamp = new Date();
             db.collection('notes').add({
                 userId: auth.currentUser.uid,
@@ -105,7 +108,7 @@ export default {
                 body: '# New note',
                 isPublic: false,
                 isTrash: false,
-                tags: this.tags.map(tag => ({[tag.text]: true})),
+                tags: tagsMap,
                 createdDateTime: curTimestamp,
                 lastModifiedDateTime: curTimestamp,
                 reminderDateTime: this.reminderDate === null ? null : this.reminderDate
