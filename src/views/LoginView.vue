@@ -1,18 +1,18 @@
 <template>
     <div class="home">
         <h1 class="title is-1"><strong>Welcome to Shepherd</strong></h1>
-        <SignInOut/>
+        <ButtonAuthenticationGoogle/>
     </div>
 </template>
 
 <script>
-import SignInOut from '@/components/SignInOut';
+import ButtonAuthenticationGoogle from '@/components/ButtonAuthenticationGoogle';
 import HomeView from '@/views/HomeView';
 import {auth} from '@/firebaseConfig';
 
 export default {
     name: 'LoginView',
-    components: {SignInOut},
+    components: {ButtonAuthenticationGoogle},
     created: function() {
         if(auth.currentUser) {
             this.$router.replace({name: HomeView.name});

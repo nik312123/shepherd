@@ -1,6 +1,6 @@
 <template>
     <base-modal
-        id="edit-view-modal"
+        id="modal-view-edit"
         button-classes="is-small is-gray"
         modal-header="Edit View"
         :max-title-length="30"
@@ -33,7 +33,7 @@ import BaseModal from '@/components/BaseModal';
 import InputTagManager from '@/components/InputTagManager';
 
 export default {
-    name: 'EditViewModal',
+    name: 'ModalViewEdit',
     components: {InputTagManager, BaseModal},
     props: {
         userTags: Array,
@@ -91,13 +91,13 @@ export default {
 </script>
 
 <style scoped>
-#edit-view-modal >>> .is-gray {
+#modal-view-edit >>> .is-gray {
     background-color: #68778F;
     font-weight: 800;
     border-radius: 10px;
 }
 
-#edit-view-modal >>> .is-gray:hover {
+#modal-view-edit >>> .is-gray:hover {
     background-color: #5A667A;
     font-weight: 800;
     border-radius: 10px;

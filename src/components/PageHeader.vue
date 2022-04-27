@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <SignInOut class="comp"/>
+    <div class="page-header">
+        <ButtonAuthenticationGoogle class="comp"/>
         <img id="shepherd-logo" src="../assets/temp.png" @click="redirectToHome" alt="logo">
         <h1
             id="shepherd-header-title"
@@ -13,12 +13,12 @@
 </template>
 
 <script>
-import SignInOut from '@/components/SignInOut';
+import ButtonAuthenticationGoogle from '@/components/ButtonAuthenticationGoogle';
 import HomeView from '@/views/HomeView';
 
 export default {
-    name: 'HeaderBar',
-    components: {SignInOut},
+    name: 'PageHeader',
+    components: {ButtonAuthenticationGoogle},
     data: function() {
         return {
             user: null,

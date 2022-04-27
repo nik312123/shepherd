@@ -1,6 +1,6 @@
 <template>
     <base-modal
-        id="create-note-modal"
+        id="modal-note-create"
         button-classes="is-add is-large"
         modal-header="New Note"
         :max-title-length="30"
@@ -55,7 +55,7 @@ import firebase from 'firebase/app';
 import {dateToString} from '@/helpers/dateFormatter';
 
 export default {
-    name: 'CreateNoteModal',
+    name: 'ModalNoteCreate',
     components: {InputTagManager, BaseModal, DatePicker},
     props: {
         userTags: Array,
@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style scoped>
-#create-note-modal >>> .datepicker-container {
+#modal-note-create >>> .datepicker-container {
     position: fixed !important;
     left: 50%;
     top: 50%;
@@ -133,11 +133,11 @@ export default {
     z-index: 999999999;
 }
 
-#create-note-modal >>> .datepicker {
+#modal-note-create >>> .datepicker {
     box-shadow: rgba(0, 0, 0, 0.50) 0 22px 70px 4px;
 }
 
-#create-note-modal >>> .is-add {
+#modal-note-create >>> .is-add {
     background-color: #10A5E9;
     font-weight: 800;
     border-radius: 99999px;
@@ -153,7 +153,7 @@ export default {
     z-index: 30;
 }
 
-#create-note-modal >>> .fa-solid {
+#modal-note-create >>> .fa-solid {
     padding: 10px;
 }
 </style>

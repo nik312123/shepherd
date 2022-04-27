@@ -1,5 +1,5 @@
 <template>
-    <div class>
+    <div class="button-authentication-google">
         <template v-if="!user">
             <button @click="signIn" class="button is-info"><strong>Sign in with Google</strong>
             </button>
@@ -20,7 +20,7 @@ import router from '@/router';
 import LoginView from '@/views/LoginView';
 
 export default {
-    name: 'SignInOut',
+    name: 'ButtonAuthenticationGoogle',
     components: {},
     data: function() {
         return {

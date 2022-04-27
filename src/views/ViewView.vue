@@ -1,6 +1,6 @@
 <template>
     <div>
-        <HeaderBar/>
+        <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
                 <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
@@ -13,29 +13,29 @@
                 <button @click="deleteView" class="button is-info is-small">
                     <span class="fa-solid fa-trash view-button"></span>
                 </button>
-                <EditViewModal v-if="user && view" :userTags="user.tags" :views="views" :viewObj="view"/>
+                <ModalViewEdit v-if="user && view" :userTags="user.tags" :views="views" :viewObj="view"/>
             </div>
         </div>
-        <TagComponent v-if="view" :tag-array="view.tags"/>
+        <TagList v-if="view" :tag-array="view.tags"/>
         <div class="section">
             <article v-for="noteObj in notes" :key="noteObj.id">
-                <NoteComponent :note="noteObj"/>
+                <NoteListItem :note="noteObj"/>
             </article>
         </div>
     </div>
 </template>
 
 <script>
-import HeaderBar from '@/components/HeaderBar';
+import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
-import TagComponent from '@/components/TagComponent';
-import NoteComponent from '@/components/NoteComponent';
-import EditViewModal from '@/components/EditViewModal';
+import TagList from '@/components/TagList';
+import NoteListItem from '@/components/NoteListItem';
+import ModalViewEdit from '@/components/ModalViewEdit';
 import HomeView from '@/views/HomeView';
 
 export default {
     name: 'ViewView',
-    components: {EditViewModal, NoteComponent, TagComponent, HeaderBar},
+    components: {ModalViewEdit, NoteListItem, TagList, PageHeader},
     data: function() {
         return {
             homeViewName: HomeView.name,

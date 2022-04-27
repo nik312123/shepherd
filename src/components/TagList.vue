@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="tag-list">
         <div v-if="tagArray" class="tags">
             <article v-for="tag in tagArray" :key="tag.key">
                 <p class="tag">{{ tag }}</p>
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-    name: 'TagComponent',
+    name: 'TagList',
     props: {
         tagArray: Array,
         tagMap: Object

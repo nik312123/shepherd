@@ -1,6 +1,6 @@
 <template>
     <div>
-        <HeaderBar/>
+        <PageHeader/>
         <div v-if="note.userId === userId">
             <div>
                 <router-link :to="{name: homeViewName}">
@@ -11,7 +11,7 @@
                 </a>
             </div>
             <p class="title is-3">{{ note.title }}</p>
-            <TagComponent :tag-array="Object.keys(note.tags)" class="tags"/>
+            <TagList :tag-array="Object.keys(note.tags)" class="tags"/>
             
             <div>
                 <p v-if="note.reminderDateTime" class="note-info">
@@ -21,7 +21,7 @@
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }} ago</p>
             </div>
             <NoteBody :body="note.body" :id="note.id"/>
-            <EditNote v-if="showModal" @close="showModal = false" :class="{ 'is-active': showModal }"/>
+            <ModalNoteEdit v-if="showModal" @close="showModal = false" :class="{ 'is-active': showModal }"/>
         </div>
     </div>
 </template>
@@ -29,15 +29,15 @@
 <script>
 import {auth, db} from '@/firebaseConfig';
 import NoteBody from '@/components/NoteBody';
-import EditNote from '@/components/EditNote';
-import HeaderBar from '@/components/HeaderBar';
-import TagComponent from '@/components/TagComponent';
+import ModalNoteEdit from '@/components/ModalNoteEdit';
+import PageHeader from '@/components/PageHeader';
+import TagList from '@/components/TagList';
 import HomeView from '@/views/HomeView';
 import {dateToString} from '@/helpers/dateFormatter';
 
 export default {
     name: 'NoteView',
-    components: {TagComponent, HeaderBar, EditNote, NoteBody},
+    components: {TagList, PageHeader, ModalNoteEdit, NoteBody},
     props: {
         id: String
     },

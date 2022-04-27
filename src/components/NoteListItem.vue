@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="note-list-item">
         <div @click="goToNote" class="card" ref="singlenote">
             <div v-if="note.reminderDateTime" class="card-content date">
                 <div class="date-elements">
@@ -13,7 +13,7 @@
                         {{ note.title }}
                     </p>
                     <button class="card-header-icon" aria-label="more options">
-                        <TagComponent :tag-map="note.tags"/>
+                        <TagList :tag-map="note.tags"/>
                     </button>
                 </header>
                 <div class="card-content">
@@ -29,12 +29,12 @@
 
 <script>
 
-import TagComponent from '@/components/TagComponent';
+import TagList from '@/components/TagList';
 import NoteView from '@/views/NoteView';
 
 export default {
-    name: 'NoteComponent',
-    components: {TagComponent},
+    name: 'NoteListItem',
+    components: {TagList},
     props: {
         note: Object
     },

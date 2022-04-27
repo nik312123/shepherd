@@ -1,5 +1,5 @@
 <template>
-    <div class="modal">
+    <div class="modal-note-edit">
         <div class="modal-background"></div>
         <div class="modal-card column is-three-quarters">
             <header class="modal-card-head">
@@ -29,7 +29,7 @@
 
 <script>
 export default {
-    name: 'EditNote',
+    name: 'ModalNoteEdit',
     data() {
         return {};
     }

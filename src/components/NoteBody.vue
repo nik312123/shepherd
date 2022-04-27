@@ -1,5 +1,5 @@
 <template>
-    <div class="body">
+    <div class="note-body">
         <button class="button is-info save" v-if="showSave" @click="saveNote">Save</button>
         <Editor
             class="editor"
@@ -73,7 +73,7 @@ export default {
     font-weight: 700;
 }
 
-.body {
+.note-body {
     margin-top: 20px;
 }
 

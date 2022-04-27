@@ -1,5 +1,5 @@
 <template>
-    <div class="column">
+    <div class="upcoming-view-section-day column">
         <div class="row">
             <p class="title is-3">
                 {{ getDate() }}
@@ -10,18 +10,18 @@
         </div>
         <hr class="solid">
         <article v-for="noteObj in notes" :key="noteObj.id">
-            <NoteComponent :note="noteObj"/>
+            <NoteListItem :note="noteObj"/>
         </article>
     </div>
 </template>
 
 <script>
 import {auth, db} from '@/firebaseConfig';
-import NoteComponent from '@/components/NoteComponent';
+import NoteListItem from '@/components/NoteListItem';
 
 export default {
-    name: 'UpcomingViewDaySection',
-    components: {NoteComponent},
+    name: 'UpcomingViewSectionDay',
+    components: {NoteListItem},
     data: function() {
         return {
             notes: [],

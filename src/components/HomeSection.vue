@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div class="home-section card">
         <header @click="goToView" class="card-header">
             <p class="card-header-title">
                 {{ title }}
@@ -14,7 +14,7 @@ import router from '@/router';
 import ViewView from '@/views/ViewView';
 
 export default {
-    name: 'HomeItem',
+    name: 'HomeSection',
     props: {
         title: String,
         viewName: String,

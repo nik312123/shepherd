@@ -1,6 +1,6 @@
 <template>
     <div>
-        <HeaderBar/>
+        <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
                 <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
@@ -15,23 +15,23 @@
         </div>
         <div class="section">
             <article v-for="noteObj in notes" :key="noteObj.id">
-                <NoteComponent :note="noteObj"/>
+                <NoteListItem :note="noteObj"/>
             </article>
         </div>
     </div>
 </template>
 
 <script>
-import HeaderBar from '@/components/HeaderBar';
+import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
-import NoteComponent from '@/components/NoteComponent';
+import NoteListItem from '@/components/NoteListItem';
 import HomeView from '@/views/HomeView';
 
 const trashViewName = 'TrashView';
 
 export default {
     name: trashViewName,
-    components: {HeaderBar, NoteComponent},
+    components: {PageHeader, NoteListItem},
     data: function() {
         return {
             trashViewName: trashViewName,

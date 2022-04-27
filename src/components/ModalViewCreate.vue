@@ -1,6 +1,6 @@
 <template>
     <base-modal
-        id="create-view-modal"
+        id="modal-view-create"
         button-classes="is-add"
         modal-header="New View"
         :max-title-length="30"
@@ -30,7 +30,7 @@ import BaseModal from '@/components/BaseModal';
 import InputTagManager from '@/components/InputTagManager';
 
 export default {
-    name: 'CreateViewModal',
+    name: 'ModalViewCreate',
     components: {InputTagManager, BaseModal},
     props: {
         userTags: Array,
@@ -88,7 +88,7 @@ export default {
 </script>
 
 <style scoped>
-#create-view-modal >>> .is-add {
+#modal-view-create >>> .is-add {
     background-color: #10A5E9;
     font-weight: 800;
     border-radius: 10px;
