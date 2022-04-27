@@ -1,11 +1,13 @@
 <template>
-    <VueTagsInput
-        v-model="tag"
-        :placeholder="tags.length === 0 ? 'Add tag' : ''"
-        :tags="tags"
-        :autocomplete-items="relevantUserTags"
-        @tags-changed="updateTags"
-    />
+    <div class="input-tag-manager">
+        <VueTagsInput
+            v-model="tag"
+            :placeholder="tags.length === 0 ? 'Add tag' : ''"
+            :tags="tags"
+            :autocomplete-items="relevantUserTags"
+            @tags-changed="updateTags"
+        />
+    </div>
 </template>
 
 <script>
