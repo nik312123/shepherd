@@ -51,7 +51,6 @@ import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import NoteView from '@/views/NoteView';
 import BaseModal from '@/components/BaseModal';
 import InputTagManager from '@/components/InputTagManager';
-import firebase from 'firebase/app';
 import {dateToString} from '@/helpers/dateFormatter';
 
 export default {
@@ -99,7 +98,7 @@ export default {
             db.collection('users').doc(auth.currentUser.uid)
                 .update({'tags': fieldValue.arrayUnion(...this.tags.map(tag => tag.text))});
             
-            const curTimestamp = firebase.firestore.FieldValue.serverTimestamp();
+            const curTimestamp = new Date();
             db.collection('notes').add({
                 userId: auth.currentUser.uid,
                 title: name,
@@ -109,9 +108,7 @@ export default {
                 tags: this.tags.map(tag => ({[tag.text]: true})),
                 createdDateTime: curTimestamp,
                 lastModifiedDateTime: curTimestamp,
-                reminderDateTime:
-                    this.reminderDate === null ? this.reminderDate :
-                        firebase.firestore.Timestamp.fromDate(this.reminderDate)
+                reminderDateTime: this.reminderDate === null ? null : this.reminderDate
             }).then((docRef) => {
                 this.$router.push({name: NoteView.name, params: {id: docRef.id}});
             });
