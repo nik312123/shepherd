@@ -78,7 +78,7 @@ export default {
             this.title = '';
             this.reminderDate = null;
             this.reminder = false;
-            this.$refs.inputTagManager.clear();
+            this.$refs.inputTagManager.reset();
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;

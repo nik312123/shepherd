@@ -36,9 +36,9 @@ export default {
         }
     },
     methods: {
-        clear: function() {
+        reset: function() {
             this.tag = '';
-            this.tags = [];
+            this.tags = this.initialTags.slice();
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
