@@ -1,7 +1,8 @@
 export function dateToString(date) {
     const year = date.getFullYear();
-    const month = date.getMonth() + 1;
+    const month = date.toLocaleDateString("en-US", {'month': 'long'});
     const day = date.getDate();
+    const weekday = date.toLocaleDateString("en-US", {'weekday': 'long'});
     
     let hours = date.getHours();
     const minutes = date.getMinutes();
@@ -11,5 +12,5 @@ export function dateToString(date) {
     
     const paddedMinutes = String(minutes).padStart(2, '0');
     
-    return `${month}/${day}/${year} at ${hours}:${paddedMinutes} ${ampm}`;
+    return `${weekday}, ${month} ${day}, ${year} at ${hours}:${paddedMinutes} ${ampm}`;
 }

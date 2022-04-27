@@ -18,7 +18,7 @@
                     Reminder: {{ formatToDate(note.reminderDateTime.toDate()) }}
                 </p>
                 <p class="note-info">Created: {{ formatToDate(note.createdDateTime.toDate()) }}</p>
-                <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }} ago</p>
+                <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
             </div>
             <NoteBody :body="note.body" :id="note.id"/>
             <ModalNoteEdit v-if="showModal" @close="showModal = false" :class="{ 'is-active': showModal }"/>
@@ -89,7 +89,7 @@ export default {
                 intervalType += 's';
             }
             
-            return interval + ' ' + intervalType;
+            return interval + ' ' + intervalType + ' ago';
         },
         formatToDate(date) {
             if(typeof date !== 'object') {
