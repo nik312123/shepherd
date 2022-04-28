@@ -22,7 +22,8 @@ export default {
     name: 'NoteBody',
     props: {
         body: String,
-        id: String
+        id: String,
+        defaultTab: String
     },
     components: {
         Editor: Editor
@@ -56,11 +57,13 @@ export default {
         }
     },
     mounted: function() {
-        for(const tab of document.querySelectorAll('div.tab-item')) {
-            if(tab.textContent.includes('Preview')) {
-                // This timeout is needed, or some styles break
-                setTimeout(() => tab.click(), 10);
-                break;
+        if(this.defaultTab !== 'write') {
+            for(const tab of document.querySelectorAll('div.tab-item')) {
+                if(tab.textContent.includes('Preview')) {
+                    // This timeout is needed, or some styles break
+                    setTimeout(() => tab.click(), 10);
+                    break;
+                }
             }
         }
     }

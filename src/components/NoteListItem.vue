@@ -40,7 +40,7 @@ export default {
     },
     methods: {
         goToNote: function() {
-            this.$router.push({name: NoteView.name, params: {id: this.note.id}});
+            this.$router.push({name: NoteView.name, params: {id: this.note.id, defaultTab: 'preview'}});
         }
     }
 };

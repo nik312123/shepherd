@@ -20,7 +20,7 @@
                 <p class="note-info">Created: {{ dateToString(note.createdDateTime.toDate(), true, false) }}</p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
             </div>
-            <NoteBody :body="note.body" :id="note.id"/>
+            <NoteBody :default-tab="defaultTab" :body="note.body" :id="note.id"/>
             <ModalNoteEdit v-if="showModal" @close="showModal = false" :class="{ 'is-active': showModal }"/>
         </div>
     </div>
@@ -39,7 +39,8 @@ export default {
     name: 'NoteView',
     components: {TagList, PageHeader, ModalNoteEdit, NoteBody},
     props: {
-        id: String
+        id: String,
+        defaultTab: String
     },
     data: function() {
         return {
