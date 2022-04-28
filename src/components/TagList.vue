@@ -26,7 +26,7 @@ export default {
     },
     data: function() {
         return {
-            currentWidth: window.innerWidth
+            currentWidth: window.screen.width
         };
     },
     computed: {
@@ -72,7 +72,7 @@ export default {
             };
         },
         updateScreenWidth: function() {
-            this.currentWidth = window.innerWidth;
+            this.currentWidth = window.screen.width;
         }
     }
 };

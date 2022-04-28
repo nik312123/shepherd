@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="today-view">
         <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
@@ -9,7 +9,7 @@
                 </li>
             </ul>
         </nav>
-        <h1 class="title is-2">☀️ {{ todayString }}</h1>
+        <h1 id="today-date" :class="'title is-mobile is-' + todayTextSizeDenominator">☀️ {{ todayString }}</h1>
         <div class="section">
             <article v-for="noteObj in notes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
@@ -34,8 +34,28 @@ export default {
             todayViewName: todayViewName,
             homeViewName: HomeView.name,
             notes: [],
-            todayString: new Date().toLocaleDateString('en-US', {weekday: 'long', month: 'long', day: 'numeric'})
+            todayString: new Date().toLocaleDateString('en-US', {weekday: 'long', month: 'long', day: 'numeric'}),
+            todayTextSizeDenominator: 2,
+            currentlyResizing: false
         };
+    },
+    created: function() {
+        this.onResize();
+        window.addEventListener('resize', this.onResize);
+    },
+    methods: {
+        onResize: function() {
+            const windowWidth = window.screen.width;
+            if(windowWidth >= 500) {
+                this.todayTextSizeDenominator = 2;
+            }
+            else if(windowWidth >= 400) {
+                this.todayTextSizeDenominator = 3;
+            }
+            else {
+                this.todayTextSizeDenominator = 4;
+            }
+        }
     },
     firestore: function() {
         let today = new Date();
@@ -52,3 +72,9 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+#today-date {
+    white-space: nowrap;
+}
+</style>

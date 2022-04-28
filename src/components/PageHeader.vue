@@ -1,13 +1,17 @@
 <template>
-    <div class="page-header">
-        <ButtonAuthenticationGoogle class="comp"/>
-        <img id="shepherd-logo" src="../assets/temp.png" @click="redirectToHome" alt="logo">
-        <h1
-            id="shepherd-header-title"
-            :style="'visibility: ' + (shepherdHeaderVisible ? 'visible' : 'hidden')"
-            @click="redirectToHome"
-            class="title is-3"
-        >Shepherd</h1>
+    <div id="page-header">
+        <div id="page-header-content">
+            <div id="shepherd-content">
+                <img id="shepherd-logo" src="../assets/temp.png" @click="redirectToHome" alt="logo">
+                <h1
+                    id="shepherd-header-title"
+                    :style="'visibility: ' + (shepherdHeaderTitleVisible ? 'visible' : 'hidden')"
+                    @click="redirectToHome"
+                    :class="'title is-mobile is-' + shepherdHeaderTitleDenominator"
+                >{{shepherdHeaderTitleVisible ? 'Shepherd' : '.'}}</h1>
+            </div>
+            <ButtonAuthenticationGoogle class="comp"/>
+        </div>
         <hr class="solid">
     </div>
 </template>
@@ -22,38 +26,54 @@ export default {
     data: function() {
         return {
             user: null,
-            shepherdHeaderVisible: true
+            shepherdHeaderTitleDenominator: 3,
+            shepherdHeaderTitleVisible: true
         };
     },
     created: function() {
-        this.checkScreen();
-        window.addEventListener('resize', this.checkScreen);
+        this.onResize();
+        window.addEventListener('resize', this.onResize);
     },
     methods: {
         redirectToHome: function() {
             this.$router.push({name: HomeView.name});
         },
-        checkScreen: function() {
-            const windowWidth = window.innerWidth;
-            this.shepherdHeaderVisible = windowWidth > 448;
+        onResize: function() {
+            const windowWidth = window.screen.width;
+            this.shepherdHeaderTitleVisible = windowWidth > 340;
+            this.shepherdHeaderTitleDenominator = windowWidth >= 400 ? 3 : 4;
         }
     }
 };
 </script>
 
 <style scoped>
+#page-header {
+    overflow: auto;
+}
+
+#shepherd-content {
+    display: inline-flex;
+    align-items: center;
+}
+
+#page-header-content {
+    height: 40px;
+}
+
 #shepherd-logo, #shepherd-header-title {
     cursor: pointer;
+    display: inline-block;
+    float: left;
 }
 
-.comp {
-    float: right;
+#shepherd-header-title {
+    white-space: nowrap;
 }
 
-img {
+img#shepherd-logo {
     width: 40px;
     margin-right: 10px;
-    float: left;
     padding-top: 2px;
 }
 
@@ -62,8 +82,6 @@ hr.solid {
 }
 
 .title {
-    position: relative;
     top: 4px;
-    width: 210px;
 }
 </style>

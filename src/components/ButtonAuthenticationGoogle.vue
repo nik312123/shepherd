@@ -52,6 +52,11 @@ export default {
 </script>
 
 <style scoped>
+.button-authentication-google {
+    display: inline-block;
+    float: right;
+}
+
 .avatar {
     width: 2.6em;
     height: 2.6em;
@@ -65,7 +70,6 @@ export default {
 }
 
 button {
-    position: relative;
     top: -10px;
     margin-right: 0;
     
