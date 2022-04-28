@@ -70,7 +70,7 @@ export default {
     },
     computed: {
         formattedDate: function() {
-            return this.reminderDate === null ? null : dateToString(this.reminderDate);
+            return this.reminderDate === null ? null : dateToString(this.reminderDate, false, true);
         }
     },
     methods: {

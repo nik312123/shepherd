@@ -10,14 +10,14 @@
                     <span class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></span>
                 </a>
             </div>
-            <p class="title is-3">{{ note.title }}</p>
+            <p id="note-view-title" class="title is-3">{{ note.title }}</p>
             <TagList :tag-array="Object.keys(note.tags)" class="tags"/>
             
             <div>
                 <p v-if="note.reminderDateTime" class="note-info">
-                    Reminder: {{ formatToDate(note.reminderDateTime.toDate()) }}
+                    Reminder: {{ dateToString(note.reminderDateTime.toDate(), true, true) }}
                 </p>
-                <p class="note-info">Created: {{ formatToDate(note.createdDateTime.toDate()) }}</p>
+                <p class="note-info">Created: {{ dateToString(note.createdDateTime.toDate(), true, false) }}</p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
             </div>
             <NoteBody :body="note.body" :id="note.id"/>
@@ -70,7 +70,7 @@ export default {
             const secondsInDay = 24 * secondsInHour;
             
             if(seconds >= secondsInDay) {
-                return this.formatToDate(date);
+                return dateToString(date, true, false)
             }
             else if(seconds >= secondsInHour) {
                 intervalType = 'hour';
@@ -91,19 +91,17 @@ export default {
             
             return interval + ' ' + intervalType + ' ago';
         },
-        formatToDate(date) {
-            if(typeof date !== 'object') {
-                date = new Date(date);
-            }
-            
-            return dateToString(date);
-        }
+        dateToString: dateToString
     }
 };
 
 </script>
 
 <style scoped>
+#note-view-title {
+    margin-bottom: 5px;
+}
+
 * {
     color: white;
 }
@@ -113,6 +111,7 @@ export default {
 }
 
 .note-info {
+    margin-bottom: 15px;
     font-weight: 700;
     color: #AABBD5;
 }
