@@ -11,18 +11,20 @@ let db = app.firestore();
 const sendNotifications = (messages, docIds) => {
     messaging.sendAll(messages)
         .then((response) => {
-            console.log('Successfully sent message:', JSON.stringify(response));
-            if(response.failureCount === 0) {
-               docIds.forEach(docId => {
-                   db.collection('notes').doc(docId).update({
-                       notified: true
-                   }).then(() => {
-                       console.log("Notified for docId: ", docId);
-                   }).catch((err) => {
-                       console.log("Error updating docId: ", docId, err);
-                   })
-               });
-            }
+            console.log('Message status', JSON.stringify(response));
+            response.responses.forEach((response, index) => {
+                if (response.success) {
+                    db.collection('notes').doc(docIds[index]).update({
+                        'notified': true
+                    }).then(() => {
+                        console.log("Notified for docId: ", docIds[index]);
+                    }).catch((err) => {
+                        console.log("Error updating docId: ", docIds[index], err);
+                    });
+                } else {
+                    console.log("Error sending message: ", docIds[index], JSON.stringify(response.error));
+                }
+            });
         })
         .catch((error) => {
             console.log('Error sending message:', error);

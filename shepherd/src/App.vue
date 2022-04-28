@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="container is-max-desktop">
+    <notifications></notifications>
     <router-view/>
   </div>
 </template>
@@ -61,6 +62,13 @@ export default {
   mounted() {
     messaging.onMessage(payload => {
       console.log('Message received. ', payload);
+      this.$notify({
+        // title: payload.notification.title,
+        title: payload.notification.body,
+        duration: 20000,
+        payload: payload,
+        closeOnClick: false,
+      })
     });
   }
 }
