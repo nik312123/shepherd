@@ -20,9 +20,6 @@ const messaging = firebase.messaging();
 self.addEventListener('notificationclick',  (event) => {
     console.log('SW notification click event', JSON.stringify(event));
     let url = event.webpush.fcmOptions.link;
-    // let linkArr = event.webpush.fcmOptions.link.split("/");
-    // let noteId = linkArr[linkArr.length - 1];
-    // let baseUrl = linkArr.slice(0, linkArr.length - 1).join("/");
 
     event.waitUntil(
         clients.matchAll({type: 'window'}).then( windowClients => {
@@ -30,14 +27,9 @@ self.addEventListener('notificationclick',  (event) => {
             for (var i = 0; i < windowClients.length; i++) {
                 var client = windowClients[i];
                 // If so, just focus it.
-                // let clientLinkArr = client.url.split("/");
-                // let clientNoteId = clientLinkArr[clientLinkArr.length - 1];
-                // let clientBaseUrl = clientLinkArr.slice(0, clientLinkArr.length - 1).join("/");
                 if (client.url === url && 'focus' in client) {
                     return client.focus();
                 }
-                // } else if(("localhost".includes(client.url) || "127.0.0.1".includes(client.url))
-                // && )
             }
             // If not, then open the target URL in a new window/tab.
             if (clients.openWindow) {
