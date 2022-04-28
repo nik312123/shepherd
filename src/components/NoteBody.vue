@@ -46,7 +46,7 @@ export default {
     methods: {
         onEditorChange: function() {
             this.newBody = this.$refs.bodyEditor.invoke('getMarkdown');
-            this.showSave = true;
+            this.showSave = this.newBody !== this.body;
         },
         saveNote: function() {
             db.collection('notes').doc(this.id).update({
