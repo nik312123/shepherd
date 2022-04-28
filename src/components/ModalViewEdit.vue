@@ -55,7 +55,7 @@ export default {
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
         },
-        isViewNameValid(newName, oldName, views) {
+        isViewNameValid: function(newName, oldName, views) {
             if(newName.length < 1 || newName.length > 30) {
                 alert('View name has to be between 1 and 30 characters long');
                 return false;
