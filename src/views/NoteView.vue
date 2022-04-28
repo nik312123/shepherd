@@ -15,9 +15,9 @@
             
             <div>
                 <p v-if="note.reminderDateTime" class="note-info">
-                    Reminder: {{ dateToString(note.reminderDateTime.toDate(), true, true) }}
+                    Reminder: {{ dateToString(note.reminderDateTime.toDate(), false, true) }}
                 </p>
-                <p class="note-info">Created: {{ dateToString(note.createdDateTime.toDate(), true, false) }}</p>
+                <p class="note-info">Created: {{ dateToString(note.createdDateTime.toDate(), false, false) }}</p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
             </div>
             <NoteBody :default-tab="defaultTab" :body="note.body" :id="note.id"/>
@@ -71,7 +71,7 @@ export default {
             const secondsInDay = 24 * secondsInHour;
             
             if(seconds >= secondsInDay) {
-                return dateToString(date, true, false)
+                return dateToString(date, false, false)
             }
             else if(seconds >= secondsInHour) {
                 intervalType = 'hour';
