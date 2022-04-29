@@ -34,6 +34,7 @@ const sendNotifications = (messages, docIds) => {
 db.collection("notes")
     .where("notified", "==", false)
     .where("reminderDateTime", "<=", new Date(Date.now()))
+    .where("isTrash", "==", false)
     .get()
     .then((querySnapshot) => {
         let messages = [];

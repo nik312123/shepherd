@@ -19,7 +19,7 @@
         <TagComponent v-if="view" :tag-array="view.tags"/>
         <div class="section">
             <article v-for="noteObj in notes" :key="noteObj.id">
-                <NoteComponent :note="noteObj"/>
+                <NoteComponent :note="noteObj" :viewName="view.name" :viewId="id"/>
             </article>
         </div>
     </div>

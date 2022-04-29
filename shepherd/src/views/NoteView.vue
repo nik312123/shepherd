@@ -1,11 +1,21 @@
 <template>
     <div>
         <HeaderBar/>
+      <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
+        <ul v-if="$route.params.from !== undefined">
+          <li @click="$router.push({'name': 'home'})"><a> Home </a></li>
+          <li @click="$router.push({'name': $route.params.from})" v-if="$route.params.viewName === undefined"><a> {{getPathName}} </a></li>
+          <li @click="$router.push({'name': $route.params.from, params: {'id': $route.params.viewId}})"
+              v-if="$route.params.viewName !== undefined"><a> {{$route.params.viewName}} </a></li>
+          <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
+        </ul>
+        <ul v-else>
+          <li @click="$router.push({'name': 'all-notes'})"><a> All Notes </a></li>
+          <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
+        </ul>
+      </nav>
         <div v-if="note.userId===userId">
             <div>
-                <router-link to="/home">
-                    <i class="fa fa-angle-left fa-2x" aria-hidden="true"></i>
-                </router-link>
                 <a class="edit-menu" @click="showModal = true">
                     <i class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></i>
                 </a>
@@ -41,7 +51,14 @@ export default {
         return {
             note: false,
             showModal: false,
-            userId: auth.currentUser.uid
+            userId: auth.currentUser.uid,
+            pathMapping: {
+              "home": "Home",
+              "inbox": "Inbox",
+              "trash": "Trash",
+              "today": "Today",
+              "upcoming": "Upcoming",
+            }
         };
     },
     firestore: function() {
@@ -108,7 +125,13 @@ export default {
             }
 
             return interval + ' ' + intervalType;
-        }
+        },
+    },
+    computed:{
+      getPathName() {
+        // eslint-disable-next-line no-prototype-builtins
+        return this.pathMapping.hasOwnProperty(this.$route.params.from) ? this.pathMapping[this.$route.params.from] : "All Notes";
+      }
     }
 };
 

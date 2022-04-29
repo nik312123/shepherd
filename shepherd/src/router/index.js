@@ -73,7 +73,8 @@ const routes = [
         meta: {
             requiresAuth: true
         },
-        component: ViewView
+        component: ViewView,
+        props: true
     },
     {
         path: "/note/:id",

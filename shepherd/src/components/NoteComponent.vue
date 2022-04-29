@@ -35,11 +35,13 @@ export default {
     name: 'NoteComponent',
     components: {TagComponent},
     props: {
-        note: Object
+        note: Object,
+        viewName: String,
+        viewId: String
     },
     methods: {
         goToNote: function() {
-            this.$router.push({name: 'note', params: {id: this.note.id}});
+            this.$router.push({name: 'note', params: {id: this.note.id, from: this.$route.name, viewName: this.viewName, viewId: this.viewId}});
         }
     }
 };
