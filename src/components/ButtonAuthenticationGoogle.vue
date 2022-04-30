@@ -28,7 +28,9 @@ export default {
         };
     },
     beforeCreate: function() {
-        auth.onAuthStateChanged(user => {this.user = user ? user : null;});
+        auth.onAuthStateChanged(user => {
+            this.user = user ? user : null;
+        });
     },
     methods: {
         signIn: function() {
@@ -72,6 +74,5 @@ export default {
 button {
     top: -10px;
     margin-right: 0;
-    
 }
 </style>

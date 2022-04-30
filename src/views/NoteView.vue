@@ -6,11 +6,26 @@
                 <router-link :to="{name: homeViewName}">
                     <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
                 </router-link>
-                <a class="edit-menu" @click="showModal = true">
-                    <span class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></span>
-                </a>
             </div>
-            <p id="note-view-title" class="title is-3">{{ note.title }}</p>
+            <span @click="copyURL" v-if="note.isPublic && !note.isTrash" class="tag is-medium public">
+                Copy link
+                <span class="fa-solid fa-paste"></span>
+            </span>
+            <div class="row">
+                <p id="note-view-title" class="title is-3">{{ note.title }}</p>
+                <div v-if="!note.isTrash" class="row smaller-gap">
+                    <button @click="moveToTrash" class="button is-info is-small delete-button">
+                        <span class="fa-solid fa-trash view-button"></span>
+                    </button>
+                    <ModalNoteEdit v-if="user" :userTags="user.tags" :noteObj="this.note"/>
+                </div>
+                <div v-if="note.isTrash" class="row smaller-gap">
+                    <button @click="recover" class="button is-info is-small recover-button">
+                        <span class="fa-solid fa-rotate-left view-button"></span>
+                    </button>
+                    <ModalDeletePermanently :note-id="note.id"/>
+                </div>
+            </div>
             <TagList :tag-array="Object.keys(note.tags)" class="tags"/>
             
             <div>
@@ -21,7 +36,6 @@
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
             </div>
             <NoteBody :default-tab="defaultTab" :body="note.body" :id="note.id"/>
-            <ModalNoteEdit v-if="showModal" @close="showModal = false" :class="{ 'is-active': showModal }"/>
         </div>
     </div>
 </template>
@@ -34,10 +48,11 @@ import PageHeader from '@/components/PageHeader';
 import TagList from '@/components/TagList';
 import HomeView from '@/views/HomeView';
 import {dateToString} from '@/helpers/dateFormatter';
+import ModalDeletePermanently from '@/components/ModalDeletePermanently';
 
 export default {
     name: 'NoteView',
-    components: {TagList, PageHeader, ModalNoteEdit, NoteBody},
+    components: {ModalDeletePermanently, TagList, PageHeader, ModalNoteEdit, NoteBody},
     props: {
         id: String,
         defaultTab: String
@@ -47,15 +62,33 @@ export default {
             homeViewName: HomeView.name,
             note: false,
             showModal: false,
+            user: false,
             userId: auth.currentUser.uid
         };
     },
     firestore: function() {
         return {
+            user: db.collection('users').doc(auth.currentUser.uid),
             note: db.collection('notes').doc(this.$route.params.id)
         };
     },
     methods: {
+        moveToTrash: function() {
+            db.collection('notes').doc(this.note.id).update({isTrash: true});
+            this.$router.push({name: 'TrashView'});
+        },
+        recover: function() {
+            db.collection('notes').doc(this.note.id).update({isTrash: false});
+        },
+        copyURL: async function() {
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                alert('Copied');
+            }
+            catch(ignored) {
+                alert('Cannot copy');
+            }
+        },
         timeSince: function(date) {
             if(typeof date !== 'object') {
                 date = new Date(date);
@@ -71,7 +104,7 @@ export default {
             const secondsInDay = 24 * secondsInHour;
             
             if(seconds >= secondsInDay) {
-                return dateToString(date, false, false)
+                return dateToString(date, false, false);
             }
             else if(seconds >= secondsInHour) {
                 intervalType = 'hour';
@@ -98,6 +131,20 @@ export default {
 
 </script>
 
+<style>
+.delete-button, .delete-button.modal-open-button {
+    background-color: #DC3F58 !important;
+    font-weight: 800 !important;;
+    border-radius: 10px !important;
+}
+
+.delete-button:hover, .delete-button.modal-open-button:hover {
+    background-color: #B23247 !important;;
+    font-weight: 800 !important;;
+    border-radius: 10px !important;
+}
+</style>
+
 <style scoped>
 #note-view-title {
     margin-bottom: 5px;
@@ -112,7 +159,7 @@ export default {
 }
 
 .note-info {
-    margin-bottom: 15px;
+    margin-bottom: 7px;
     font-weight: 700;
     color: #AABBD5;
 }
@@ -141,5 +188,44 @@ export default {
     position: relative;
     float: right;
     top: 60px;
+}
+
+.recover-button {
+    background-color: #09BB92;
+    font-weight: 800;
+    border-radius: 10px !important;
+}
+
+.recover-button:hover {
+    background-color: #089D7B;
+    font-weight: 800;
+    border-radius: 10px !important;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.smaller-gap {
+    gap: 0;
+}
+
+.public {
+    background-color: #323F54;
+    color: #91A9D7;
+    font-weight: 700;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+.public:hover {
+    cursor: pointer;
+}
+
+.fa-paste {
+    color: #91A9D7;
+    margin-left: 6px;
 }
 </style>

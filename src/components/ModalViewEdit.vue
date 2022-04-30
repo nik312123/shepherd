@@ -3,9 +3,8 @@
         id="modal-view-edit"
         button-classes="is-small is-gray"
         modal-header="Edit View"
-        :max-title-length="30"
-        @modalAction="updateView"
-        modal-button-text="Update"
+        :modal-buttons="[{buttonText: 'Update', actionName: 'update'}]"
+        @update="updateView"
         @modalOpen="onOpenModal"
         ref="baseModal"
     >
@@ -18,7 +17,7 @@
             
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="viewObj.tags.map(tag => ({text: tag}))"
+                    :user-tags="userTags" :initial-tags="tags"
                     @updateTags="updateTags"
                     ref="inputTagManager"
                 />
