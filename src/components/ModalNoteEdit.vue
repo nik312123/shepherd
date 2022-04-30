@@ -3,8 +3,8 @@
         id="modal-note-edit"
         button-classes="is-small is-gray"
         modal-header="Edit Note"
-        @modalAction="updateNote"
-        modal-button-text="Update"
+        :modal-buttons="[{buttonText: 'Update', actionName: 'update'}]"
+        @update="updateNote"
         @modalOpen="onOpenModal"
         ref="baseModal"
     >

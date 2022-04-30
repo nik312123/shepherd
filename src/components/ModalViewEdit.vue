@@ -3,8 +3,8 @@
         id="modal-view-edit"
         button-classes="is-small is-gray"
         modal-header="Edit View"
-        @modalAction="updateView"
-        modal-button-text="Update"
+        :modal-buttons="[{buttonText: 'Update', actionName: 'update'}]"
+        @update="updateView"
         @modalOpen="onOpenModal"
         ref="baseModal"
     >

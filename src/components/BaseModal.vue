@@ -18,8 +18,15 @@
                         <slot name="modal-content"></slot>
                     </div>
                     <footer class="card-footer">
-                        <p @click="$emit('modalAction')" class="card-footer-item create">
-                            <span class="title is-5">{{ modalButtonText }}</span>
+                        <!--suppress JSUnresolvedVariable -->
+                        <p
+                            v-for="modalButton in modalButtons"
+                            :key="modalButton.buttonText"
+                            @click="$emit(modalButton.actionName)"
+                            class="card-footer-item create"
+                        >
+                            <!--suppress JSUnresolvedVariable -->
+                            <span class="title is-5">{{ modalButton.buttonText }}</span>
                         </p>
                     </footer>
                 </div>
@@ -35,7 +42,8 @@ export default {
     props: {
         buttonClasses: String,
         modalHeader: String,
-        modalButtonText: String
+        //Array of objects in the form {buttonText: <string>, actionName: <string>}
+        modalButtons: Array
     },
     data: function() {
         return {

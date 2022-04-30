@@ -3,8 +3,8 @@
         id="modal-note-create"
         button-classes="is-add is-large"
         modal-header="New Note"
-        @modalAction="createNote"
-        modal-button-text="Create"
+        :modal-buttons="[{buttonText: 'Create', actionName: 'create'}]"
+        @create="createNote"
         @modalOpen="onOpenModal"
         ref="baseModal"
     >
