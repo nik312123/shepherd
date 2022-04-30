@@ -21,9 +21,13 @@ export default {
         title: String,
         viewName: String,
         count: Number,
-        id: String,
-        view: null,
-        viewNotes: []
+        id: String
+    },
+    data: function() {
+        return {
+            view: null,
+            viewNotes: []
+        };
     },
     watch: {
         view: function() {
