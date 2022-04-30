@@ -70,14 +70,19 @@ export default {
     components: {InputTagManager, BaseModal, DatePicker, ToggleButton},
     props: {
         userTags: Array,
-        views: Array
+        views: Array,
+        startingTags: Array,
+        startingDate: {
+            type: Date,
+            default: null
+        }
     },
     data: function() {
         return {
             title: '',
-            tags: [],
+            tags: Object.keys(this.startingTags).map((tag) => ({text: tag})),
             reminder: false,
-            reminderDate: null,
+            reminderDate: this.startingDate,
             isPublic: false
         };
     },
@@ -88,9 +93,9 @@ export default {
     },
     methods: {
         onOpenModal: function() {
-            this.tags = [];
+            this.tags = Object.keys(this.startingTags).map((tag) => ({text: tag}));
             this.title = '';
-            this.reminderDate = null;
+            this.reminderDate = this.startingDate;
             this.reminder = false;
             this.isPublic = false;
             this.$refs.inputTagManager.reset();

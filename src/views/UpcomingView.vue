@@ -7,7 +7,7 @@
                 <li class="is-active"><a aria-current="page">Upcoming</a></li>
             </ul>
         </nav>
-        <h1 class="title is-2">🗓 This Week</h1>
+        <h1 class="title is-2">🗓 Upcoming</h1>
         <div>
             <article v-for="idx in 7" :key="idx">
                 <UpcomingViewSectionDay :offset="idx"/>
