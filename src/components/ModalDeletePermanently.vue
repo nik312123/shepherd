@@ -6,6 +6,7 @@
             {buttonText: 'Yes', actionName: 'confirm'},
             {buttonText: 'No', actionName: 'cancel'}
         ]"
+        :additional-padding="12"
         @confirm="deletePermanently"
         @cancel="() => $refs.baseModal.hideModal()"
         ref="baseModal"

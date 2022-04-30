@@ -7,7 +7,7 @@
         <div :class="'modal' + (showModal ? ' is-active' : '')">
             <div @click="showModal = false" class="modal-background"></div>
             <div class="modal-content">
-                <div class="card">
+                <div class="card" :style="additionalPadding ? `padding: ${additionalPadding}px;` : ''">
                     <header class="card-header">
                         <p class="title card-header-title is-centered">
                             <span>{{ modalHeader }}</span>
@@ -43,7 +43,8 @@ export default {
         buttonClasses: String,
         modalHeader: String,
         //Array of objects in the form {buttonText: <string>, actionName: <string>}
-        modalButtons: Array
+        modalButtons: Array,
+        additionalPadding: Number
     },
     data: function() {
         return {
