@@ -42,7 +42,7 @@
                 />
             </div>
             
-            <div class="control is-centered">
+            <div class="control">
                 <ToggleButton
                     v-model="isPublic"
                     :color="{checked: '#68778F', unchecked: '#2A3444'}"
