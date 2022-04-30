@@ -1,7 +1,7 @@
 <template>
     <base-modal
         id="modal-view-create"
-        button-classes="is-add"
+        button-classes="is-add is-medium"
         modal-header="New View"
         :modal-buttons="[{buttonText: 'Create', actionName: 'create'}]"
         @create="createView"
@@ -9,7 +9,7 @@
         ref="baseModal"
     >
         <template v-slot:button-contents>
-            <span class="fa-solid fa-circle-plus"></span>
+            <span class="fa-solid fa-folder-plus"></span>
         </template>
         
         <template v-slot:modal-content>
@@ -91,11 +91,9 @@ export default {
 #modal-view-create >>> .is-add {
     background-color: #10A5E9;
     font-weight: 800;
-    border-radius: 10px;
-    position: relative;
-    top: 2px;
+    border-radius: 99999px;
     padding: 5px;
-    height: auto;
-    font-size: 22px;
+    width: 80px;
+    height: 40px;
 }
 </style>

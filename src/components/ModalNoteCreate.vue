@@ -1,7 +1,7 @@
 <template>
     <base-modal
         id="modal-note-create"
-        button-classes="is-add is-large"
+        button-classes="is-add is-medium"
         modal-header="New Note"
         :modal-buttons="[{buttonText: 'Create', actionName: 'create'}]"
         @create="createNote"
@@ -155,15 +155,8 @@ export default {
     font-weight: 800;
     border-radius: 99999px;
     padding: 5px;
-    margin-bottom: 20px;
-    height: auto;
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%);
-    width: 200px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    z-index: 30;
+    width: 80px;
+    height: 40px;
 }
 
 #modal-note-create >>> .fa-solid {

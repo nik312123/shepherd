@@ -2,21 +2,28 @@
     <div>
         <PageHeader/>
         <div class="section">
-            <HomeSection title="📮 Inbox" viewName="InboxView" :count="inboxNotes.length"/>
-            <HomeSection title="☀️ Today" viewName="TodayView" :count="todayNotes.length"/>
-            <HomeSection title="🗓 Upcoming" viewName="UpcomingView" :count="upcomingNotes.length"/>
-            <HomeSection title="🗄 All Notes" viewName="AllNotesView" :count="allNotes.length"/>
-            <HomeSection title="🗑 Trash" viewName="TrashView" :count="trashNotes.length"/>
+            <div class="row section-header">
+                <h1 class="title is-3">Home</h1>
+                <ModalNoteCreate v-if="user" :userTags="user.tags" :views="views"/>
+            </div>
+            <div class="row stretch">
+                <HomeSection title="📮 Inbox" viewName="InboxView" :count="inboxNotes.length"/>
+                <HomeSection title="☀️ Today" viewName="TodayView" :count="todayNotes.length"/>
+            </div>
+            <div class="row stretch">
+                <HomeSection title="🗄 All Notes" viewName="AllNotesView" :count="allNotes.length"/>
+                <HomeSection title="🗓 Upcoming" viewName="UpcomingView" :count="upcomingNotes.length"/>
+            </div>
+            <div class="row stretch">
+                <HomeSection title="🗑 Trash" viewName="TrashView" :count="trashNotes.length"/>
+            </div>
         </div>
         
-        <ModalNoteCreate v-if="user" :userTags="user.tags" :views="views"/>
-        
         <div class="section">
-            <div class="row">
+            <div class="row section-header">
                 <h1 class="title is-3">Views</h1>
                 <ModalViewCreate v-if="user" :userTags="user.tags" :views="views"/>
             </div>
-            <hr class="solid">
             
             <article v-for="view in views" :key="view.id">
                 <HomeSection :title="view.name" viewName="ViewView" :id="view.id" :count="1"/>
@@ -95,11 +102,22 @@ export default {
 </script>
 
 <style scoped>
+
 .row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+}
+
+.stretch {
+    justify-content: stretch;
+}
+
+@media only screen and (max-width: 420px) {
+    .stretch {
+        display: block;
+    }
 }
 
 hr.solid {
@@ -111,5 +129,9 @@ hr.solid {
 .is-3 {
     margin-bottom: 10px;
     margin-top: 15px;
+}
+
+.section-header {
+    margin-bottom: 5px;
 }
 </style>

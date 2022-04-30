@@ -65,8 +65,9 @@ export default {
 .card {
     background-color: #344155;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     cursor: pointer;
+    width: 100%;
 }
 
 .card:hover {
@@ -75,9 +76,11 @@ export default {
 
 .card-header-title {
     color: #F8FAFC;
-    font-size: 1.3em;
+    font-size: 1.2em;
     user-select: none;
+    text-align: center;
 }
+
 
 .tag {
     margin: auto 15px auto auto;
