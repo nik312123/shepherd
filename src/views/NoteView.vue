@@ -50,8 +50,6 @@ import PageHeader from '@/components/PageHeader';
 import TagList from '@/components/TagList';
 import HomeView from '@/views/HomeView';
 import {dateToString} from '@/helpers/dateFormatter';
-import AllNotesView from "@/views/AllNotesView";
-import TrashView from "@/views/TrashView";
 
 export default {
   name: 'NoteView',
@@ -78,14 +76,14 @@ export default {
   methods: {
     moveToTrash: function () {
       db.collection('notes').doc(this.note.id).update({isTrash: true})
-      this.$router.push({name: TrashView.name});
+      this.$router.push({name: 'TrashView'});
     },
     recover: function () {
       db.collection('notes').doc(this.note.id).update({isTrash: false})
     },
     deletePermanent: function () {
       db.collection('notes').doc(this.note.id).delete();
-      this.$router.push({name: AllNotesView.name});
+      this.$router.push({name: 'AllNotesView'});
     },
     copyURL: async function () {
       try {
