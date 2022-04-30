@@ -18,7 +18,7 @@
             
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="viewObj.tags.map(tag => ({text: tag}))"
+                    :user-tags="userTags" :initial-tags="tags"
                     @updateTags="updateTags"
                     ref="inputTagManager"
                 />

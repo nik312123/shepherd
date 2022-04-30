@@ -38,7 +38,6 @@ export default {
     data: function() {
         return {
             views: [],
-            
             user: false
         };
     },

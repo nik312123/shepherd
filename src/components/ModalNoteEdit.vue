@@ -80,8 +80,7 @@ export default {
             reminderDate: this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null,
             isPublic: this.noteObj.isPublic
         };
-    }
-    ,
+    },
     computed: {
         formattedDate: function() {
             return this.reminderDate === null ? null : dateToString(this.reminderDate, false, true);
