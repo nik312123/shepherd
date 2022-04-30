@@ -5,7 +5,7 @@
                 <p class="tag">{{ tag }}</p>
             </article>
         </div>
-
+        
         <div v-if="tagMap" class="tags note-tags">
             <article v-for="tag in displayedTagsAndRemainingCount.displayedTags" :key="tag.key">
                 <p class="tag">{{ tag }}</p>
@@ -53,7 +53,7 @@ export default {
         },
         computeDisplayedTagsAndRemainingCount: function(tags) {
             let totalChars = this.computeTotalChars(this.currentWidth);
-
+            
             let displayedTags = [];
             for(let i = 0; totalChars > 0 && i < tags.length; ++i) {
                 const expectedRemainingTotalChars = totalChars - tags[i].length;
@@ -63,9 +63,9 @@ export default {
                 totalChars = expectedRemainingTotalChars;
                 displayedTags.push(tags[i]);
             }
-
+            
             let remainingTagCount = tags.length - displayedTags.length;
-
+            
             return {
                 displayedTags,
                 remainingTagCount

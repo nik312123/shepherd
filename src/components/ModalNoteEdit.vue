@@ -12,25 +12,25 @@
         <template v-slot:button-contents>
             <span class="fa-solid fa-edit view-button"></span>
         </template>
-
+        
         <template v-slot:modal-content>
             <input v-model="title" class="input is-medium" type="text" placeholder="Add title" maxlength="30">
-
+            
             <div class="control">
                 <InputTagManager
                     :user-tags="userTags" :initial-tags="tags" @updateTags="updateTags" ref="inputTagManager"
                 />
             </div>
-
+            
             <div class="control">
                 <input
                     @click="reminder = !reminder" v-model="formattedDate" class="input is-medium" type="text"
                     placeholder="Add reminder" readonly
                 >
             </div>
-
+            
             <div class="modal is-active" v-if="reminder" @click="reminder = false"></div>
-
+            
             <div class="datepicker-container">
                 <DatePicker
                     class="datepicker"
@@ -41,7 +41,7 @@
                     is-dark
                 />
             </div>
-
+            
             <div class="control is-centered">
                 <ToggleButton
                     @click="isPublic = !isPublic" v-model="isPublic"
@@ -106,15 +106,15 @@ export default {
                 alert('View title has to be between 1 and 30 characters long');
                 return;
             }
-
+            
             if(this.tags.length > 0) {
                 db.collection('users').doc(auth.currentUser.uid)
                     .update({'tags': fieldValue.arrayUnion(...this.tags.map(tag => tag.text))});
             }
-
+            
             let tagsMap = this.tags.map(tag => ({[tag.text]: true}));
             tagsMap = Object.assign({}, ...tagsMap);
-
+            
             const curTimestamp = new Date();
             db.collection('notes').doc(this.noteObj.id).update({
                 title: name,

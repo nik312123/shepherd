@@ -12,10 +12,10 @@
         <template v-slot:button-contents>
             <span class="fa-solid fa-edit view-button"></span>
         </template>
-
+        
         <template v-slot:modal-content>
             <input v-model="title" class="input is-medium" type="text" placeholder="Add title" maxlength="30">
-
+            
             <div class="control">
                 <InputTagManager
                     :user-tags="userTags" :initial-tags="viewObj.tags.map(tag => ({text: tag}))"
@@ -60,7 +60,7 @@ export default {
                 alert('View name has to be between 1 and 30 characters long');
                 return false;
             }
-
+            
             if(newName !== oldName) {
                 for(let i = 0; i < views.length; ++i) {
                     if(newName.toLowerCase() === views[i].name.toLowerCase()) {
@@ -73,21 +73,21 @@ export default {
         },
         updateView: function() {
             let curName = this.title.trim();
-
+            
             if(!this.isViewNameValid(curName, this.viewObj.name, this.views)) {
                 return;
             }
-
+            
             if(this.tags.length === 0) {
                 alert('A view must have at least one tag');
                 return;
             }
-
+            
             const tagArr = this.tags.map(tag => tag.text);
-
+            
             db.collection('views').doc(this.viewObj.id).update({name: curName, tags: tagArr});
             db.collection('users').doc(auth.currentUser.uid).update({'tags': fieldValue.arrayUnion(...tagArr)});
-
+            
             this.$refs.baseModal.hideModal();
         }
     }

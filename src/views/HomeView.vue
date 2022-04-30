@@ -8,16 +8,16 @@
             <HomeSection title="🗄 All Notes" viewName="AllNotesView" :count="3"/>
             <HomeSection title="🗑 Trash" viewName="TrashView" :count="0"/>
         </div>
-
+        
         <ModalNoteCreate v-if="user" :userTags="user.tags" :views="views"/>
-
+        
         <div class="section">
             <div class="row">
                 <h1 class="title is-3">Views</h1>
                 <ModalViewCreate v-if="user" :userTags="user.tags" :views="views"/>
             </div>
             <hr class="solid">
-
+            
             <article v-for="view in views" :key="view.id">
                 <HomeSection :title="view.name" viewName="ViewView" :id="view.id" :count="1"/>
             </article>
@@ -38,7 +38,7 @@ export default {
     data: function() {
         return {
             views: [],
-
+            
             user: false
         };
     },

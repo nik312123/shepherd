@@ -4,7 +4,7 @@
             <button @click="signIn" class="button is-info"><strong>Sign in with Google</strong>
             </button>
         </template>
-
+        
         <template v-if="user">
             <!-- https://stackoverflow.com/a/63502512 seems to work far more consistently than referrerpolicy="no-referrer" -->
             <img class="avatar" :src="user.photoURL" alt="avatar" rel="noreferrer" referrerpolicy="origin">
@@ -74,6 +74,6 @@ export default {
 button {
     top: -10px;
     margin-right: 0;
-
+    
 }
 </style>
