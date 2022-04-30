@@ -23,9 +23,7 @@
                     <button @click="recover" class="button is-info is-small recover-button">
                         <span class="fa-solid fa-rotate-left view-button"></span>
                     </button>
-                    <button @click="deletePermanent" class="button is-info is-small delete-button">
-                        <span class="fa-solid fa-file-circle-xmark view-button"></span>
-                    </button>
+                    <ModalDeletePermanently :note-id="note.id"/>
                 </div>
             </div>
             <TagList :tag-array="Object.keys(note.tags)" class="tags"/>
@@ -50,10 +48,11 @@ import PageHeader from '@/components/PageHeader';
 import TagList from '@/components/TagList';
 import HomeView from '@/views/HomeView';
 import {dateToString} from '@/helpers/dateFormatter';
+import ModalDeletePermanently from '@/components/ModalDeletePermanently';
 
 export default {
     name: 'NoteView',
-    components: {TagList, PageHeader, ModalNoteEdit, NoteBody},
+    components: {ModalDeletePermanently, TagList, PageHeader, ModalNoteEdit, NoteBody},
     props: {
         id: String,
         defaultTab: String
@@ -81,16 +80,12 @@ export default {
         recover: function() {
             db.collection('notes').doc(this.note.id).update({isTrash: false});
         },
-        deletePermanent: function() {
-            db.collection('notes').doc(this.note.id).delete();
-            this.$router.push({name: 'AllNotesView'});
-        },
         copyURL: async function() {
             try {
                 await navigator.clipboard.writeText(window.location.href);
                 alert('Copied');
             }
-            catch($e) {
+            catch(ignored) {
                 alert('Cannot copy');
             }
         },
@@ -136,6 +131,20 @@ export default {
 
 </script>
 
+<style>
+.delete-button, .delete-button.modal-open-button {
+    background-color: #DC3F58 !important;
+    font-weight: 800 !important;;
+    border-radius: 10px !important;
+}
+
+.delete-button:hover, .delete-button.modal-open-button {
+    background-color: #B23247 !important;;
+    font-weight: 800 !important;;
+    border-radius: 10px !important;
+}
+</style>
+
 <style scoped>
 #note-view-title {
     margin-bottom: 5px;
@@ -179,18 +188,6 @@ export default {
     position: relative;
     float: right;
     top: 60px;
-}
-
-.delete-button {
-    background-color: #DC3F58;
-    font-weight: 800;
-    border-radius: 10px !important;
-}
-
-.delete-button:hover {
-    background-color: #B23247;
-    font-weight: 800;
-    border-radius: 10px !important;
 }
 
 .recover-button {
