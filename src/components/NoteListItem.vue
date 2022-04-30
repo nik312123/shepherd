@@ -9,10 +9,10 @@
             </div>
             <div :class="'note-info ' + (note.reminderDateTime ? 'has-reminder' : '')">
                 <div class="row">
-                    <p class="note-title">
+                    <p class="note-title" :style="titleStyle">
                         {{ note.title }}
                     </p>
-                    <TagList :tag-map="note.tags" ref="tagList"/>
+                    <TagList v-if="showTags" :tag-map="note.tags" ref="tagList"/>
                 </div>
                 <div class="">
                     <div class="note-body">
@@ -36,10 +36,24 @@ export default {
     props: {
         note: Object
     },
+    data: function() {
+        return {
+            showTags: false,
+            titleStyle: ''
+        };
+    },
     methods: {
         goToNote: function() {
             this.$router.push({name: NoteView.name, params: {id: this.note.id, defaultTab: 'preview'}});
-        },
+        }
+    },
+    mounted: function() {
+        const titleEl = this.$el.getElementsByClassName('note-title')[0];
+        const titleStyle = getComputedStyle(titleEl);
+        let titleWidth = titleEl.getBoundingClientRect().width;
+        titleWidth -= parseFloat(titleStyle.paddingLeft) + parseFloat(titleStyle.paddingRight);
+        this.titleStyle = `min-width: ${titleWidth}px`;
+        this.showTags = true;
     }
 };
 </script>
@@ -52,9 +66,6 @@ export default {
     color: #F8FAFC;
     font-size: 20px;
     font-weight: 800;
-    /*padding-top: 5px;*/
-    /*padding-bottom: 0;*/
-    width: max-content;
     margin-left: 10px;
 }
 
