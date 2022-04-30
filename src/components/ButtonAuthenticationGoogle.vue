@@ -74,6 +74,5 @@ export default {
 button {
     top: -10px;
     margin-right: 0;
-
 }
 </style>

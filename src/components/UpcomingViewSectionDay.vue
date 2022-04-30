@@ -47,10 +47,10 @@ export default {
         let start = new Date();
         start.setDate(start.getDate() + this.offset);
         start.setHours(0, 0, 0, 0);
-
+        
         let end = new Date(start);
         end.setDate(end.getDate() + 1);
-
+        
         return {
             notes: db.collection('notes')
                 .where('userId', '==', auth.currentUser.uid)

@@ -12,7 +12,7 @@
         <template v-slot:button-contents>
             <span class="fa-solid fa-circle-plus"></span>
         </template>
-
+        
         <template v-slot:modal-content>
             <input v-model="title" class="input is-medium" type="text" placeholder="Add title" maxlength="30">
             <div class="control">
@@ -57,21 +57,21 @@ export default {
                 alert('View name has to be between 1 and 30 characters long');
                 return;
             }
-
+            
             if(this.tags.length === 0) {
                 alert('A view must have at least one tag');
                 return;
             }
-
+            
             for(let i = 0; i < this.views.length; ++i) {
                 if(name.toLowerCase() === this.views[i].name.toLowerCase()) {
                     alert('You already have a view with this name');
                     return;
                 }
             }
-
+            
             const tagsArr = this.tags.map(tag => tag.text);
-
+            
             db.collection('views').add({
                 name: name,
                 sortedAsc: true,
@@ -80,7 +80,7 @@ export default {
                 userId: auth.currentUser.uid
             });
             db.collection('users').doc(auth.currentUser.uid).update({'tags': fieldValue.arrayUnion(...tagsArr)});
-
+            
             this.$refs.baseModal.hideModal();
         }
     }
