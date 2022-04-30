@@ -44,9 +44,8 @@
             
             <div class="control is-centered">
                 <ToggleButton
-                    @click="isPublic = !isPublic" v-model="isPublic"
+                    v-model="isPublic"
                     :color="{checked: '#68778F', unchecked: '#2A3444'}"
-                    :sync="true"
                     :labels="{checked: 'Public', unchecked: 'Private'}"
                     :width="98"
                     :height="35"
