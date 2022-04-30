@@ -61,8 +61,7 @@ export default {
             inboxNotes: db.collection('notes')
                 .where('userId', '==', auth.currentUser.uid)
                 .where('isTrash', '==', false)
-                .where('tags', '==', {})
-                .orderBy('lastModifiedDateTime'),
+                .where('tags', '==', {}),
             
             todayNotes: db.collection('notes')
                 .where('userId', '==', auth.currentUser.uid)
@@ -78,13 +77,11 @@ export default {
             
             allNotes: db.collection('notes')
                 .where('userId', '==', auth.currentUser.uid)
-                .where('isTrash', '==', false)
-                .orderBy('lastModifiedDateTime'),
+                .where('isTrash', '==', false),
             
             trashNotes: db.collection('notes')
                 .where('userId', '==', auth.currentUser.uid)
                 .where('isTrash', '==', true)
-                .orderBy('lastModifiedDateTime')
         };
     },
     watch: {
