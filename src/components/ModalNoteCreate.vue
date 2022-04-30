@@ -3,7 +3,6 @@
         id="modal-note-create"
         button-classes="is-add is-large"
         modal-header="New Note"
-        :max-title-length="30"
         @modalAction="createNote"
         modal-button-text="Create"
         @modalOpen="onOpenModal"

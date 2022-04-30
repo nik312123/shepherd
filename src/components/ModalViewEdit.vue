@@ -3,7 +3,6 @@
         id="modal-view-edit"
         button-classes="is-small is-gray"
         modal-header="Edit View"
-        :max-title-length="30"
         @modalAction="updateView"
         modal-button-text="Update"
         @modalOpen="onOpenModal"

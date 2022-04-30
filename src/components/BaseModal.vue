@@ -35,7 +35,6 @@ export default {
     props: {
         buttonClasses: String,
         modalHeader: String,
-        maxTitleLength: Number,
         modalButtonText: String
     },
     data: function() {

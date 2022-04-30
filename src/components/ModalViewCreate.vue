@@ -3,7 +3,6 @@
         id="modal-view-create"
         button-classes="is-add"
         modal-header="New View"
-        :max-title-length="30"
         @modalAction="createView"
         modal-button-text="Create"
         @modalOpen="onOpenModal"

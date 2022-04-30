@@ -3,7 +3,6 @@
         id="modal-note-edit"
         button-classes="is-small is-gray"
         modal-header="Edit Note"
-        :max-title-length="30"
         @modalAction="updateNote"
         modal-button-text="Update"
         @modalOpen="onOpenModal"
