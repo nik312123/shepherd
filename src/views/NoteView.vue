@@ -21,10 +21,10 @@
                 </div>
                 <div v-if="note.isTrash" class="row smaller-gap">
                     <button @click="recover" class="button is-info is-small recover-button">
-                        <i class="fa-solid fa-rotate-left view-button"></i>
+                        <span class="fa-solid fa-rotate-left view-button"></span>
                     </button>
                     <button @click="deletePermanent" class="button is-info is-small delete-button">
-                        <i class="fa-solid fa-file-circle-xmark view-button"></i>
+                        <span class="fa-solid fa-file-circle-xmark view-button"></span>
                     </button>
                 </div>
             </div>
