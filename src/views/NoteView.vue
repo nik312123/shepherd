@@ -138,7 +138,7 @@ export default {
     border-radius: 10px !important;
 }
 
-.delete-button:hover, .delete-button.modal-open-button {
+.delete-button:hover, .delete-button.modal-open-button:hover {
     background-color: #B23247 !important;;
     font-weight: 800 !important;;
     border-radius: 10px !important;
