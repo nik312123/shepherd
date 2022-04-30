@@ -5,15 +5,13 @@
                 <p class="tag">{{ tag }}</p>
             </article>
         </div>
-
+        
         <div class="row">
             <div v-if="tagMap" class="note-tags-list">
-                <article v-for="tag in Object.keys(tagMap)" :key="tag.key">
-                    <p class="tag note-tag">{{ tag }}</p>
-                </article>
-
+                <p style="width: 10px; background-color: blue;" class="note-tag">.</p>
+                <p v-for="tag in Object.keys(tagMap)" :key="tag.key" class="tag note-tag">{{ tag }}</p>
             </div>
-            <span class="tag is-info is-light is-rounded counter" v-if="overflowCount > 0">
+            <span class="tag is-info is-light is-rounded remaining-tag-counter" v-if="overflowCount > 0">
                 {{ overflowCount }}+
             </span>
         </div>
@@ -30,7 +28,8 @@ export default {
     data: function() {
         return {
             currentWidth: window.screen.width,
-            overflowCount: 0
+            overflowCount: 0,
+            totalNumTagsMap: Object.keys(this.tagMap).length
         };
     },
     mounted() {
@@ -49,42 +48,6 @@ export default {
                 }
             }
             this.overflowCount = counter;
-        },
-        computeTotalChars: function(currentWidth) {
-            // if(currentWidth < 380) {
-            //     return 0;
-            // }
-            // else if(currentWidth < 450) {
-            //     return 3;
-            // }
-            // else if(currentWidth < 550) {
-            //     return currentWidth / 100;
-            // }
-            // return currentWidth / 60;
-            return 99999 + currentWidth;
-        },
-        computeDisplayedTagsAndRemainingCount: function(tags) {
-            let totalChars = this.computeTotalChars(this.currentWidth);
-
-            let displayedTags = [];
-            for(let i = 0; totalChars > 0 && i < tags.length; ++i) {
-                const expectedRemainingTotalChars = totalChars - tags[i].length;
-                if(expectedRemainingTotalChars < 0) {
-                    break;
-                }
-                totalChars = expectedRemainingTotalChars;
-                displayedTags.push(tags[i]);
-            }
-
-            let remainingTagCount = tags.length - displayedTags.length;
-
-            return {
-                displayedTags,
-                remainingTagCount
-            };
-        },
-        updateScreenWidth: function() {
-            this.currentWidth = window.screen.width;
         }
     }
 };
@@ -101,18 +64,13 @@ export default {
 }
 
 .note-tags-list {
-    /*float: right;*/
-    /*justify-content: flex-end !important;*/
-    /*flex-wrap: nowrap;*/
-    /*max-width: 50%;*/
     display: flex;
     flex-flow: row wrap;
     overflow: hidden;
     flex-wrap: wrap;
     height: 30px;
     justify-content: flex-end;
-    /*width: auto;*/
-
+    width: auto;
 }
 
 .row {
@@ -120,7 +78,7 @@ export default {
     align-items: center;
 }
 
-.counter{
+.remaining-tag-counter {
     margin-top: 0;
     position: relative;
     top: 6px;
