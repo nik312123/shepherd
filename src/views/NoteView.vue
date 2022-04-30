@@ -8,9 +8,9 @@
                 </router-link>
             </div>
             <span @click="copyURL" v-if="note.isPublic && !note.isTrash" class="tag is-medium public">
-        Copy link
-        <i class="fa-solid fa-paste"></i>
-      </span>
+                Copy link
+                <span class="fa-solid fa-paste"></span>
+            </span>
             <div class="row">
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
                 <div v-if="!note.isTrash" class="row smaller-gap">
