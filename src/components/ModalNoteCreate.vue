@@ -118,7 +118,7 @@ export default {
                 userId: auth.currentUser.uid,
                 title: name,
                 body: '# New note',
-                isPublic: false,
+                isPublic: this.isPublic,
                 isTrash: false,
                 tags: tagsMap,
                 createdDateTime: curTimestamp,
