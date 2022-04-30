@@ -2,11 +2,11 @@
     <div>
         <PageHeader/>
         <div class="section">
-            <HomeSection title="📮 Inbox" viewName="InboxView" :count="1"/>
-            <HomeSection title="☀️ Today" viewName="TodayView" :count="2"/>
-            <HomeSection title="🗓 Upcoming" viewName="UpcomingView" :count="0"/>
-            <HomeSection title="🗄 All Notes" viewName="AllNotesView" :count="3"/>
-            <HomeSection title="🗑 Trash" viewName="TrashView" :count="0"/>
+            <HomeSection title="📮 Inbox" viewName="InboxView" :count="inboxNotes.length"/>
+            <HomeSection title="☀️ Today" viewName="TodayView" :count="todayNotes.length"/>
+            <HomeSection title="🗓 Upcoming" viewName="UpcomingView" :count="upcomingNotes.length"/>
+            <HomeSection title="🗄 All Notes" viewName="AllNotesView" :count="allNotes.length"/>
+            <HomeSection title="🗑 Trash" viewName="TrashView" :count="trashNotes.length"/>
         </div>
         
         <ModalNoteCreate v-if="user" :userTags="user.tags" :views="views"/>
@@ -38,13 +38,53 @@ export default {
     data: function() {
         return {
             views: [],
-            user: false
+            user: false,
+            inboxNotes: [],
+            todayNotes: [],
+            upcomingNotes: [],
+            allNotes: [],
+            trashNotes: []
         };
     },
     firestore: function() {
+        let today = new Date();
+        today.setHours(0, 0, 0);
+        let tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        let endOfWeek = new Date(tomorrow);
+        endOfWeek.setDate(endOfWeek.getDate() + 7);
+        
         return {
             user: db.collection('users').doc(auth.currentUser.uid),
-            views: db.collection('views').where('userId', '==', auth.currentUser.uid)
+            views: db.collection('views').where('userId', '==', auth.currentUser.uid),
+            
+            inboxNotes: db.collection('notes')
+                .where('userId', '==', auth.currentUser.uid)
+                .where('isTrash', '==', false)
+                .where('tags', '==', {})
+                .orderBy('lastModifiedDateTime'),
+            
+            todayNotes: db.collection('notes')
+                .where('userId', '==', auth.currentUser.uid)
+                .where('isTrash', '==', false)
+                .where('reminderDateTime', '>=', today)
+                .where('reminderDateTime', '<', tomorrow),
+            
+            upcomingNotes: db.collection('notes')
+                .where('userId', '==', auth.currentUser.uid)
+                .where('isTrash', '==', false)
+                .where('reminderDateTime', '>=', tomorrow)
+                .where('reminderDateTime', '<', endOfWeek),
+            
+            allNotes: db.collection('notes')
+                .where('userId', '==', auth.currentUser.uid)
+                .where('isTrash', '==', false)
+                .orderBy('lastModifiedDateTime'),
+            
+            trashNotes: db.collection('notes')
+                .where('userId', '==', auth.currentUser.uid)
+                .where('isTrash', '==', true)
+                .orderBy('lastModifiedDateTime')
         };
     },
     watch: {
