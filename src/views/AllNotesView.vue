@@ -20,7 +20,7 @@
 
 <script>
 import PageHeader from '@/components/PageHeader';
-import {auth, db} from '@/firebaseConfig';
+import {db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
 import HomeView from '@/views/HomeView';
 
@@ -39,7 +39,7 @@ export default {
     firestore: function() {
         return {
             notes: db.collection('notes')
-                .where('userId', '==', auth.currentUser.uid)
+                .where('userId', '==', "kwpByqIGiiR3ed88Czxcb8Od7eU2")
                 .where('isTrash', '==', false)
                 .orderBy('lastModifiedDateTime')
         };

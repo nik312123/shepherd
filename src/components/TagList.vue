@@ -5,13 +5,16 @@
                 <p class="tag">{{ tag }}</p>
             </article>
         </div>
-        
-        <div v-if="tagMap" class="tags note-tags">
-            <article v-for="tag in displayedTagsAndRemainingCount.displayedTags" :key="tag.key">
-                <p class="tag">{{ tag }}</p>
-            </article>
-            <span class="tag is-info is-light is-rounded" v-if="displayedTagsAndRemainingCount.remainingTagCount > 0">
-                {{ displayedTagsAndRemainingCount.remainingTagCount }}+
+
+        <div class="row">
+            <div v-if="tagMap" class="note-tags-list">
+                <article v-for="tag in Object.keys(tagMap)" :key="tag.key">
+                    <p class="tag note-tag">{{ tag }}</p>
+                </article>
+
+            </div>
+            <span class="tag is-info is-light is-rounded counter" v-if="overflowCount > 0">
+                {{ overflowCount }}+
             </span>
         </div>
     </div>
@@ -26,34 +29,43 @@ export default {
     },
     data: function() {
         return {
-            currentWidth: window.screen.width
+            currentWidth: window.screen.width,
+            overflowCount: 0
         };
     },
-    computed: {
-        displayedTagsAndRemainingCount: function() {
-            return this.computeDisplayedTagsAndRemainingCount(Object.keys(this.tagMap).sort());
-        }
-    },
-    created: function() {
-        this.updateScreenWidth();
-        window.addEventListener('resize', this.updateScreenWidth);
+    mounted() {
+        this.numOverflown();
+        window.addEventListener('resize', this.numOverflown);
     },
     methods: {
+        numOverflown: function() {
+            const parentBounds = this.$el.getElementsByClassName('note-tags-list')[0].getBoundingClientRect();
+            const tags = this.$el.getElementsByClassName('note-tag');
+            let counter = 0;
+            for(let tag of tags) {
+                const bounds = tag.getBoundingClientRect();
+                if(parentBounds.bottom <= bounds.top) {
+                    counter++;
+                }
+            }
+            this.overflowCount = counter;
+        },
         computeTotalChars: function(currentWidth) {
-            if(currentWidth < 380) {
-                return 0;
-            }
-            else if(currentWidth < 450) {
-                return 3;
-            }
-            else if(currentWidth < 550) {
-                return currentWidth / 100;
-            }
-            return currentWidth / 60;
+            // if(currentWidth < 380) {
+            //     return 0;
+            // }
+            // else if(currentWidth < 450) {
+            //     return 3;
+            // }
+            // else if(currentWidth < 550) {
+            //     return currentWidth / 100;
+            // }
+            // return currentWidth / 60;
+            return 99999 + currentWidth;
         },
         computeDisplayedTagsAndRemainingCount: function(tags) {
             let totalChars = this.computeTotalChars(this.currentWidth);
-            
+
             let displayedTags = [];
             for(let i = 0; totalChars > 0 && i < tags.length; ++i) {
                 const expectedRemainingTotalChars = totalChars - tags[i].length;
@@ -63,9 +75,9 @@ export default {
                 totalChars = expectedRemainingTotalChars;
                 displayedTags.push(tags[i]);
             }
-            
+
             let remainingTagCount = tags.length - displayedTags.length;
-            
+
             return {
                 displayedTags,
                 remainingTagCount
@@ -88,10 +100,29 @@ export default {
     margin: 6px 6px 6px 0;
 }
 
-.note-tags {
-    float: right;
-    justify-content: flex-end !important;
-    flex-wrap: nowrap;
-    max-width: 50%;
+.note-tags-list {
+    /*float: right;*/
+    /*justify-content: flex-end !important;*/
+    /*flex-wrap: nowrap;*/
+    /*max-width: 50%;*/
+    display: flex;
+    flex-flow: row wrap;
+    overflow: hidden;
+    flex-wrap: wrap;
+    height: 30px;
+    justify-content: flex-end;
+    /*width: auto;*/
+
+}
+
+.row {
+    display: flex;
+    align-items: center;
+}
+
+.counter{
+    margin-top: 0;
+    position: relative;
+    top: 6px;
 }
 </style>
