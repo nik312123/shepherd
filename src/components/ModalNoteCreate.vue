@@ -41,6 +41,18 @@
                     is-dark
                 />
             </div>
+            
+            <div class="control">
+                <ToggleButton
+                    v-model="isPublic"
+                    :color="{checked: '#68778F', unchecked: '#2A3444'}"
+                    :labels="{checked: 'Public', unchecked: 'Private'}"
+                    :width="98"
+                    :height="35"
+                    :font-size="15"
+                    :margin="5"
+                />
+            </div>
         </template>
     </base-modal>
 </template>
@@ -51,11 +63,12 @@ import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import NoteView from '@/views/NoteView';
 import BaseModal from '@/components/BaseModal';
 import InputTagManager from '@/components/InputTagManager';
+import {ToggleButton} from 'vue-js-toggle-button';
 import {dateToString} from '@/helpers/dateFormatter';
 
 export default {
     name: 'ModalNoteCreate',
-    components: {InputTagManager, BaseModal, DatePicker},
+    components: {InputTagManager, BaseModal, DatePicker, ToggleButton},
     props: {
         userTags: Array,
         views: Array
@@ -65,7 +78,8 @@ export default {
             title: '',
             tags: [],
             reminder: false,
-            reminderDate: null
+            reminderDate: null,
+            isPublic: false
         };
     },
     computed: {
@@ -75,9 +89,11 @@ export default {
     },
     methods: {
         onOpenModal: function() {
+            this.tags = [];
             this.title = '';
             this.reminderDate = null;
             this.reminder = false;
+            this.isPublic = false;
             this.$refs.inputTagManager.reset();
         },
         updateTags: function(updatedTags) {
