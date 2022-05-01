@@ -24,7 +24,7 @@ import {db, storage} from '@/firebaseConfig';
 export default {
     components: {SelectImageModal},
     name: 'AddImage',
-    data() {
+    data: function() {
         return {
             showModal: false,
             imageSrc: null,

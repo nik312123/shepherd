@@ -39,7 +39,7 @@
 <script>
 export default {
     name: 'CameraImageModal',
-    data() {
+    data: function() {
         return {
             video: null,
             canvas: null,
@@ -49,13 +49,13 @@ export default {
             imageSrc: ''
         };
     },
-    mounted() {
+    mounted: function() {
         this.video = this.$refs.video;
         this.canvas = this.$refs.canvas;
         this.startCapture();
     },
     methods: {
-        startCapture() {
+        startCapture: function() {
             navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(
                 stream => {
                     this.video.srcObject = stream;
@@ -77,13 +77,13 @@ export default {
                 this.$emit('close');
             });
         },
-        initCanvas() {
+        initCanvas: function() {
 
             this.canvas.setAttribute('width', this.video.videoWidth);
             this.canvas.setAttribute('height', this.video.videoHeight);
             this.showCanvas = false;
         },
-        clickPicture() {
+        clickPicture: function() {
 
             let context = this.canvas.getContext('2d');
             context.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
@@ -93,10 +93,10 @@ export default {
             this.$emit('picture-taken', this.imageSrc);
 
         },
-        retakePicture() {
+        retakePicture: function() {
             this.showVideo = true;
         },
-        emitClose() {
+        emitClose: function() {
 
             let tracks = this.$refs.video.srcObject.getTracks();
 

@@ -65,7 +65,7 @@ export default {
         uploadValue: Number,
         showProgressBar: Boolean
     },
-    data() {
+    data: function() {
         return {
             showCamera: false,
             imageSrc: null,
@@ -74,14 +74,14 @@ export default {
         };
     },
     methods: {
-        closeImageModal() {
+        closeImageModal: function() {
             this.showCamera = false;
             if(this.imageSrc === null) {this.showButtons = true;}
         },
-        triggerChooseFile() {
+        triggerChooseFile: function() {
             this.$refs.fileInput.click();
         },
-        onFilePicked(event) {
+        onFilePicked: function(event) {
 
             const files = event.target.files;
             const fileTypes = ['jpg', 'jpeg', 'png'];
@@ -108,11 +108,11 @@ export default {
                 }
             }
         },
-        emitImage(event) {
+        emitImage: function(event) {
             this.imageSrc = event;
             this.showImage = true;
         },
-        uploadImage() {
+        uploadImage: function() {
             this.$emit('picture-taken', this.imageSrc);
         }
     }

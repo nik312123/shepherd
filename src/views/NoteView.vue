@@ -159,7 +159,7 @@ export default {
         },
         dateToString: dateToString,
 
-        deleteImage() {
+        deleteImage: function() {
             storage.ref('notes/' + this.$route.params.id).delete().then(() => {
 
                 //Delete from db
