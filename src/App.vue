@@ -1,21 +1,24 @@
 <template>
     <div id="app" class="container is-max-desktop">
-      <notifications v-bind:closeOnClick=false>
-        <template slot="body" slot-scope="props">
-          <div class="vue-notification" @click="handleNotificationOnClick(props)">
-            <a class="close" @click.stop="props.close" style="top: 0; right: 0; position: relative; float: right">
-              <i class="fa fa-fw fa-close"></i>
-            </a>
-            <a class="title">
-              {{props.item.title}}
-            </a>
-            <div>
-              {{props.item.data.noteBody}}
-            </div>
-          </div>
-        </template>
-      </notifications>
-      <RouterView/>
+        <notifications v-bind:closeOnClick=false>
+            <template slot="body" slot-scope="props">
+                <div class="vue-notification" @click="handleNotificationOnClick(props)">
+                    <a
+                        class="close" @click.stop="props.close"
+                        style="top: 0; right: 0; position: relative; float: right"
+                    >
+                        <i class="fa fa-fw fa-close"></i>
+                    </a>
+                    <a class="title">
+                        {{ props.item.title }}
+                    </a>
+                    <div>
+                        {{ props.item.data.noteBody }}
+                    </div>
+                </div>
+            </template>
+        </notifications>
+        <RouterView/>
     </div>
 </template>
 
@@ -67,44 +70,44 @@ html {
 }
 
 .vue-notification {
-  padding: 10px;
-  margin: 0 5px 5px;
-
-  font-size: 12px;
-  color: #ffffff;
-  background: #44A4FC;
-  border: 2px solid #187FE7;
-  border-radius: 5px;
+    padding: 10px;
+    margin: 0 5px 5px;
+    
+    font-size: 12px;
+    color: #FFFFFF;
+    background: #44A4FC;
+    border: 2px solid #187FE7;
+    border-radius: 5px;
 }
 
 </style>
 
 <script>
-import {messaging} from "@/firebaseConfig";
+import {messaging} from '@/firebaseConfig';
 
 export default {
-  mounted() {
-    messaging.onMessage(payload => {
-      console.log('Message received. ', payload);
-      new Audio(require("@/assets/pristine-609.mp3")).play();
-      this.$notify({
-        title: payload.notification.title,
-        duration: -1,
-        data: {
-          noteId: payload.data.noteId,
-          noteBody: payload.notification.body
+    mounted() {
+        messaging.onMessage(payload => {
+            console.log('Message received. ', payload);
+            new Audio(require('@/assets/pristine-609.mp3')).play();
+            this.$notify({
+                title: payload.notification.title,
+                duration: -1,
+                data: {
+                    noteId: payload.data.noteId,
+                    noteBody: payload.notification.body
+                }
+            });
+        });
+    },
+    methods: {
+        handleNotificationOnClick(passedProp) {
+            console.log('Got passed prop: ', JSON.stringify(passedProp));
+            this.$router.push({name: 'note', params: {id: passedProp.item.data.noteId}}).then(() => {
+                passedProp.close();
+            });
         }
-      })
-    });
-  },
-  methods: {
-    handleNotificationOnClick(passedProp) {
-      console.log("Got passed prop: ", JSON.stringify(passedProp));
-      this.$router.push({name: 'note', params: {id: passedProp.item.data.noteId}}).then(() => {
-        passedProp.close();
-      });
     }
-  }
-}
+};
 
 </script>

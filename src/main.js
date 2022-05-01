@@ -2,10 +2,10 @@ import Vue from 'vue';
 import App from '@/App.vue';
 import router from '@/router';
 import {auth, messaging} from '@/firebaseConfig';
-import Notifications from 'vue-notification'
+import Notifications from 'vue-notification';
 import {firestorePlugin} from 'vuefire';
 import 'no-darkreader';
-import '@/registerServiceWorker'
+import '@/registerServiceWorker';
 
 Vue.config.productionTip = false;
 
@@ -13,9 +13,9 @@ Vue.use(firestorePlugin);
 Vue.use(Notifications);
 
 messaging.getToken({
-    vapidKey: "***REMOVED***"
+    vapidKey: '***REMOVED***'
 }).then(() => {
-    console.log("Token generated");
+    console.log('Token generated');
 }).catch((err) => {
     console.log(err);
 });
