@@ -184,6 +184,22 @@ export default {
         dateToString,
         goToView: function() {
             this.$router.push({name: 'view', params: {id: this.$route.params.viewId}});
+        },
+        deleteImage: function() {
+          storage.ref('notes/' + this.$route.params.id).delete().then(() => {
+            //Delete from db
+            db.collection('notes').doc(this.$route.params.id)
+                .update({
+                  'imageUrl': '',
+                  lastModifiedDateTime: new Date()
+                })
+                .then(() => {})
+                .catch(err => {
+                  alert('Something went wrong');
+                  console.log(err);
+                });
+            this.showImage = false;
+          });
         }
     },
     computed: {
@@ -191,22 +207,6 @@ export default {
             // eslint-disable-next-line no-prototype-builtins
             return this.pathMapping.hasOwnProperty(this.$route.params.from) ?
                 this.pathMapping[this.$route.params.from] : 'All Notes';
-        },
-        deleteImage: function() {
-            storage.ref('notes/' + this.$route.params.id).delete().then(() => {
-                //Delete from db
-                db.collection('notes').doc(this.$route.params.id)
-                    .update({
-                        'imageUrl': '',
-                        lastModifiedDateTime: new Date()
-                    })
-                    .then(() => {})
-                    .catch(err => {
-                        alert('Something went wrong');
-                        console.log(err);
-                    });
-                this.showImage = false;
-            });
         }
     }
 };
