@@ -25,8 +25,8 @@
                             >
                         </div>
                         <ModalImageCamera
-                            v-if="showCamera" @close="closeImageModal()" :class="{ 'is-active': showCamera }"
-                            @picture-taken="emitImage"
+                            v-if="showCamera" @close="closeImageModal()" :class="{'is-active': showCamera}"
+                            @pictureTaken="emitImage"
                         />
                     </div>
                     <div class="image-container" v-show="showImage">
@@ -76,7 +76,9 @@ export default {
     methods: {
         closeImageModal: function() {
             this.showCamera = false;
-            if(this.imageSrc === null) {this.showButtons = true;}
+            if(this.imageSrc === null) {
+                this.showButtons = true;
+            }
         },
         triggerChooseFile: function() {
             this.$refs.fileInput.click();
@@ -86,8 +88,8 @@ export default {
             const fileTypes = ['jpg', 'jpeg', 'png'];
             
             if(files && files[0]) {
-                const extension = files[0].name.split('.').pop().toLowerCase(),
-                    isSuccess = fileTypes.indexOf(extension) > -1;
+                const extension = files[0].name.split('.').pop().toLowerCase();
+                const isSuccess = fileTypes.indexOf(extension) !== -1;
                 if(isSuccess) {
                     this.showImage = true;
                     const reader = new FileReader();
@@ -99,7 +101,7 @@ export default {
                     reader.readAsDataURL(files[0]);
                 }
                 else {
-                    alert('invalid file type');
+                    alert('Invalid file type');
                 }
             }
         },
@@ -108,7 +110,7 @@ export default {
             this.showImage = true;
         },
         uploadImage: function() {
-            this.$emit('picture-taken', this.imageSrc);
+            this.$emit('pictureTaken', this.imageSrc);
         }
     }
 };

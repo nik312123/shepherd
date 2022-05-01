@@ -1,16 +1,16 @@
 <template>
     <div>
         <button class="button is-focused add-image-button" @click="showModal = true">
-        <span class="icon">
-            <span class="fas fa-image"></span>
-        </span>
+            <span class="icon">
+                <span class="fas fa-image"></span>
+            </span>
             <span>Add Image</span>
         </button>
         <ModalImageSelect
             v-if="showModal"
             @close="showModal = false"
-            :class="{ 'is-active': showModal }"
-            @picture-taken="emitImage"
+            :class="{'is-active': showModal}"
+            @pictureTaken="emitImage"
             :showProgressBar="showProgressBar"
             :uploadValue="progressValue"
         />
@@ -60,7 +60,7 @@ export default {
                             this.showProgressBar = false;
                             this.progressValue = 0;
                         }).catch(err => {
-                            alert('Something went wrong refresh the page');
+                            alert('Something went wrong. Refresh the page.');
                             console.log(err);
                         });
                     });
