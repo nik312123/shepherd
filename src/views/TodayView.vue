@@ -36,8 +36,6 @@ export default {
     data: function() {
         return {
             user: false,
-            todayViewName: 'TodayView',
-            homeViewName: 'HomeView',
             notes: [],
             todayString: new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'}),
             todayTextSizeDenominator: 2,

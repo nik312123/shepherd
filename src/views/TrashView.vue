@@ -31,8 +31,6 @@ export default {
     components: {PageHeader, NoteListItem},
     data: function() {
         return {
-            trashViewName: 'TrashView',
-            homeViewName: 'HomeView',
             notes: []
         };
     },
