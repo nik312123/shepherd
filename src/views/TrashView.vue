@@ -14,7 +14,7 @@
             <button @click="emptyTrash" class="button is-info is-small">Empty</button>
         </div>
         <div class="section">
-            <search-bar :notes="notes" :returnResults="setResults" />
+            <search-bar :notes="notes" :returnResults="setResults"/>
             <article v-for="noteObj in searchNotes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
             </article>
@@ -56,8 +56,8 @@ export default {
                 db.collection('notes').doc(note.id).delete();
             });
         },
-        setResults : function(value){
-            this.searchNotes = value
+        setResults: function(value) {
+            this.searchNotes = value;
         }
     }
 };

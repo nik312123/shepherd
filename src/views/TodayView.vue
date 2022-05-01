@@ -11,9 +11,11 @@
         </nav>
         <div class="row">
             <h1 id="today-date" :class="'title is-mobile is-' + todayTextSizeDenominator">☀️ {{ todayString }}</h1>
-            <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]" :starting-date="getOneHourFromNowUpToMidnight()"/>
+            <ModalNoteCreate
+                v-if="user" :userTags="user.tags" :starting-tags="[]" :starting-date="getOneHourFromNowUpToMidnight()"
+            />
         </div>
-        <search-bar :notes="notes" :returnResults="setResults" />
+        <search-bar :notes="notes" :returnResults="setResults"/>
         <div class="section">
             <article v-for="noteObj in searchNotes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
@@ -45,7 +47,7 @@ export default {
             todayString: new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'}),
             todayTextSizeDenominator: 2,
             currentlyResizing: false,
-            searchNotes : []
+            searchNotes: []
         };
     },
     created: function() {
@@ -71,8 +73,8 @@ export default {
             oneHourFromNow.setMinutes(roundToNearestMultiple(oneHourFromNow.getMinutes(), 15));
             return oneHourFromNow;
         },
-        setResults : function(value){
-            this.searchNotes = value
+        setResults: function(value) {
+            this.searchNotes = value;
         }
     },
     firestore: function() {

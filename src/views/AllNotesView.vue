@@ -13,7 +13,7 @@
             <h1 class="title is-2">🗄 All Notes</h1>
             <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]"/>
         </div>
-        <search-bar :notes="notes" :returnResults="setResults" />
+        <search-bar :notes="notes" :returnResults="setResults"/>
         <div class="section">
             <article v-for="noteObj in searchNotes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
@@ -41,12 +41,12 @@ export default {
             allNotesViewName: allNotesViewName,
             homeViewName: HomeView.name,
             notes: [],
-            searchNotes : []
+            searchNotes: []
         };
     },
-    methods : {
-        setResults : function(value){
-            this.searchNotes = value
+    methods: {
+        setResults: function(value) {
+            this.searchNotes = value;
         }
     },
     firestore: function() {
