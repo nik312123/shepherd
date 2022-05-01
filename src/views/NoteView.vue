@@ -7,7 +7,7 @@
                     <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
                 </router-link>
             </div>
-            <span @click="copyURL" v-if="note.isPublic && !note.isTrash" class="tag is-medium public">
+            <span @click="copyURL" v-if="note.isPublic && !note.isTrash && owner" class="tag is-medium public">
                 Copy link
                 <span class="fa-solid fa-paste"></span>
             </span>
