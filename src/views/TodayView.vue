@@ -11,7 +11,7 @@
         </nav>
         <div class="row">
             <h1 id="today-date" :class="'title is-mobile is-' + todayTextSizeDenominator">☀️ {{ todayString }}</h1>
-            <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]" :starting-date="new Date()"/>
+            <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]" :starting-date="getOneHourFromNowUpToMidnight()"/>
         </div>
         <div class="section">
             <article v-for="noteObj in notes" :key="noteObj.id">
@@ -27,6 +27,7 @@ import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
 import HomeView from '@/views/HomeView';
 import ModalNoteCreate from '@/components/ModalNoteCreate';
+import {roundToNearestMultiple} from '@/helpers/mathUtility';
 
 const todayViewName = 'TodayView';
 
@@ -60,6 +61,12 @@ export default {
             else {
                 this.todayTextSizeDenominator = 4;
             }
+        },
+        getOneHourFromNowUpToMidnight() {
+            const oneHourFromNow = new Date();
+            oneHourFromNow.setHours(oneHourFromNow.getHours() + 1);
+            oneHourFromNow.setMinutes(roundToNearestMultiple(oneHourFromNow.getMinutes(), 15));
+            return oneHourFromNow;
         }
     },
     firestore: function() {
