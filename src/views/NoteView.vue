@@ -3,16 +3,16 @@
         <PageHeader/>
       <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
         <ul v-if="$route.params.from !== undefined">
-          <li @click="$router.push({'name': 'home'})"><a> Home </a></li>
-          <li @click="$router.push({'name': $route.params.from})" v-if="$route.params.viewName === undefined"><a>
+          <li @click="$router.push({name: 'home'})"><a> Home </a></li>
+          <li @click="$router.push({name: $route.params.from})" v-if="$route.params.viewName === undefined"><a>
             {{ getPathName }} </a></li>
-          <li @click="$router.push({'name': $route.params.from, params: {'id': $route.params.viewId}})"
+          <li @click="goToView"
               v-if="$route.params.viewName !== undefined"><a> {{$route.params.viewName}} </a></li>
           <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
         </ul>
         <ul v-else>
-          <li @click="$router.push({'name': 'home'})"><a> Home </a></li>
-          <li @click="$router.push({'name': 'all-notes'})"><a> All Notes </a></li>
+          <li @click="$router.push({name: 'home'})"><a> Home </a></li>
+          <li @click="$router.push({name: 'all-notes'})"><a> All Notes </a></li>
           <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
         </ul>
       </nav>
@@ -142,6 +142,9 @@ export default {
             return interval + ' ' + intervalType + ' ago';
         },
         dateToString: dateToString,
+        goToView: function() {
+            this.$router.push({name: "view", params: {id : this.$route.params.viewId}});
+        },
 
     },
     computed: {
