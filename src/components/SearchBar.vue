@@ -1,5 +1,6 @@
 <template>
     <div class="search-container">
+
         <input
             class="input is-rounded search-input" type="text" placeholder="Search..." v-model="searchQuery"
             @input="getSearchResults"
@@ -22,15 +23,18 @@ export default {
             searchQuery: ''
         };
     },
+    watch: {
+        notes: function() {
+            this.getSearchResults();
+        }
+    },
     mounted: function() {
-        console.log("Inside created search query0")
-        this.returnResults(this.notes);
+        this.getSearchResults();
     },
     methods: {
         getSearchResults: function() {
-            console.log("Inside created search query1 ")
+
             if(this.searchQuery === '') {
-                console.log("Inside created search query")
                 this.returnResults(this.notes);
                 return;
             }
@@ -58,13 +62,15 @@ export default {
 <style scoped>
 .search-container {
     display: flex;
+    margin: 5px 0;
 }
 
 .search-input {
     margin: auto 1%;
+    font-weight: 700;
+    letter-spacing: 2px;
+    caret-color: grey;
+    color: #00004D;
 }
 
-.search-button {
-    margin: auto 0.5%;
-}
 </style>

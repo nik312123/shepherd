@@ -20,7 +20,7 @@
         <TagList v-if="view" :tag-array="view.tags"/>
         <div class="section">
 
-            <search-bar :notes="notes" :returnResults="setResults"/>
+            <search-bar :notes="notes" v-bind="notes" :returnResults="setResults"/>
             <article v-for="noteObj in searchNotes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
             </article>
