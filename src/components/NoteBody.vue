@@ -23,7 +23,8 @@ export default {
     props: {
         body: String,
         id: String,
-        defaultTab: String
+        defaultTab: String,
+        owner: Boolean
     },
     components: {
         Editor: Editor
@@ -61,6 +62,12 @@ export default {
                 if(tab.textContent.includes('Preview')) {
                     // This timeout is needed, or some styles break
                     setTimeout(() => tab.click(), 10);
+                    if(!this.owner) {
+                        document.querySelector('.toastui-editor-toolbar').remove();
+                        document.querySelector('.toastui-editor-defaultUI').style.borderRadius = '10px';
+                        document.querySelector('.toastui-editor-md-container').style.borderRadius = '10px';
+                        document.querySelector('.editor').style.borderRadius = '10px';
+                    }
                     break;
                 }
             }

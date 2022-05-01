@@ -1,7 +1,7 @@
 <template>
     <div>
         <PageHeader/>
-        <div v-if="note.userId === userId">
+        <div>
             <div>
                 <router-link :to="{name: homeViewName}">
                     <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
@@ -13,29 +13,31 @@
             </span>
             <div class="row">
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
-                <div v-if="!note.isTrash" class="row smaller-gap">
+                <div v-if="!note.isTrash && owner" class="row smaller-gap">
                     <button @click="moveToTrash" class="button is-info is-small delete-button">
                         <span class="fa-solid fa-trash view-button"></span>
                     </button>
                     <ModalNoteEdit v-if="user" :userTags="user.tags" :noteObj="this.note"/>
                 </div>
-                <div v-if="note.isTrash" class="row smaller-gap">
+                <div v-if="note.isTrash && owner" class="row smaller-gap">
                     <button @click="recover" class="button is-info is-small recover-button">
                         <span class="fa-solid fa-rotate-left view-button"></span>
                     </button>
                     <ModalDeletePermanently :note-id="note.id"/>
                 </div>
             </div>
-            <TagList :tag-array="Object.keys(note.tags)" class="tags"/>
+            <TagList v-if="owner" :tag-array="Object.keys(note.tags)" class="tags"/>
             
             <div>
-                <p v-if="note.reminderDateTime" class="note-info">
+                <p v-if="note.reminderDateTime && owner" class="note-info">
                     Reminder: {{ dateToString(note.reminderDateTime.toDate(), false, true) }}
                 </p>
-                <p class="note-info">Created: {{ dateToString(note.createdDateTime.toDate(), false, false) }}</p>
+                <p class="note-info" v-if="owner">Created: {{
+                        dateToString(note.createdDateTime.toDate(), false, false)
+                                                  }}</p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
             </div>
-            <NoteBody :default-tab="defaultTab" :body="note.body" :id="note.id"/>
+            <NoteBody :default-tab="defaultTab" :body="note.body" :id="note.id" :owner="owner"/>
         </div>
     </div>
 </template>
@@ -63,7 +65,8 @@ export default {
             note: false,
             showModal: false,
             user: false,
-            userId: auth.currentUser.uid
+            userId: auth.currentUser.uid,
+            owner: false
         };
     },
     firestore: function() {
@@ -71,6 +74,19 @@ export default {
             user: db.collection('users').doc(auth.currentUser.uid),
             note: db.collection('notes').doc(this.$route.params.id)
         };
+    },
+    watch: {
+        note: function() {
+            if(this.note) {
+                this.owner = this.userId === this.note.userId;
+                if(!this.owner && !this.note.isPublic || !this.owner && this.note.isTrash) {
+                    this.$router.push({name: 'HomeView'});
+                }
+            }
+            else {
+                this.$router.push({name: 'HomeView'});
+            }
+        }
     },
     methods: {
         moveToTrash: function() {
