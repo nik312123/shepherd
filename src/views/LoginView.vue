@@ -36,4 +36,8 @@ img {
     text-align: center;
     padding-top: 70px;
 }
+
+.button-authentication-google {
+    float: none;
+}
 </style>

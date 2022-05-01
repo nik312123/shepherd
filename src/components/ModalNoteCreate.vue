@@ -3,9 +3,8 @@
         id="modal-note-create"
         button-classes="is-add is-large"
         modal-header="New Note"
-        :max-title-length="30"
-        @modalAction="createNote"
-        modal-button-text="Create"
+        :modal-buttons="[{buttonText: 'Create', actionName: 'create'}]"
+        @create="createNote"
         @modalOpen="onOpenModal"
         ref="baseModal"
     >
@@ -41,6 +40,18 @@
                     is-dark
                 />
             </div>
+            
+            <div class="control">
+                <ToggleButton
+                    v-model="isPublic"
+                    :color="{checked: '#68778F', unchecked: '#2A3444'}"
+                    :labels="{checked: 'Public', unchecked: 'Private'}"
+                    :width="98"
+                    :height="35"
+                    :font-size="15"
+                    :margin="5"
+                />
+            </div>
         </template>
     </base-modal>
 </template>
@@ -51,11 +62,12 @@ import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import NoteView from '@/views/NoteView';
 import BaseModal from '@/components/BaseModal';
 import InputTagManager from '@/components/InputTagManager';
+import {ToggleButton} from 'vue-js-toggle-button';
 import {dateToString} from '@/helpers/dateFormatter';
 
 export default {
     name: 'ModalNoteCreate',
-    components: {InputTagManager, BaseModal, DatePicker},
+    components: {InputTagManager, BaseModal, DatePicker, ToggleButton},
     props: {
         userTags: Array,
         views: Array
@@ -65,7 +77,8 @@ export default {
             title: '',
             tags: [],
             reminder: false,
-            reminderDate: null
+            reminderDate: null,
+            isPublic: false
         };
     },
     computed: {
@@ -75,9 +88,11 @@ export default {
     },
     methods: {
         onOpenModal: function() {
+            this.tags = [];
             this.title = '';
             this.reminderDate = null;
             this.reminder = false;
+            this.isPublic = false;
             this.$refs.inputTagManager.reset();
         },
         updateTags: function(updatedTags) {
@@ -90,13 +105,10 @@ export default {
                 return;
             }
             
-            if(this.tags.length === 0) {
-                alert('A note must have at least one tag');
-                return;
+            if(this.tags.length > 0) {
+                db.collection('users').doc(auth.currentUser.uid)
+                    .update({'tags': fieldValue.arrayUnion(...this.tags.map(tag => tag.text))});
             }
-            
-            db.collection('users').doc(auth.currentUser.uid)
-                .update({'tags': fieldValue.arrayUnion(...this.tags.map(tag => tag.text))});
             
             let tagsMap = this.tags.map(tag => ({[tag.text]: true}));
             tagsMap = Object.assign({}, ...tagsMap);
@@ -106,7 +118,7 @@ export default {
                 userId: auth.currentUser.uid,
                 title: name,
                 body: '# New note',
-                isPublic: false,
+                isPublic: this.isPublic,
                 isTrash: false,
                 tags: tagsMap,
                 createdDateTime: curTimestamp,

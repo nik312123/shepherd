@@ -1,58 +1,55 @@
 <template>
-  <div class="modal background">
-    <div class="modal-card column is-three-quarters">
-      <header class="modal-card-head">
-        <p class="modal-card-title">Select Image</p>
-        <button class="delete" aria-label="close" @click="$emit('close')"></button>
-      </header>
-      <section class="modal-card-body">
-        <div class="body-container">
-            <div class="field" v-show="showButtons">
-                <button @click="showCamera=true; showButtons=false" class="button is-light">
-                    <span class="icon">
-                        <i class="fas fa-camera"></i>
-                    </span>
-                    <span>Camera</span>
+  <div class="modal base-modal">
+        <div class="modal-background" @click="$emit('close')"></div>
+        <div class="modal-content">
+        <div class="card"> 
+            <header class="card-header">
+                <p class="title card-header-title is-centered">Select Image</p>
+                <button class="delete" aria-label="close" @click="$emit('close')"></button>
+            </header>
+            <div class="card-content">
+                <div class="body-container">
+                    <div class="field" v-show="showButtons">
+                        <button @click="showCamera=true; showButtons=false" class="card-footer-item create">
+                            
+                            <span class="title is-5">Camera</span>
+                        </button>
+                    </div>
+                    <div class="field" v-show="showButtons">
+                        <button class="card-footer-item create" @click="triggerChooseFile">
+                        
+                            <span class="title is-5">Browse</span>
+                        </button>
+                        <input type="file" style="display:none" ref="fileInput" accept="image/" @change="onFilePicked">
+                    </div>
+                    <camera-image-modal v-if="showCamera" @close="closeImageModal()" v-bind:class="{ 'is-active': showCamera }" @picture-taken="emitImage" />
+                </div>
+                <div class="image-container" v-show="showImage">
+                    <img :src="imageSrc" class="image"/>
+                </div>
+                <div v-if="showProgressBar" class="progress-bar-container">
+                    <p class="title is-5"> Uploading </p>
+                    <progress v-if="showProgressBar" class="progress is-info" :value="uploadValue" max="100">{{uploadValue}}%</progress>
+                </div>
+            </div>
+            <footer v-show="imageSrc !== null" class="card-footer">
+                <button class="card-footer-item create"  @click="uploadImage()">
+
+                    <span class="title is-5">Save</span>
                 </button>
-            </div>
-            <div class="field" v-show="showButtons">
-                <button class="button is-light" @click="triggerChooseFile">
-                   <span class="icon">
-                        <i class="fas fa-file"></i>
-                    </span>
-                    <span>Browse</span>
+                <button class="card-footer-item create"  @click="showButtons=true;showImage=false; imageSrc=null">
+                   
+                    <span class="title is-5">Reselect</span>    
                 </button>
-                <input type="file" style="display:none" ref="fileInput" accept="image/" @change="onFilePicked">
-            </div>
-            <camera-image-modal v-if="showCamera" @close="closeImageModal()" v-bind:class="{ 'is-active': showCamera }" @picture-taken="emitImage" />
+            </footer>
         </div>
-        <div class="image-container" v-show="showImage">
-            <div class="image">
-                <img :src="imageSrc" />
-            </div>
-        </div>
-      </section>
-      <footer v-show="imageSrc !== null" class="modal-card-foot">
-        <button class="button light-button"  @click="uploadImage()">
-            <span class="icon">
-                <i class="fas fa-save"></i>
-            </span>
-            <span>Save</span>
-        </button>
-        <button class="button dark-button"  @click="showButtons=true;showImage=false">
-            <span class="icon">
-                <i class="fas fa-arrow-rotate-right"></i>
-            </span>
-            <span>Reselect</span>    
-        </button>
-        <progress v-if="showProgressBar" class="progress is-info" :value="uploadValue" max="100">{{uploadValue}}%</progress>
-      </footer>
     </div>
   </div>
 </template>
 
 <script>
-import CameraImageModal from './CameraImageModal.vue';
+import CameraImageModal from '@/components/CameraImageModal.vue';
+
 export default {
   components: { CameraImageModal },
   name: "SelectImageModal",
@@ -64,7 +61,8 @@ export default {
     return {
         showCamera : false,
         imageSrc : null,
-        showButtons : true
+        showButtons : true,
+        showImage : false
     };
   },
   methods: {
@@ -82,15 +80,14 @@ export default {
             const fileReader = new FileReader()
             fileReader.addEventListener('load', () => {
                 this.imageSrc = fileReader.result
-                console.log("READ image")
             })
             this.showImage=true
             fileReader.readAsDataURL(files[0])
+            this.showButtons=false
       },
       emitImage(event){
           this.imageSrc = event
           this.showImage=true
-          console.log("Inside emit Image")
       },
       uploadImage(){
           this.$emit("picture-taken",this.imageSrc)
@@ -102,41 +99,41 @@ export default {
 <style scoped>
 .body-container{
     width: 100%;
+    height: 70%;
     display: flex;
     justify-content: space-evenly;
 }
 .image-container{
-    width: 100%;
     display: flex;
     justify-content: space-evenly;
+    overflow: hidden;
 }
 .image{
     display: flex;
     justify-content: space-around;
-    max-width: 50%;
-    max-height: 50%;
+    width: auto; 
+    max-height: 350px;
 }
-.modal{
+</style>
+<style>
+.modal-open-button {
+    background-color: #10A5E9;
+    font-weight: 800;
+    margin: 0 0 0 0;
+}
+
+.modal-open-button:hover {
+    background-color: #1282B6;
+    font-weight: 800;
+}
+</style>
+
+<style scoped>
+.modal-background {
+    backdrop-filter: blur(10px);
     background-color: rgba(10, 10, 10, .5);
 }
-.modal-header{
 
-}
-.modal-footer{
-
-}
-
-.light-button{
-    background-color: #0AA5E9 !important;
-    font-weight: 700;
-    color: white;
-}
-
-.dark-button{
-    background-color: rgba(10, 10, 10, .5) !important;
-    font-weight: 700;
-    color: white;
-}
 .card {
     background-color: #344155;
     border-radius: 10px;
@@ -145,27 +142,77 @@ export default {
     user-select: none;
 }
 
-.background{
-    background-color: rgba(10, 10, 10, .5) !important;
+.card-header {
+    box-shadow: 0 0 0 0;
+    padding: 0;
+    margin: 0;
 }
 
-#modal-image {
+.card-footer {
+    border-top-width: 0;
+}
+
+.is-centered {
+    text-align: center;
+}
+
+.progress-bar-container{
+
+    margin: 4% 0% 1% 0%;
+}
+
+.card-footer-item {
     background-color: #10A5E9;
-    font-weight: 800;
-    border-radius: 99999px;
-    padding: 5px;
-    margin-bottom: 20px;
-    height: auto;
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%);
-    width: 200px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    z-index: 30;
+    border-width: 0;
+    user-select: none;
+    cursor: pointer;
+    border-radius: 10px;
+    margin: 0 25px 25px;
 }
 
-#modal-note-create >>> .fa-solid {
-    padding: 10px;
+.create {
+    background-color: #0DBB92;
+}
+
+/* noinspection CssUnusedSymbol */
+.input {
+    font-weight: 700;
+    color: #F8FAFC;
+    background-color: #2A3444;
+    border-color: #344155;
+    border-radius: 10px;
+}
+
+.title {
+    font-weight: 700;
+    user-select: none;
+    cursor: pointer;
+    font-size: x-large;
+}
+
+.is-5 {
+    font-size: large;
+}
+
+.card-content {
+    padding-top: 5px;
+}
+
+/* noinspection CssUnusedSymbol */
+.control {
+    padding-top: 20px;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #A4B1B6;
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #A4B1B6;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: #A4B1B6;
 }
 </style>

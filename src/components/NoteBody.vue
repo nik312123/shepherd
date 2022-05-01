@@ -35,10 +35,9 @@ export default {
             options: {
                 hideModeSwitch: true,
                 toolbarItems: [
-                    ['quote'],
-                    ['task'],
-                    ['link'],
-                    ['code', 'codeblock']
+                    ['bold', 'italic', 'strike'],
+                    ['ul', 'ol', 'task'],
+                    ['link', 'code']
                 ]
             }
         };

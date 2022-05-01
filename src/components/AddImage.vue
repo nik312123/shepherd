@@ -33,25 +33,25 @@ export default {
   },
   methods : {
     emitImage : async function(event){
-      console.log("Inside function emitImage")
-      this.imageSrc = event
-      console.log("ROUTEEE : ",this.$route.params.id)
-      //this.$emit("picture-taken",this.imageSrc)
-      //console.log("Done emitting")
 
       const blob = await (await fetch(event)).blob(); 
       const noteId = this.$route.params.id
       this.showProgressBar = true
       const imageRef = storage.ref('notes/'+noteId).put(blob)
+
       imageRef.on('state_changed', snapshot => {
-          console.log("Snapshot : ",snapshot)
+
           this.progressValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+
       },error => {
+
           console.log(error.message)
+          alert("Could not upload image")
+
       },
       ()=>{
           imageRef.snapshot.ref.getDownloadURL().then((url) => {
-              console.log("URL : ",url)
+
               this.image = url
               //Update note
               db.collection('notes').doc(this.$route.params.id).update({
@@ -60,6 +60,9 @@ export default {
                 this.showModal = false
                 this.showProgressBar = false
                 this.progressValue = 0
+              }).catch(err => {
+                alert("Something went wrong refresh the page")
+                console.log(err)
               })
           })
       })

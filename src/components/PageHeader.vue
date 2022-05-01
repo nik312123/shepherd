@@ -8,7 +8,7 @@
                     :style="'visibility: ' + (shepherdHeaderTitleVisible ? 'visible' : 'hidden')"
                     @click="redirectToHome"
                     :class="'title is-mobile is-' + shepherdHeaderTitleDenominator"
-                >{{shepherdHeaderTitleVisible ? 'Shepherd' : '.'}}</h1>
+                >{{ shepherdHeaderTitleVisible ? 'Shepherd' : '.' }}</h1>
             </div>
             <ButtonAuthenticationGoogle class="comp"/>
         </div>

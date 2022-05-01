@@ -6,11 +6,26 @@
                 <router-link :to="{name: homeViewName}">
                     <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
                 </router-link>
-                <a class="edit-menu" @click="showModal = true">
-                    <span class="fa fa-ellipsis-v fa-2x" aria-hidden="true"></span>
-                </a>
             </div>
-            <p id="note-view-title" class="title is-3">{{ note.title }}</p>
+            <span @click="copyURL" v-if="note.isPublic && !note.isTrash" class="tag is-medium public">
+                Copy link
+                <span class="fa-solid fa-paste"></span>
+            </span>
+            <div class="row">
+                <p id="note-view-title" class="title is-3">{{ note.title }}</p>
+                <div v-if="!note.isTrash" class="row smaller-gap">
+                    <button @click="moveToTrash" class="button is-info is-small delete-button">
+                        <span class="fa-solid fa-trash view-button"></span>
+                    </button>
+                    <ModalNoteEdit v-if="user" :userTags="user.tags" :noteObj="this.note"/>
+                </div>
+                <div v-if="note.isTrash" class="row smaller-gap">
+                    <button @click="recover" class="button is-info is-small recover-button">
+                        <span class="fa-solid fa-rotate-left view-button"></span>
+                    </button>
+                    <ModalDeletePermanently :note-id="note.id"/>
+                </div>
+            </div>
             <TagList :tag-array="Object.keys(note.tags)" class="tags"/>
             
             <div>
@@ -19,19 +34,31 @@
                 </p>
                 <p class="note-info">Created: {{ dateToString(note.createdDateTime.toDate(), false, false) }}</p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
-                <add-image @picture-taken="changedImage"/>
+                <div class="toggle-image-container">
+                    <add-image/>
+                    <div class="control" v-if="note.imageUrl !== undefined">
+                        <ToggleButton
+                            v-model="showImage"
+                            :color="{checked: '#089D7B', unchecked: '#2A3444'}"
+                            :labels="{checked: 'Hide', unchecked: 'Show'}"
+                            :width="98"
+                            :height="35"
+                            :font-size="15"
+                            :margin="5"
+                        />
+                    </div>
+                </div>
             </div>
-            <div>
-                <img :src="note.imageUrl" />
+            <div class="image-container">
+                <img :src="note.imageUrl" v-if="showImage" class="image"/>
             </div>
             <NoteBody :default-tab="defaultTab" :body="note.body" :id="note.id"/>
-            <ModalNoteEdit v-if="showModal" @close="showModal = false" :class="{ 'is-active': showModal }"/>
         </div>
     </div>
 </template>
 
 <script>
-import {auth, db, storage} from '@/firebaseConfig';
+import {auth, db} from '@/firebaseConfig';
 import NoteBody from '@/components/NoteBody';
 import ModalNoteEdit from '@/components/ModalNoteEdit';
 import PageHeader from '@/components/PageHeader';
@@ -39,10 +66,11 @@ import TagList from '@/components/TagList';
 import HomeView from '@/views/HomeView';
 import {dateToString} from '@/helpers/dateFormatter';
 import AddImage from '@/components/AddImage';
-
+import ModalDeletePermanently from '@/components/ModalDeletePermanently';
+import {ToggleButton} from 'vue-js-toggle-button';
 export default {
     name: 'NoteView',
-    components: {TagList, PageHeader, ModalNoteEdit, NoteBody, AddImage},
+    components: {TagList, PageHeader, ModalNoteEdit, NoteBody, AddImage, ModalDeletePermanently, ToggleButton},
     props: {
         id: String,
         defaultTab: String
@@ -54,15 +82,34 @@ export default {
             showModal: false,
             userId: auth.currentUser.uid,
             image : null,
-            uploadValue : 0
+            uploadValue : 0,
+            user: false,
+            showImage: false
         };
     },
     firestore: function() {
         return {
+            user: db.collection('users').doc(auth.currentUser.uid),
             note: db.collection('notes').doc(this.$route.params.id)
         };
     },
     methods: {
+        moveToTrash: function() {
+            db.collection('notes').doc(this.note.id).update({isTrash: true});
+            this.$router.push({name: 'TrashView'});
+        },
+        recover: function() {
+            db.collection('notes').doc(this.note.id).update({isTrash: false});
+        },
+        copyURL: async function() {
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                alert('Copied');
+            }
+            catch(ignored) {
+                alert('Cannot copy');
+            }
+        },
         timeSince: function(date) {
             if(typeof date !== 'object') {
                 date = new Date(date);
@@ -78,7 +125,7 @@ export default {
             const secondsInDay = 24 * secondsInHour;
             
             if(seconds >= secondsInDay) {
-                return dateToString(date, false, false)
+                return dateToString(date, false, false);
             }
             else if(seconds >= secondsInHour) {
                 intervalType = 'hour';
@@ -99,34 +146,26 @@ export default {
             
             return interval + ' ' + intervalType + ' ago';
         },
-        dateToString: dateToString,
-        changedImage: async function(event){
-            
-            
-            const blob = await (await fetch(event)).blob(); 
-            const noteId = this.$route.params.id
-            const imageRef = storage.ref('notes/'+noteId).put(blob)
-            imageRef.on('state_changed', snapshot => {
-                console.log("Snapshot : ",snapshot)
-            },error => {
-                console.log(error.message)
-            },
-            ()=>{
-                imageRef.snapshot.ref.getDownloadURL().then((url) => {
-                    console.log("URL : ",url)
-                    this.image = url
-                    //Update note
-                    db.collection('notes').doc(this.$route.params.id).update({
-                        'imageUrl' : url
-                    })
-                })
-            })
-        }
+        dateToString: dateToString
     },
     
 };
 
 </script>
+
+<style>
+.delete-button, .delete-button.modal-open-button {
+    background-color: #DC3F58 !important;
+    font-weight: 800 !important;;
+    border-radius: 10px !important;
+}
+
+.delete-button:hover, .delete-button.modal-open-button:hover {
+    background-color: #B23247 !important;;
+    font-weight: 800 !important;;
+    border-radius: 10px !important;
+}
+</style>
 
 <style scoped>
 #note-view-title {
@@ -142,11 +181,30 @@ export default {
 }
 
 .note-info {
-    margin-bottom: 15px;
+    margin-bottom: 7px;
     font-weight: 700;
     color: #AABBD5;
 }
 
+.toggle-image-container{
+    display: flex;
+}
+
+.control{
+    margin: auto 0%;
+    padding: auto 0%;
+}
+
+.image-container{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.image{
+    max-width: 70%;
+    max-height: 400px;
+}
 .title {
     margin-bottom: 0;
 }
@@ -171,5 +229,44 @@ export default {
     position: relative;
     float: right;
     top: 60px;
+}
+
+.recover-button {
+    background-color: #09BB92;
+    font-weight: 800;
+    border-radius: 10px !important;
+}
+
+.recover-button:hover {
+    background-color: #089D7B;
+    font-weight: 800;
+    border-radius: 10px !important;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.smaller-gap {
+    gap: 0;
+}
+
+.public {
+    background-color: #323F54;
+    color: #91A9D7;
+    font-weight: 700;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+.public:hover {
+    cursor: pointer;
+}
+
+.fa-paste {
+    color: #91A9D7;
+    margin-left: 6px;
 }
 </style>

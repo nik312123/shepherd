@@ -3,9 +3,8 @@
         id="modal-view-create"
         button-classes="is-add"
         modal-header="New View"
-        :max-title-length="30"
-        @modalAction="createView"
-        modal-button-text="Create"
+        :modal-buttons="[{buttonText: 'Create', actionName: 'create'}]"
+        @create="createView"
         @modalOpen="onOpenModal"
         ref="baseModal"
     >

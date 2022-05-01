@@ -1,13 +1,13 @@
 <template>
     <div class="base-modal">
-        <button @click="openModal" :class="'button is-info ' + buttonClasses">
+        <button @click="openModal" :class="'modal-open-button button is-info ' + buttonClasses">
             <slot name="button-contents"></slot>
         </button>
         
         <div :class="'modal' + (showModal ? ' is-active' : '')">
             <div @click="showModal = false" class="modal-background"></div>
             <div class="modal-content">
-                <div class="card">
+                <div class="card" :style="additionalPadding ? `padding: ${additionalPadding}px;` : ''">
                     <header class="card-header">
                         <p class="title card-header-title is-centered">
                             <span>{{ modalHeader }}</span>
@@ -18,8 +18,15 @@
                         <slot name="modal-content"></slot>
                     </div>
                     <footer class="card-footer">
-                        <p @click="$emit('modalAction')" class="card-footer-item create">
-                            <span class="title is-5">{{ modalButtonText }}</span>
+                        <!--suppress JSUnresolvedVariable -->
+                        <p
+                            v-for="modalButton in modalButtons"
+                            :key="modalButton.buttonText"
+                            @click="$emit(modalButton.actionName)"
+                            class="card-footer-item create"
+                        >
+                            <!--suppress JSUnresolvedVariable -->
+                            <span class="title is-5">{{ modalButton.buttonText }}</span>
                         </p>
                     </footer>
                 </div>
@@ -35,8 +42,9 @@ export default {
     props: {
         buttonClasses: String,
         modalHeader: String,
-        maxTitleLength: Number,
-        modalButtonText: String
+        //Array of objects in the form {buttonText: <string>, actionName: <string>}
+        modalButtons: Array,
+        additionalPadding: Number
     },
     data: function() {
         return {
@@ -55,20 +63,20 @@ export default {
 };
 </script>
 
-<style scoped>
-/* noinspection CssUnusedSymbol */
-.is-info {
+<style>
+.modal-open-button {
     background-color: #10A5E9;
     font-weight: 800;
     margin: 0 0 0 0;
 }
 
-/* noinspection CssUnusedSymbol */
-.is-info:hover {
+.modal-open-button:hover {
     background-color: #1282B6;
     font-weight: 800;
 }
+</style>
 
+<style scoped>
 .modal-background {
     backdrop-filter: blur(10px);
     background-color: rgba(10, 10, 10, .5);
@@ -90,6 +98,10 @@ export default {
 
 .card-footer {
     border-top-width: 0;
+}
+
+.is-centered {
+    text-align: center;
 }
 
 .card-footer-item {
