@@ -14,7 +14,7 @@
             <div class="row">
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
                 <div v-if="!note.isTrash" class="row smaller-gap">
-                    <button @click="moveToTrash" class="button is-info is-small delete-button">
+                    <button @click="moveToTrash" class="button is-info is-small delete-image-button">
                         <span class="fa-solid fa-trash view-button"></span>
                     </button>
                     <ModalNoteEdit v-if="user" :userTags="user.tags" :noteObj="this.note"/>
@@ -36,7 +36,7 @@
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
                 <div class="toggle-image-container">
                     <add-image/>
-                    <div class="control" v-if="note.imageUrl !== undefined">
+                    <div class="control" v-if="note.imageUrl !== undefined && note.imageUrl !== '' ">
                         <ToggleButton
                             v-model="showImage"
                             :color="{checked: '#089D7B', unchecked: '#2A3444'}"
@@ -47,6 +47,13 @@
                             :margin="5"
                         />
                     </div>
+                    <button v-show="note.imageUrl !== undefined && note.imageUrl !== '' && showImage" class="button is-focused delete-image-button" @click="deleteImage">
+                        <span class="icon">
+                            <i class="fas fa-trash"></i>
+                        </span>
+                        <span>Image</span>
+                    </button>
+                    
                 </div>
             </div>
             <div class="image-container">
@@ -58,7 +65,7 @@
 </template>
 
 <script>
-import {auth, db} from '@/firebaseConfig';
+import {auth, db, storage} from '@/firebaseConfig';
 import NoteBody from '@/components/NoteBody';
 import ModalNoteEdit from '@/components/ModalNoteEdit';
 import PageHeader from '@/components/PageHeader';
@@ -146,7 +153,25 @@ export default {
             
             return interval + ' ' + intervalType + ' ago';
         },
-        dateToString: dateToString
+        dateToString: dateToString,
+
+        deleteImage(){
+            storage.ref('notes/'+this.$route.params.id).delete().then(() => {
+                
+                //Delete from db
+                db.collection('notes').doc(this.$route.params.id).update({
+                  'imageUrl' : '',
+                   lastModifiedDateTime: new Date()
+                }).then(() => {
+                    
+                }).catch(err => {
+                    alert("Something went wrong")
+                    console.log(err)
+                })
+                this.showImage = false;
+            })
+
+        }
     },
     
 };
@@ -268,5 +293,13 @@ export default {
 .fa-paste {
     color: #91A9D7;
     margin-left: 6px;
+}
+
+.delete-image-button{
+    background-color: red !important;
+    padding: auto 1%;
+    font-weight: 400;
+    color: white;
+    margin: auto 10px;
 }
 </style>

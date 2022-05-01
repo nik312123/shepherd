@@ -20,7 +20,7 @@
                         
                             <span class="title is-5">Browse</span>
                         </button>
-                        <input type="file" style="display:none" ref="fileInput" accept="image/" @change="onFilePicked">
+                        <input type="file" style="display:none" ref="fileInput" accept="image/png, image/gif, image/jpeg" @change="onFilePicked">
                     </div>
                     <camera-image-modal v-if="showCamera" @close="closeImageModal()" v-bind:class="{ 'is-active': showCamera }" @picture-taken="emitImage" />
                 </div>
@@ -76,7 +76,31 @@ export default {
       },
       onFilePicked(event){
             const files = event.target.files
+            var fileTypes = ['jpg', 'jpeg', 'png'];
 
+            if(files && files[0]) {
+                var extension = files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
+                    isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+
+                if (isSuccess) { 
+                    this.showImage=true
+                    const reader = new FileReader();
+                    reader.addEventListener('load', () => {
+                        //console.log("Done loading 123",reader.result)
+                        this.imageSrc = reader.result
+                        this.showButtons=false
+                        this.showImage=true
+                    })
+
+                    reader.readAsDataURL(files[0]);
+                }
+                else { //no
+                    //warning
+                    alert("invalid file type")
+                }
+            }
+            /*
+           const files = event.target.files
             const fileReader = new FileReader()
             fileReader.addEventListener('load', () => {
                 this.imageSrc = fileReader.result
@@ -84,6 +108,7 @@ export default {
             this.showImage=true
             fileReader.readAsDataURL(files[0])
             this.showButtons=false
+            */
       },
       emitImage(event){
           this.imageSrc = event

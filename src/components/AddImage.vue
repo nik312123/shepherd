@@ -55,7 +55,8 @@ export default {
               this.image = url
               //Update note
               db.collection('notes').doc(this.$route.params.id).update({
-                  'imageUrl' : url
+                  'imageUrl' : url,
+                  lastModifiedDateTime: new Date()
               }).then(() => {
                 this.showModal = false
                 this.showProgressBar = false
