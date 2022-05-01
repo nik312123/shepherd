@@ -14,7 +14,8 @@
             <button @click="emptyTrash" class="button is-info is-small">Empty</button>
         </div>
         <div class="section">
-            <article v-for="noteObj in notes" :key="noteObj.id">
+            <search-bar :notes="notes" :returnResults="setResults" />
+            <article v-for="noteObj in searchNotes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
             </article>
         </div>
@@ -26,17 +27,19 @@ import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
 import HomeView from '@/views/HomeView';
+import SearchBar from '@/components/SearchBar';
 
 const trashViewName = 'TrashView';
 
 export default {
     name: trashViewName,
-    components: {PageHeader, NoteListItem},
+    components: {PageHeader, NoteListItem, SearchBar},
     data: function() {
         return {
             trashViewName: trashViewName,
             homeViewName: HomeView.name,
-            notes: []
+            notes: [],
+            searchNotes: []
         };
     },
     firestore: function() {
@@ -52,6 +55,9 @@ export default {
             this.notes.forEach(function(note) {
                 db.collection('notes').doc(note.id).delete();
             });
+        },
+        setResults : function(value){
+            this.searchNotes = value
         }
     }
 };

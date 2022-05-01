@@ -27,7 +27,7 @@
                 </div>
             </div>
             <TagList :tag-array="Object.keys(note.tags)" class="tags"/>
-            
+
             <div>
                 <p v-if="note.reminderDateTime" class="note-info">
                     Reminder: {{ dateToString(note.reminderDateTime.toDate(), false, true) }}
@@ -80,7 +80,15 @@ import {ToggleButton} from 'vue-js-toggle-button';
 
 export default {
     name: 'NoteView',
-    components: {TagList, PageHeader, ModalNoteEdit, NoteBody, ButtonNoteImageAdd, ModalDeletePermanently, ToggleButton},
+    components: {
+        TagList,
+        PageHeader,
+        ModalNoteEdit,
+        NoteBody,
+        ButtonNoteImageAdd,
+        ModalDeletePermanently,
+        ToggleButton
+    },
     props: {
         id: String,
         defaultTab: String
@@ -124,16 +132,16 @@ export default {
             if(typeof date !== 'object') {
                 date = new Date(date);
             }
-            
+
             const seconds = Math.floor((new Date() - date) / 1000);
-            
+
             let interval;
             let intervalType;
-            
+
             const secondsInMinute = 60;
             const secondsInHour = 60 * secondsInMinute;
             const secondsInDay = 24 * secondsInHour;
-            
+
             if(seconds >= secondsInDay) {
                 return dateToString(date, false, false);
             }
@@ -149,11 +157,11 @@ export default {
                 intervalType = 'second';
                 interval = seconds;
             }
-            
+
             if(interval !== 1) {
                 intervalType += 's';
             }
-            
+
             return interval + ' ' + intervalType + ' ago';
         },
         dateToString,
