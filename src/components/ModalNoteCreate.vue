@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import {auth, db, fieldValue} from '@/firebaseConfig';
+import {auth, db, fieldValue, messaging} from '@/firebaseConfig';
 import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import NoteView from '@/views/NoteView';
 import BaseModal from '@/components/BaseModal';
@@ -118,18 +118,25 @@ export default {
             tagsMap = Object.assign({}, ...tagsMap);
             
             const curTimestamp = new Date();
-            db.collection('notes').add({
-                userId: auth.currentUser.uid,
-                title: name,
-                body: '# New note',
-                isPublic: this.isPublic,
-                isTrash: false,
-                tags: tagsMap,
-                createdDateTime: curTimestamp,
-                lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDate === null ? null : this.reminderDate
-            }).then(docRef => {
-                this.$router.push({name: NoteView.name, params: {id: docRef.id, defaultTab: 'write'}});
+
+            messaging.getToken({
+              vapidKey: "***REMOVED***"
+            }).then((messageToken) => {
+                db.collection('notes').add({
+                  userId: auth.currentUser.uid,
+                  title: name,
+                  body: '# New note',
+                  isPublic: this.isPublic,
+                  isTrash: false,
+                  tags: tagsMap,
+                  createdDateTime: curTimestamp,
+                  lastModifiedDateTime: curTimestamp,
+                  reminderDateTime: this.reminderDate === null ? null : this.reminderDate,
+                  messageToken: messageToken,
+                  notified: false
+              }).then(docRef => {
+                  this.$router.push({name: NoteView.name, params: {id: docRef.id, defaultTab: 'write'}});
+              })
             });
             
             this.$refs.baseModal.hideModal();

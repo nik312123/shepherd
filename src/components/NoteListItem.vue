@@ -42,7 +42,16 @@ export default {
     },
     methods: {
         goToNote: function() {
-            this.$router.push({name: 'note', params: {id: this.note.id, from: this.$route.name, viewName: this.viewName, viewId: this.viewId, defaultTab: 'preview'}});
+            this.$router.push({
+              name: NoteView.name,
+              params: {
+                id: this.note.id,
+                from: this.$route.name,
+                viewName: this.viewName,
+                viewId: this.viewId,
+                defaultTab: 'preview'
+              }
+            });
         }
     }
 };

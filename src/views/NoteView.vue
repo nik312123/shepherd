@@ -1,12 +1,22 @@
 <template>
     <div>
         <PageHeader/>
+      <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
+        <ul v-if="$route.params.from !== undefined">
+          <li @click="$router.push({'name': getHomeViewName})"><a> Home </a></li>
+          <li @click="$router.push({'name': $route.params.from})" v-if="$route.params.viewName === undefined"><a>
+            {{ getPathName }} </a></li>
+          <li @click="$router.push({'name': $route.params.from, params: {'id': $route.params.viewId}})"
+              v-if="$route.params.viewName !== undefined"><a> {{$route.params.viewName}} </a></li>
+          <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
+        </ul>
+        <ul v-else>
+          <li @click="$router.push({'name': getHomeViewName})"><a> Home </a></li>
+          <li @click="$router.push({'name': getAllNotesViewName})"><a> All Notes </a></li>
+          <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
+        </ul>
+      </nav>
         <div v-if="note.userId === userId">
-            <div>
-                <router-link :to="{name: homeViewName}">
-                    <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
-                </router-link>
-            </div>
             <span @click="copyURL" v-if="note.isPublic && !note.isTrash" class="tag is-medium public">
                 Copy link
                 <span class="fa-solid fa-paste"></span>
@@ -49,6 +59,11 @@ import TagList from '@/components/TagList';
 import HomeView from '@/views/HomeView';
 import {dateToString} from '@/helpers/dateFormatter';
 import ModalDeletePermanently from '@/components/ModalDeletePermanently';
+import InboxView from "@/views/InboxView";
+import TrashView from "@/views/TrashView";
+import TodayView from "@/views/TodayView";
+import UpcomingView from "@/views/UpcomingView";
+import AllNotesView from "@/views/AllNotesView";
 
 export default {
     name: 'NoteView',
@@ -63,7 +78,7 @@ export default {
             note: false,
             showModal: false,
             user: false,
-            userId: auth.currentUser.uid
+            userId: auth.currentUser.uid,
         };
     },
     firestore: function() {
@@ -125,7 +140,28 @@ export default {
             
             return interval + ' ' + intervalType + ' ago';
         },
-        dateToString: dateToString
+        dateToString: dateToString,
+
+    },
+    computed: {
+      getHomeViewName: function() {
+        return HomeView.name;
+      },
+      getAllNotesViewName: function() {
+        return AllNotesView.name;
+      },
+      getPathName: function() {
+        let nameMapping = {
+          "Home": HomeView.name,
+          "Inbox": InboxView.name,
+          "Trash": TrashView.name,
+          "Today": TodayView.name,
+          "Upcoming": UpcomingView.name
+        };
+        let pathMapping = Object.fromEntries(Object.entries(nameMapping).map(a => a.reverse()))
+        // eslint-disable-next-line no-prototype-builtins
+        return pathMapping.hasOwnProperty(this.$route.params.from) ? pathMapping[this.$route.params.from] : "All Notes";
+      },
     }
 };
 

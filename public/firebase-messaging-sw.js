@@ -18,8 +18,6 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 self.addEventListener('notificationclick', (event) => {
-    console.log('SW notification click event', JSON.stringify(event));
-    console.log('SW notification click event - notification', JSON.stringify(event.notification.data));
     let noteId = event.notification.data;
     clients.openWindow('/note/' + noteId);
     event.notification.close();
