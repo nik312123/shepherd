@@ -3,7 +3,8 @@
         <VueTagsInput
             v-model="tag"
             :placeholder="tags.length === 0 ? 'Add tag' : ''"
-            :tags="tags"
+            :tags.sync="tags"
+            :validation="validation"
             :autocomplete-items="relevantUserTags"
             @tags-changed="updateTags"
         />
@@ -24,7 +25,20 @@ export default {
         return {
             tag: '',
             originalTags: this.initialTags.slice(),
-            tags: this.initialTags.slice()
+            tags: this.initialTags.slice(),
+            validation: [{
+              classes: 'min-length',
+              rule: tag => tag.text.length < 3,
+              disableAdd: true
+              }, {
+              classes: 'max-length',
+              rule: tag => tag.text.length > 15,
+              disableAdd: true
+              }, {
+              classes: 'no-commas',
+              rule: ({ text }) => text.indexOf(',') !== -1 || text.indexOf(',') !== -1,
+              disableAdd: true
+            }],
         };
     },
     computed: {
