@@ -54,10 +54,8 @@ export default {
 </script>
 
 <style scoped>
-
 .row {
     display: flex;
     justify-content: space-between;
 }
-
 </style>
