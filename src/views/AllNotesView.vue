@@ -3,7 +3,7 @@
         <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push({name: 'home'})"><a>Home</a></li>
+                <li @click="$router.push({name: 'HomeView'})"><a>Home</a></li>
                 <li class="is-active">
                     <router-link :to="{name: $route.name}" aria-current="page">All Notes</router-link>
                 </li>
@@ -27,9 +27,8 @@ import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
 import ModalNoteCreate from '@/components/ModalNoteCreate';
 
-
 export default {
-    name: "AllNotesView",
+    name: 'AllNotesView',
     components: {NoteListItem, PageHeader, ModalNoteCreate},
     data: function() {
         return {

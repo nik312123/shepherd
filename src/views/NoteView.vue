@@ -3,7 +3,7 @@
         <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul v-if="$route.params.from !== undefined">
-                <li @click="$router.push({name: 'home'})"><a> Home </a></li>
+                <li @click="$router.push({name: 'HomeView'})"><a> Home </a></li>
                 <li @click="$router.push({name: $route.params.from})" v-if="$route.params.viewName === undefined"><a>
                     {{ getPathName }} </a></li>
                 <li
@@ -13,8 +13,8 @@
                 <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
             </ul>
             <ul v-else>
-                <li @click="$router.push({name: 'home'})"><a> Home </a></li>
-                <li @click="$router.push({name: 'all-notes'})"><a> All Notes </a></li>
+                <li @click="$router.push({name: 'HomeView'})"><a> Home </a></li>
+                <li @click="$router.push({name: 'AllNotesView'})"><a> All Notes </a></li>
                 <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
             </ul>
         </nav>
@@ -131,7 +131,7 @@ export default {
     methods: {
         moveToTrash: function() {
             db.collection('notes').doc(this.note.id).update({isTrash: true});
-            this.$router.push({name: 'trash'});
+            this.$router.push({name: 'TrashView'});
         },
         recover: function() {
             db.collection('notes').doc(this.note.id).update({isTrash: false});
@@ -183,7 +183,7 @@ export default {
         },
         dateToString,
         goToView: function() {
-            this.$router.push({name: 'view', params: {id: this.$route.params.viewId}});
+            this.$router.push({name: 'ViewView', params: {id: this.$route.params.viewId}});
         },
         deleteImage: function() {
           storage.ref('notes/' + this.$route.params.id).delete().then(() => {
@@ -204,7 +204,6 @@ export default {
     },
     computed: {
         getPathName: function() {
-            // eslint-disable-next-line no-prototype-builtins
             return this.pathMapping.hasOwnProperty(this.$route.params.from) ?
                 this.pathMapping[this.$route.params.from] : 'All Notes';
         }

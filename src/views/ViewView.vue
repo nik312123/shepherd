@@ -3,7 +3,7 @@
         <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push({name: 'home'})"><a>Home</a></li>
+                <li @click="$router.push({name: 'HomeView'})"><a>Home</a></li>
                 <li v-if="view" class="is-active"><a aria-current="page">{{ view.name }}</a></li>
             </ul>
         </nav>
@@ -74,7 +74,7 @@ export default {
     methods: {
         deleteView: function() {
             db.collection('views').doc(this.view.id).delete();
-            this.$router.push({name: "home"});
+            this.$router.push({name: 'HomeView'});
         }
     }
 };

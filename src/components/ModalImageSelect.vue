@@ -11,7 +11,7 @@
                 <div class="card-content">
                     <div class="body-container">
                         <div class="field" v-show="showButtons">
-                            <button @click="showCamera=true; showButtons=false" class="card-footer-item create">
+                            <button @click="showCamera = true; showButtons = false" class="card-footer-item create">
                                 <span class="title is-5">Camera</span>
                             </button>
                         </div>
@@ -45,7 +45,7 @@
                         
                         <span class="title is-5">Save</span>
                     </button>
-                    <button class="card-footer-item create" @click="showButtons=true;showImage=false; imageSrc=null">
+                    <button class="card-footer-item create" @click="showButtons = true;showImage = false; imageSrc = null">
                         
                         <span class="title is-5">Reselect</span>
                     </button>

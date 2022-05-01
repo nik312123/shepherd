@@ -3,9 +3,9 @@
         <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push({name: 'home'})"><a>Home</a></li>
+                <li @click="$router.push({name: 'HomeView'})"><a>Home</a></li>
                 <li class="is-active">
-                    <router-link :to="{name: 'today'}" aria-current="page">Today</router-link>
+                    <router-link :to="{name: 'TodayView'}" aria-current="page">Today</router-link>
                 </li>
             </ul>
         </nav>
@@ -28,15 +28,14 @@ import NoteListItem from '@/components/NoteListItem';
 import ModalNoteCreate from '@/components/ModalNoteCreate';
 import {roundToNearestMultiple} from '@/helpers/mathUtility';
 
-
 export default {
-    name: "TodayView",
+    name: 'TodayView',
     components: {NoteListItem, PageHeader, ModalNoteCreate},
     data: function() {
         return {
             user: false,
-            todayViewName: "today",
-            homeViewName: "home",
+            todayViewName: 'TodayView',
+            homeViewName: 'HomeView',
             notes: [],
             todayString: new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'}),
             todayTextSizeDenominator: 2,

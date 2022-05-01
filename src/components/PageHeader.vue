@@ -35,7 +35,7 @@ export default {
     },
     methods: {
         redirectToHome: function() {
-            this.$router.push({name: "home"});
+            this.$router.push({name: 'HomeView'});
         },
         onResize: function() {
             const windowWidth = window.screen.width;

@@ -44,7 +44,7 @@ export default {
             auth.signOut()
                 .then(() => {
                     this.user = null;
-                    router.push({name: "login"});
+                    router.push({name: 'LoginView'});
                 })
                 .catch(err => console.log(err));
         }

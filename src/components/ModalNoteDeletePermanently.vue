@@ -33,7 +33,7 @@ export default {
     methods: {
         deletePermanently: function() {
             db.collection('notes').doc(this.noteId).delete();
-            this.$router.push({name: 'trash'});
+            this.$router.push({name: 'TrashView'});
             this.$refs.baseModal.hideModal();
         }
     }

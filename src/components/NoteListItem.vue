@@ -37,19 +37,19 @@ export default {
     props: {
         note: Object,
         viewName: String,
-        viewId: String,
+        viewId: String
     },
     methods: {
         goToNote: function() {
             this.$router.push({
-              name: "note",
-              params: {
-                id: this.note.id,
-                from: this.$route.name,
-                viewName: this.viewName,
-                viewId: this.viewId,
-                defaultTab: 'preview'
-              }
+                name: 'NoteView',
+                params: {
+                    id: this.note.id,
+                    from: this.$route.name,
+                    viewName: this.viewName,
+                    viewId: this.viewId,
+                    defaultTab: 'preview'
+                }
             });
         }
     }

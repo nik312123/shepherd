@@ -44,8 +44,8 @@ export default {
     },
     methods: {
         goToView: function() {
-            if(this.viewName === "view") {
-                router.push({name: "view", params: {id: this.id}});
+            if(this.viewName === 'ViewView') {
+                router.push({name: 'ViewView', params: {id: this.id}});
             }
             else {
                 router.push({name: this.viewName});

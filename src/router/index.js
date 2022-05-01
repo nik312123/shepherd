@@ -16,7 +16,6 @@ Vue.use(VueRouter);
 const routes = [
     {
         path: '/',
-        name: 'login',
         component: LoginView,
         meta: {
             title: 'Shepherd'
@@ -24,7 +23,6 @@ const routes = [
     },
     {
         path: '/home',
-        name: 'home',
         component: HomeView,
         meta: {
             requiresAuth: true,
@@ -33,7 +31,6 @@ const routes = [
     },
     {
         path: '/inbox',
-        name: 'inbox',
         component: InboxView,
         meta: {
             requiresAuth: true,
@@ -42,7 +39,6 @@ const routes = [
     },
     {
         path: '/today',
-        name: 'today',
         component: TodayView,
         meta: {
             requiresAuth: true,
@@ -51,7 +47,6 @@ const routes = [
     },
     {
         path: '/upcoming',
-        name: 'upcoming',
         component: UpcomingView,
         meta: {
             requiresAuth: true,
@@ -60,7 +55,6 @@ const routes = [
     },
     {
         path: '/all-notes',
-        name: 'all-notes',
         component: AllNotesView,
         meta: {
             requiresAuth: true,
@@ -69,7 +63,6 @@ const routes = [
     },
     {
         path: '/trash',
-        name: 'trash',
         component: TrashView,
         meta: {
             requiresAuth: true,
@@ -78,7 +71,6 @@ const routes = [
     },
     {
         path: '/view/:id',
-        name: 'view',
         component: ViewView,
         props: true,
         meta: {
@@ -88,7 +80,6 @@ const routes = [
     },
     {
         path: '/note/:id',
-        name: 'note',
         component: NoteView,
         props: true,
         meta: {
@@ -97,6 +88,12 @@ const routes = [
         }
     }
 ];
+
+for(let i = 0; i < routes.length; ++i) {
+    if(routes[i].component !== undefined) {
+        routes[i].name = routes[i].component.name;
+    }
+}
 
 document.title = routes[0].meta.title;
 
