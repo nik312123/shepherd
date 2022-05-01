@@ -44,7 +44,7 @@ export default {
                 .where('userId', '==', auth.currentUser.uid)
                 .where('isTrash', '==', false)
                 .where('tags', '==', {})
-                .orderBy('lastModifiedDateTime')
+                .orderBy('lastModifiedDateTime', 'desc')
         };
     }
 };

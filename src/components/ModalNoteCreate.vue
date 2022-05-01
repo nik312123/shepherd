@@ -96,7 +96,7 @@ export default {
             this.reminderDate = this.startingDate;
             this.reminder = false;
             this.isPublic = false;
-            this.$refs.inputTagManager.reset(this.startingTags);
+            this.$refs.inputTagManager.reset(this.tags);
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
