@@ -79,14 +79,14 @@ export default {
             var fileTypes = ['jpg', 'jpeg', 'png'];
 
             if(files && files[0]) {
-                var extension = files[0].name.split('.').pop().toLowerCase(),  //file extension from input file
-                    isSuccess = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+                var extension = files[0].name.split('.').pop().toLowerCase(), 
+                    isSuccess = fileTypes.indexOf(extension) > -1;  
 
                 if (isSuccess) { 
                     this.showImage=true
                     const reader = new FileReader();
                     reader.addEventListener('load', () => {
-                        //console.log("Done loading 123",reader.result)
+                        
                         this.imageSrc = reader.result
                         this.showButtons=false
                         this.showImage=true
@@ -94,21 +94,11 @@ export default {
 
                     reader.readAsDataURL(files[0]);
                 }
-                else { //no
-                    //warning
+                else { 
+
                     alert("invalid file type")
                 }
             }
-            /*
-           const files = event.target.files
-            const fileReader = new FileReader()
-            fileReader.addEventListener('load', () => {
-                this.imageSrc = fileReader.result
-            })
-            this.showImage=true
-            fileReader.readAsDataURL(files[0])
-            this.showButtons=false
-            */
       },
       emitImage(event){
           this.imageSrc = event
