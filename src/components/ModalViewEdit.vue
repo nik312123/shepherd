@@ -49,7 +49,7 @@ export default {
         onOpenModal: function() {
             this.tags = this.viewObj.tags.map(tag => ({text: tag}));
             this.title = this.viewObj.name;
-            this.$refs.inputTagManager.reset();
+            this.$refs.inputTagManager.reset(this.tags);
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;

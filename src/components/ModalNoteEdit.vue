@@ -92,7 +92,7 @@ export default {
             this.reminderDate = this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null;
             this.reminder = false;
             this.isPublic = this.noteObj.isPublic;
-            this.$refs.inputTagManager.reset();
+            this.$refs.inputTagManager.reset(this.tags);
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
