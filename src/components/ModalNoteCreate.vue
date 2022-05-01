@@ -176,6 +176,6 @@ export default {
 
 #modal-note-create {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
 }
 </style>
