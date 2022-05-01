@@ -73,9 +73,4 @@ export default {
   }
 }
 
-//
-// messaging.onBackgroundMessage((payload) => {
-//     console.log("[onBackgroundMessage]", payload);
-// });
-
 </script>

@@ -43,14 +43,16 @@ db.collection("notes")
             let data = doc.data();
             let payload = {
                 notification: {
-                    title: "Reminder",
-                    body: data.title,
-                    image: "https://shepherd-be6df.firebaseapp.com/images/logo.png",
+                    title: data.title,
+                    body: data.body.length > 50 ? data.body.substring(0, 50)+"..." : data.body,
                 },
                 webpush: {
                     fcmOptions: {
                         link: "https://shepherd-be6df.firebaseapp.com/notes/" + data.id
                     }
+                },
+                data: {
+                  noteId: doc.id
                 },
                 token: data.messageToken
             };

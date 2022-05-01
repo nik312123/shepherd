@@ -10,6 +10,7 @@
           <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
         </ul>
         <ul v-else>
+          <li @click="$router.push({'name': 'home'})"><a> Home </a></li>
           <li @click="$router.push({'name': 'all-notes'})"><a> All Notes </a></li>
           <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
         </ul>

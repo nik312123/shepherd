@@ -17,39 +17,29 @@ firebase.initializeApp(firebaseConfig);
 
 const messaging = firebase.messaging();
 
-self.addEventListener('notificationclick',  (event) => {
+self.addEventListener('notificationclick', (event) => {
     console.log('SW notification click event', JSON.stringify(event));
-    let url = event.webpush.fcmOptions.link;
+    console.log('SW notification click event - notification', JSON.stringify(event.notification.data));
+    let noteId = event.notification.data;
+    clients.openWindow('/note/' + noteId);
+    event.notification.close();
+});
 
-    event.waitUntil(
-        clients.matchAll({type: 'window'}).then( windowClients => {
-            // Check if there is already a window/tab open with the target URL
-            for (var i = 0; i < windowClients.length; i++) {
-                var client = windowClients[i];
-                // If so, just focus it.
-                if (client.url === url && 'focus' in client) {
-                    return client.focus();
-                }
-            }
-            // If not, then open the target URL in a new window/tab.
-            if (clients.openWindow) {
-                return clients.openWindow(url);
-            }
-        })
-    );
-})
-
-messaging.onBackgroundMessage(function(payload) {
+messaging.onBackgroundMessage(function (payload) {
     console.log('[firebase-messaging-sw.js] Received background message ', payload);
     // Customize notification here
     const notificationTitle = payload.notification.title;
     const notificationOptions = {
         body: payload.notification.body,
-        icon: payload.notification.image
+        icon: './favicon.ico',
+        image: payload.notification.image,
+        data: payload.data.noteId
     };
 
     self.registration.showNotification(notificationTitle,
         notificationOptions).then(r => {
         console.log('[firebase-messaging-sw.js] Notification shown', r);
+    }).catch(e => {
+        console.log('[firebase-messaging-sw.js] Notification error', e);
     });
 });
