@@ -1,21 +1,23 @@
 <template>
     <div>
         <PageHeader/>
-      <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
-        <ul v-if="$route.params.from !== undefined">
-          <li @click="$router.push({name: 'home'})"><a> Home </a></li>
-          <li @click="$router.push({name: $route.params.from})" v-if="$route.params.viewName === undefined"><a>
-            {{ getPathName }} </a></li>
-          <li @click="goToView"
-              v-if="$route.params.viewName !== undefined"><a> {{$route.params.viewName}} </a></li>
-          <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
-        </ul>
-        <ul v-else>
-          <li @click="$router.push({name: 'home'})"><a> Home </a></li>
-          <li @click="$router.push({name: 'all-notes'})"><a> All Notes </a></li>
-          <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
-        </ul>
-      </nav>
+        <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
+            <ul v-if="$route.params.from !== undefined">
+                <li @click="$router.push({name: 'home'})"><a> Home </a></li>
+                <li @click="$router.push({name: $route.params.from})" v-if="$route.params.viewName === undefined"><a>
+                    {{ getPathName }} </a></li>
+                <li
+                    @click="goToView"
+                    v-if="$route.params.viewName !== undefined"
+                ><a> {{ $route.params.viewName }} </a></li>
+                <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
+            </ul>
+            <ul v-else>
+                <li @click="$router.push({name: 'home'})"><a> Home </a></li>
+                <li @click="$router.push({name: 'all-notes'})"><a> All Notes </a></li>
+                <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
+            </ul>
+        </nav>
         <div v-if="note.userId === userId">
             <span @click="copyURL" v-if="note.isPublic && !note.isTrash" class="tag is-medium public">
                 Copy link
@@ -24,7 +26,7 @@
             <div class="row">
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
                 <div v-if="!note.isTrash" class="row smaller-gap">
-                    <button @click="moveToTrash" class="button is-info is-small delete-button">
+                    <button @click="moveToTrash" class="button is-info is-small delete-image-button">
                         <span class="fa-solid fa-trash view-button"></span>
                     </button>
                     <ModalNoteEdit v-if="user" :userTags="user.tags" :noteObj="this.note"/>
@@ -44,6 +46,32 @@
                 </p>
                 <p class="note-info">Created: {{ dateToString(note.createdDateTime.toDate(), false, false) }}</p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
+                <div class="toggle-image-container">
+                    <ButtonNoteImageAdd/>
+                    <div class="control" v-if="note.imageUrl !== undefined && note.imageUrl !== '' ">
+                        <ToggleButton
+                            v-model="showImage"
+                            :color="{checked: '#089D7B', unchecked: '#2A3444'}"
+                            :labels="{checked: 'Hide', unchecked: 'Show'}"
+                            :width="98"
+                            :height="35"
+                            :font-size="15"
+                            :margin="5"
+                        />
+                    </div>
+                    <button
+                        v-show="note.imageUrl !== undefined && note.imageUrl !== '' && showImage"
+                        class="button is-focused delete-image-button" @click="deleteImage"
+                    >
+                        <span class="icon">
+                            <span class="fas fa-trash"></span>
+                        </span>
+                        <span>Image</span>
+                    </button>
+                </div>
+            </div>
+            <div class="image-container">
+                <img :src="note.imageUrl" v-if="showImage" class="image" alt="Note Image"/>
             </div>
             <NoteBody :default-tab="defaultTab" :body="note.body" :id="note.id"/>
         </div>
@@ -51,18 +79,27 @@
 </template>
 
 <script>
-import {auth, db} from '@/firebaseConfig';
+import {auth, db, storage} from '@/firebaseConfig';
 import NoteBody from '@/components/NoteBody';
 import ModalNoteEdit from '@/components/ModalNoteEdit';
 import PageHeader from '@/components/PageHeader';
 import TagList from '@/components/TagList';
 import {dateToString} from '@/helpers/dateFormatter';
-import ModalDeletePermanently from '@/components/ModalDeletePermanently';
-
+import ButtonNoteImageAdd from '@/components/ButtonNoteImageAdd';
+import ModalDeletePermanently from '@/components/ModalNoteDeletePermanently';
+import {ToggleButton} from 'vue-js-toggle-button';
 
 export default {
     name: 'NoteView',
-    components: {ModalDeletePermanently, TagList, PageHeader, ModalNoteEdit, NoteBody},
+    components: {
+        TagList,
+        PageHeader,
+        ModalNoteEdit,
+        NoteBody,
+        ButtonNoteImageAdd,
+        ModalDeletePermanently,
+        ToggleButton
+    },
     props: {
         id: String,
         defaultTab: String
@@ -71,15 +108,18 @@ export default {
         return {
             note: false,
             showModal: false,
-            user: false,
             userId: auth.currentUser.uid,
+            image: null,
+            uploadValue: 0,
+            user: false,
             pathMapping: {
-              "home": "Home",
-              "inbox": "Inbox",
-              "trash": "Trash",
-              "today": "Today",
-              "upcoming": "Upcoming",
-            }
+                'home': 'Home',
+                'inbox': 'Inbox',
+                'trash': 'Trash',
+                'today': 'Today',
+                'upcoming': 'Upcoming'
+            },
+            showImage: false
         };
     },
     firestore: function() {
@@ -141,17 +181,33 @@ export default {
             
             return interval + ' ' + intervalType + ' ago';
         },
-        dateToString: dateToString,
+        dateToString,
         goToView: function() {
-            this.$router.push({name: "view", params: {id : this.$route.params.viewId}});
-        },
-
+            this.$router.push({name: 'view', params: {id: this.$route.params.viewId}});
+        }
     },
     computed: {
-      getPathName: function() {
-        // eslint-disable-next-line no-prototype-builtins
-        return this.pathMapping.hasOwnProperty(this.$route.params.from) ? this.pathMapping[this.$route.params.from] : "All Notes";
-      },
+        getPathName: function() {
+            // eslint-disable-next-line no-prototype-builtins
+            return this.pathMapping.hasOwnProperty(this.$route.params.from) ?
+                this.pathMapping[this.$route.params.from] : 'All Notes';
+        },
+        deleteImage: function() {
+            storage.ref('notes/' + this.$route.params.id).delete().then(() => {
+                //Delete from db
+                db.collection('notes').doc(this.$route.params.id)
+                    .update({
+                        'imageUrl': '',
+                        lastModifiedDateTime: new Date()
+                    })
+                    .then(() => {})
+                    .catch(err => {
+                        alert('Something went wrong');
+                        console.log(err);
+                    });
+                this.showImage = false;
+            });
+        }
     }
 };
 
@@ -188,6 +244,25 @@ export default {
     margin-bottom: 7px;
     font-weight: 700;
     color: #AABBD5;
+}
+
+.toggle-image-container {
+    display: flex;
+}
+
+.control {
+    margin: auto 0;
+}
+
+.image-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.image {
+    max-width: 70%;
+    max-height: 400px;
 }
 
 .title {
@@ -253,5 +328,12 @@ export default {
 .fa-paste {
     color: #91A9D7;
     margin-left: 6px;
+}
+
+.delete-image-button {
+    background-color: red !important;
+    font-weight: 400;
+    color: white;
+    margin: auto 10px;
 }
 </style>

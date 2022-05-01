@@ -108,7 +108,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     // noinspection JSUnresolvedVariable
-    let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
     
     if(requiresAuth && !auth.currentUser) {
         next('/');

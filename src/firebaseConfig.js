@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/messaging';
+import 'firebase/storage';
 
 const firebaseConfig = {
     apiKey: '***REMOVED***',
@@ -19,8 +20,6 @@ firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 export const provider = new firebase.auth.GoogleAuthProvider();
 export const db = firebase.firestore();
-export const messaging = firebase.messaging();
+export const storage = firebase.storage();
 export const fieldValue = firebase.firestore.FieldValue;
-// export const getMessagingToken = async () => await messaging.getToken({
-//     vapidKey: "***REMOVED***"
-// });
+export const messaging = firebase.messaging();
