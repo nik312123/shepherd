@@ -45,7 +45,7 @@ export default {
         onOpenModal: function() {
             this.tags = [];
             this.title = '';
-            this.$refs.inputTagManager.reset();
+            this.$refs.inputTagManager.reset([]);
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;

@@ -18,6 +18,7 @@
         </div>
         <TagList v-if="view" :tag-array="view.tags"/>
         <div class="section">
+            <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="view.tags"/>
             <article v-for="noteObj in notes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
             </article>
@@ -32,10 +33,11 @@ import TagList from '@/components/TagList';
 import NoteListItem from '@/components/NoteListItem';
 import ModalViewEdit from '@/components/ModalViewEdit';
 import HomeView from '@/views/HomeView';
+import ModalNoteCreate from '@/components/ModalNoteCreate';
 
 export default {
     name: 'ViewView',
-    components: {ModalViewEdit, NoteListItem, TagList, PageHeader},
+    components: {ModalViewEdit, NoteListItem, TagList, PageHeader, ModalNoteCreate},
     data: function() {
         return {
             homeViewName: HomeView.name,

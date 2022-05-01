@@ -17,7 +17,7 @@
             
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="[]" @updateTags="updateTags" ref="inputTagManager"
+                    :user-tags="userTags" :initial-tags="tags" @updateTags="updateTags" ref="inputTagManager"
                 />
             </div>
             
@@ -70,7 +70,6 @@ export default {
     components: {InputTagManager, BaseModal, DatePicker, ToggleButton},
     props: {
         userTags: Array,
-        views: Array,
         startingTags: Array,
         startingDate: {
             type: Date,
@@ -80,7 +79,7 @@ export default {
     data: function() {
         return {
             title: '',
-            tags: Object.keys(this.startingTags).map((tag) => ({text: tag})),
+            tags: this.startingTags.map((tag) => ({text: tag})),
             reminder: false,
             reminderDate: this.startingDate,
             isPublic: false
@@ -93,12 +92,12 @@ export default {
     },
     methods: {
         onOpenModal: function() {
-            this.tags = Object.keys(this.startingTags).map((tag) => ({text: tag}));
+            this.tags = this.startingTags.map((tag) => ({text: tag}));
             this.title = '';
             this.reminderDate = this.startingDate;
             this.reminder = false;
             this.isPublic = false;
-            this.$refs.inputTagManager.reset();
+            this.$refs.inputTagManager.reset(this.startingTags);
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
@@ -166,5 +165,10 @@ export default {
 
 #modal-note-create >>> .fa-solid {
     padding: 10px;
+}
+
+#modal-note-create {
+    display: flex;
+    justify-content: end;
 }
 </style>

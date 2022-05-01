@@ -81,7 +81,6 @@ export default {
     text-align: center;
 }
 
-
 .tag {
     margin: auto 15px auto auto;
     border-radius: 99999px;
