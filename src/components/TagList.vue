@@ -78,6 +78,11 @@ export default {
     align-items: center;
 }
 
+.tag-list {
+    overflow: hidden;
+    min-width: 0;
+}
+
 .remaining-tag-counter {
     margin-top: 0;
     position: relative;
