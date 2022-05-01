@@ -3,9 +3,11 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/shepherd" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/.firebase" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="bulma" level="application" />
+    <orderEntry type="library" name="fontawesomeKit" level="application" />
   </component>
 </module>
