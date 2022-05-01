@@ -10,9 +10,9 @@
             v-if="showModal"
             @close="showModal = false"
             :class="{'is-active': showModal}"
-            @pictureTaken="emitImage"
-            :showProgressBar="showProgressBar"
-            :uploadValue="progressValue"
+            @picture-taken="emitImage"
+            :show-progress-bar="showProgressBar"
+            :upload-value="progressValue"
         />
     </div>
 </template>

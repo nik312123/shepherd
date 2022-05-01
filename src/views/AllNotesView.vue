@@ -11,7 +11,7 @@
         </nav>
         <div class="row">
             <h1 class="title is-2">🗄 All Notes</h1>
-            <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]"/>
+            <ModalNoteCreate v-if="user" :user-tags="user.tags" :starting-tags="[]"/>
         </div>
         <div class="section">
             <article v-for="noteObj in notes" :key="noteObj.id">

@@ -5,8 +5,9 @@
         modal-header="Edit Note"
         :modal-buttons="[{buttonText: 'Update', actionName: 'update'}]"
         @update="updateNote"
-        @modalOpen="onOpenModal"
-        ref="baseModal">
+        @modal-open="onOpenModal"
+        ref="baseModal"
+    >
         <template v-slot:button-contents>
             <span class="fa-solid fa-edit view-button"></span>
         </template>
@@ -16,7 +17,7 @@
             
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="tags" @updateTags="updateTags" ref="inputTagManager"
+                    :user-tags="userTags" :initial-tags="tags" @update-tags="updateTags" ref="inputTagManager"
                 />
             </div>
             

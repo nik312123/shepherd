@@ -5,7 +5,7 @@
         modal-header="New Note"
         :modal-buttons="[{buttonText: 'Create', actionName: 'create'}]"
         @create="createNote"
-        @modalOpen="onOpenModal"
+        @modal-open="onOpenModal"
         ref="baseModal"
     >
         <template v-slot:button-contents>
@@ -17,7 +17,7 @@
             
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="tags" @updateTags="updateTags" ref="inputTagManager"
+                    :user-tags="userTags" :initial-tags="tags" @update-tags="updateTags" ref="inputTagManager"
                 />
             </div>
             

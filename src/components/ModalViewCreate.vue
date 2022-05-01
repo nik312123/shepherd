@@ -5,7 +5,7 @@
         modal-header="New View"
         :modal-buttons="[{buttonText: 'Create', actionName: 'create'}]"
         @create="createView"
-        @modalOpen="onOpenModal"
+        @modal-open="onOpenModal"
         ref="baseModal"
     >
         <template v-slot:button-contents>
@@ -16,7 +16,7 @@
             <input v-model="title" class="input is-medium" type="text" placeholder="Add title" maxlength="30">
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="[]" @updateTags="updateTags" ref="inputTagManager"
+                    :user-tags="userTags" :initial-tags="[]" @update-type="updateTags" ref="inputTagManager"
                 />
             </div>
         </template>

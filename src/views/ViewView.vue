@@ -13,14 +13,14 @@
                 <button @click="deleteView" class="button is-info is-small">
                     <span class="fa-solid fa-trash view-button"></span>
                 </button>
-                <ModalViewEdit v-if="user && view" :userTags="user.tags" :views="views" :viewObj="view"/>
+                <ModalViewEdit v-if="user && view" :user-tags="user.tags" :views="views" :view-obj="view"/>
             </div>
         </div>
         <TagList v-if="view" :tag-array="view.tags"/>
         <div class="section">
-            <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="view.tags"/>
+            <ModalNoteCreate v-if="user" :user-tags="user.tags" :starting-tags="view.tags"/>
             <article v-for="noteObj in notes" :key="noteObj.id">
-                <NoteListItem :note="noteObj" :viewName="view.name" :viewId="id"/>
+                <NoteListItem :note="noteObj" :view-name="view.name" :view-id="id"/>
             </article>
         </div>
     </div>

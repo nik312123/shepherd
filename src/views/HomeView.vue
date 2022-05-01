@@ -4,7 +4,7 @@
         <div class="section">
             <div class="row section-header">
                 <h1 class="title is-3">Home</h1>
-                <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]"/>
+                <ModalNoteCreate v-if="user" :user-tags="user.tags" :starting-tags="[]"/>
             </div>
             <div class="row stretch">
                 <HomeSection title="📮 Inbox" view-name="InboxView" :count="inboxNotes.length"/>
@@ -22,11 +22,11 @@
         <div class="section">
             <div class="row section-header">
                 <h1 class="title is-3">Views</h1>
-                <ModalViewCreate v-if="user" :userTags="user.tags" :views="views"/>
+                <ModalViewCreate v-if="user" :user-tags="user.tags" :views="views"/>
             </div>
             
             <article v-for="view in views" :key="view.id">
-                <HomeSection :title="view.name" viewName="ViewView" :id="view.id" :count="1"/>
+                <HomeSection :title="view.name" view-name="ViewView" :id="view.id" :count="1"/>
             </article>
         </div>
     </div>

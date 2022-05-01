@@ -5,7 +5,7 @@
         modal-header="Edit View"
         :modal-buttons="[{buttonText: 'Update', actionName: 'update'}]"
         @update="updateView"
-        @modalOpen="onOpenModal"
+        @modal-open="onOpenModal"
         ref="baseModal"
     >
         <template v-slot:button-contents>
@@ -18,7 +18,7 @@
             <div class="control">
                 <InputTagManager
                     :user-tags="userTags" :initial-tags="tags"
-                    @updateTags="updateTags"
+                    @update-tags="updateTags"
                     ref="inputTagManager"
                 />
             </div>

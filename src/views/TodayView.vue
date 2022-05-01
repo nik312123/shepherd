@@ -11,7 +11,9 @@
         </nav>
         <div class="row">
             <h1 id="today-date" :class="'title is-mobile is-' + todayTextSizeDenominator">☀️ {{ todayString }}</h1>
-            <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]" :starting-date="getOneHourFromNowUpToMidnight()"/>
+            <ModalNoteCreate
+                v-if="user" :user-tags="user.tags" :starting-tags="[]" :starting-date="getOneHourFromNowUpToMidnight()"
+            />
         </div>
         <div class="section">
             <article v-for="noteObj in notes" :key="noteObj.id">

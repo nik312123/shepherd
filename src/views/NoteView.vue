@@ -29,7 +29,7 @@
                     <button @click="moveToTrash" class="button is-info is-small delete-image-button">
                         <span class="fa-solid fa-trash view-button"></span>
                     </button>
-                    <ModalNoteEdit v-if="user" :userTags="user.tags" :noteObj="this.note"/>
+                    <ModalNoteEdit v-if="user" :user-tags="user.tags" :note-obj="this.note"/>
                 </div>
                 <div v-if="note.isTrash" class="row smaller-gap">
                     <button @click="recover" class="button is-info is-small recover-button">

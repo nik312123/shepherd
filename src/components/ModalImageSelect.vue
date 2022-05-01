@@ -26,7 +26,7 @@
                         </div>
                         <ModalImageCamera
                             v-if="showCamera" @close="closeImageModal()" :class="{'is-active': showCamera}"
-                            @pictureTaken="emitImage"
+                            @picture-taken="emitImage"
                         />
                     </div>
                     <div class="image-container" v-show="showImage">
@@ -110,7 +110,7 @@ export default {
             this.showImage = true;
         },
         uploadImage: function() {
-            this.$emit('pictureTaken', this.imageSrc);
+            this.$emit('picture-taken', this.imageSrc);
         }
     }
 };

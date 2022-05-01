@@ -42,7 +42,7 @@ export default {
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
-            this.$emit('updateTags', this.tags.slice());
+            this.$emit('update-tags', this.tags.slice());
         }
     },
     watch: {

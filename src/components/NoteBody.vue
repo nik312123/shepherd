@@ -4,10 +4,10 @@
         <Editor
             class="editor"
             :options="options"
-            previewStyle="tab"
+            preview-style="tab"
             ref="bodyEditor"
             height="1000px"
-            :initialValue="newBody"
+            :initial-value="newBody"
             @change="onEditorChange"
         />
     </div>
