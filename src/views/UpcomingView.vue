@@ -9,8 +9,8 @@
         </nav>
         <h1 class="title is-2">🗓 Upcoming</h1>
         <div>
-            <article v-for="idx in 7" :key="idx">
-                <UpcomingViewSectionDay :offset="idx"/>
+            <article v-for="offset in 7" :key="offset">
+                <UpcomingViewSectionDay :tomorrow="offset === 1" :start-date="getOffsetDate(offset)"/>
             </article>
         </div>
     </div>
@@ -26,8 +26,20 @@ export default {
     components: {PageHeader, UpcomingViewSectionDay},
     data: function() {
         return {
-            homeViewName: HomeView.name
+            homeViewName: HomeView.name,
+            curDate: null
         };
+    },
+    methods: {
+        getOffsetDate: function(offset) {
+            if(offset === 1) {
+                this.curDate = new Date();
+                this.curDate.setHours(0, 0, 0, 0);
+            }
+            const offsetDate = new Date(this.curDate);
+            offsetDate.setDate(offsetDate.getDate() + offset);
+            return offsetDate;
+        }
     }
 };
 </script>

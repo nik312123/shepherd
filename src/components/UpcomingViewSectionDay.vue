@@ -2,10 +2,10 @@
     <div class="upcoming-view-section-day column">
         <div class="row">
             <p class="title is-3">
-                {{ getDate() }}
+                {{ startDate.getDate() }}
             </p>
             <p class="title is-5">
-                {{ offset === 1 ? 'Tomorrow' : getDayOfTheWeek() }}
+                {{ tomorrow ? 'Tomorrow' : getDayOfTheWeek }}
             </p>
         </div>
         <hr class="solid">
@@ -22,40 +22,29 @@ import NoteListItem from '@/components/NoteListItem';
 export default {
     name: 'UpcomingViewSectionDay',
     components: {NoteListItem},
+    props: {
+        startDate: Date,
+        tomorrow: Boolean
+    },
     data: function() {
         return {
-            notes: [],
-            dayOfWeekArr: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+            notes: []
         };
     },
-    props: {
-        offset: Number
-    },
-    methods: {
-        getDate: function() {
-            let d = new Date();
-            d.setDate(d.getDate() + this.offset);
-            return d.getDate();
-        },
+    computed: {
         getDayOfTheWeek: function() {
-            let d = new Date();
-            d.setDate(d.getDate() + this.offset);
-            return this.dayOfWeekArr[d.getDay()];
+            return this.startDate.toLocaleDateString('en-US', {'weekday': 'short'});
         }
     },
     firestore: function() {
-        let start = new Date();
-        start.setDate(start.getDate() + this.offset);
-        start.setHours(0, 0, 0, 0);
-        
-        let end = new Date(start);
+        let end = new Date(this.startDate);
         end.setDate(end.getDate() + 1);
         
         return {
             notes: db.collection('notes')
                 .where('userId', '==', auth.currentUser.uid)
                 .where('isTrash', '==', false)
-                .where('reminderDateTime', '>=', start)
+                .where('reminderDateTime', '>=', this.startDate)
                 .where('reminderDateTime', '<', end)
         };
     }
