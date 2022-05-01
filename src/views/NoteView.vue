@@ -79,7 +79,7 @@ export default {
         note: function() {
             if(this.note) {
                 this.owner = this.userId === this.note.userId;
-                if(!this.owner && !this.note.isPublic || !this.owner && this.note.isTrash) {
+                if(!this.owner && (!this.note.isPublic || this.note.isTrash)) {
                     this.$router.push({name: 'HomeView'});
                 }
             }
