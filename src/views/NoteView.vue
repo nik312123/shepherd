@@ -186,26 +186,28 @@ export default {
             this.$router.push({name: 'ViewView', params: {id: this.$route.params.viewId}});
         },
         deleteImage: function() {
-          storage.ref('notes/' + this.$route.params.id).delete().then(() => {
-            //Delete from db
-            db.collection('notes').doc(this.$route.params.id)
-                .update({
-                  'imageUrl': '',
-                  lastModifiedDateTime: new Date()
-                })
-                .then(() => {})
-                .catch(err => {
-                  alert('Something went wrong');
-                  console.log(err);
-                });
-            this.showImage = false;
-          });
+            storage.ref('notes/' + this.$route.params.id).delete().then(() => {
+                //Delete from db
+                db.collection('notes').doc(this.$route.params.id)
+                    .update({
+                        'imageUrl': '',
+                        lastModifiedDateTime: new Date()
+                    })
+                    .then(() => {})
+                    .catch(err => {
+                        alert('Something went wrong');
+                        console.log(err);
+                    });
+                this.showImage = false;
+            });
         }
     },
     computed: {
         getPathName: function() {
-            return this.pathMapping.hasOwnProperty(this.$route.params.from) ?
-                this.pathMapping[this.$route.params.from] : 'All Notes';
+            if(Object.prototype.hasOwnProperty.call(this.pathMapping, this.$route.params.from)) {
+                return this.pathMapping[this.$route.params.from];
+            }
+            return 'All Notes';
         }
     }
 };
