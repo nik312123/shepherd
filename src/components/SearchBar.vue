@@ -66,11 +66,27 @@ export default {
 }
 
 .search-input {
-    margin: auto 1%;
     font-weight: 700;
-    letter-spacing: 2px;
+    color: #F8FAFC;
+    background-color: #2A3444;
+    border-color: #344155;
+    border-radius: 10px;
+    margin: auto 1%;
+    letter-spacing: 1px;
     caret-color: grey;
-    color: #00004D;
+    font-size: 18px;
 }
 
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #A4B1B6;
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #A4B1B6;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: #A4B1B6;
+}
 </style>
