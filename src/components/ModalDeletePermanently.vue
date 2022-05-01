@@ -4,7 +4,7 @@
         button-classes="is-small delete-button"
         modal-header="Are you sure you want to permanently delete this note?"
         :modal-buttons="[
-            {buttonText: 'Yes', actionName: 'confirm'},
+            {buttonText: 'Yes', actionName: 'confirm', classes: 'is-red'},
             {buttonText: 'No', actionName: 'cancel'}
         ]"
         :additional-padding="12"
@@ -39,3 +39,9 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+>>> .is-red {
+    background-color: #DC3F58 !important;
+}
+</style>
