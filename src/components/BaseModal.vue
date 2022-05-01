@@ -3,7 +3,7 @@
         <button @click="openModal" :class="'modal-open-button button is-info ' + buttonClasses">
             <slot name="button-contents"></slot>
         </button>
-        
+
         <div :class="'modal' + (showModal ? ' is-active' : '')">
             <div @click="showModal = false" class="modal-background"></div>
             <div class="modal-content">
@@ -13,7 +13,7 @@
                             <span>{{ modalHeader }}</span>
                         </p>
                     </header>
-                    
+
                     <div class="card-content">
                         <slot name="modal-content"></slot>
                     </div>

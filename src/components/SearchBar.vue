@@ -2,7 +2,7 @@
     <div class="search-container">
 
         <input
-            class="input is-rounded search-input" type="text" placeholder="Search..." v-model="searchQuery"
+            class="input is-rounded search-input" type="text" placeholder="Search" v-model="searchQuery"
             @input="getSearchResults"
         >
     </div>
@@ -18,7 +18,7 @@ export default {
         notes: Array,
         returnResults: Function
     },
-    data() {
+    data: function() {
         return {
             searchQuery: ''
         };
@@ -63,17 +63,20 @@ export default {
 .search-container {
     display: flex;
     margin: 5px 0;
+    width: 100%;
+    padding: 0 !important;
 }
 
 .search-input {
+    width: 100%;
     font-weight: 700;
     color: #F8FAFC;
     background-color: #2A3444;
     border-color: #344155;
     border-radius: 10px;
-    margin: auto 1%;
+    margin: auto 0;
     letter-spacing: 1px;
-    caret-color: grey;
+    caret-color: white;
     font-size: 18px;
 }
 
