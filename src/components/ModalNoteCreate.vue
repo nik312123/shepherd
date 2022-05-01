@@ -36,7 +36,7 @@
                     :available-dates="{start: new Date(), end: null}"
                     mode="datetime"
                     v-if="reminder"
-                    v-model="reminderDate"
+                    v-model="reminderDateTime"
                     is-dark
                 />
             </div>
@@ -81,23 +81,23 @@ export default {
             title: '',
             tags: this.startingTags.map((tag) => ({text: tag})),
             reminder: false,
-            reminderDate: this.startingDate,
+            reminderDateTime: this.startingDate,
             isPublic: false
         };
     },
     computed: {
         formattedDate: function() {
-            return this.reminderDate === null ? null : dateToString(this.reminderDate, false, true);
+            return this.reminderDateTime === null ? null : dateToString(this.reminderDateTime, false, true);
         }
     },
     methods: {
         onOpenModal: function() {
             this.tags = this.startingTags.map((tag) => ({text: tag}));
             this.title = '';
-            this.reminderDate = this.startingDate;
+            this.reminderDateTime = this.startingDate;
             this.reminder = false;
             this.isPublic = false;
-            this.$refs.inputTagManager.reset(this.startingTags);
+            this.$refs.inputTagManager.reset(this.tags);
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
@@ -127,7 +127,7 @@ export default {
                 tags: tagsMap,
                 createdDateTime: curTimestamp,
                 lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDate === null ? null : this.reminderDate
+                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime
             }).then(docRef => {
                 this.$router.push({name: NoteView.name, params: {id: docRef.id, defaultTab: 'write'}});
             });
@@ -169,6 +169,6 @@ export default {
 
 #modal-note-create {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
 }
 </style>
