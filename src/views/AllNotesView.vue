@@ -23,7 +23,7 @@
 
 <script>
 import PageHeader from '@/components/PageHeader';
-import {db} from '@/firebaseConfig';
+import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
 import HomeView from '@/views/HomeView';
 import ModalNoteCreate from '@/components/ModalNoteCreate';
@@ -45,7 +45,7 @@ export default {
         return {
             user: db.collection('users').doc(auth.currentUser.uid),
             notes: db.collection('notes')
-                .where('userId', '==', "kwpByqIGiiR3ed88Czxcb8Od7eU2")
+                .where('userId', '==', auth.currentUser.uid)
                 .where('isTrash', '==', false)
                 .orderBy('lastModifiedDateTime', 'desc')
         };
