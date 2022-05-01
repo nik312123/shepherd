@@ -81,6 +81,7 @@ export default {
                 .where('isTrash', '==', false)
                 .where('reminderDateTime', '>=', today)
                 .where('reminderDateTime', '<', tomorrow)
+                .orderBy('reminderDateTime')
         };
     }
 };

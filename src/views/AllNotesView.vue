@@ -47,7 +47,7 @@ export default {
             notes: db.collection('notes')
                 .where('userId', '==', auth.currentUser.uid)
                 .where('isTrash', '==', false)
-                .orderBy('lastModifiedDateTime')
+                .orderBy('lastModifiedDateTime', 'desc')
         };
     }
 };

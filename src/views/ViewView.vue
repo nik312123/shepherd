@@ -66,7 +66,9 @@ export default {
     firestore: function() {
         return {
             view: db.collection('views').doc(this.$route.params.id),
-            views: db.collection('views').where('userId', '==', auth.currentUser.uid),
+            views: db.collection('views')
+                .where('userId', '==', auth.currentUser.uid)
+                .orderBy('lastModifiedDate', 'desc'),
             user: db.collection('users').doc(auth.currentUser.uid)
         };
     },

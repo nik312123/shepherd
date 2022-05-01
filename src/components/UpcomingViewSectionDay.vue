@@ -46,6 +46,7 @@ export default {
                 .where('isTrash', '==', false)
                 .where('reminderDateTime', '>=', this.startDate)
                 .where('reminderDateTime', '<', end)
+                .orderBy('reminderDateTime')
         };
     }
 };
