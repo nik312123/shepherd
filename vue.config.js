@@ -5,5 +5,8 @@ module.exports = defineConfig({
     pwa: {
         name: 'Shepherd',
         themeColor: '#1A2434',
+        workboxOptions: {
+            skipWaiting: true
+        }
     }
 });
