@@ -42,12 +42,12 @@ export default {
             inboxViewName: inboxViewName,
             homeViewName: HomeView.name,
             notes: [],
-            searchNotes : []
+            searchNotes: []
         };
     },
     methods: {
-        setResults : function(value){
-            this.searchNotes = value
+        setResults: function(value) {
+            this.searchNotes = value;
         }
     },
     firestore: function() {
