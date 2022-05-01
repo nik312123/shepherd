@@ -52,7 +52,7 @@ export default {
         view: function() {
             if(this.view) {
                 let notesQuery = db.collection('notes').where('userId', '==', auth.currentUser.uid);
-                let tags = this.view.tags;
+                const tags = this.view.tags;
                 tags.forEach(function(tag) {
                     notesQuery = notesQuery.where('tags.' + tag, '==', true);
                 });

@@ -29,7 +29,7 @@ export default {
     },
     computed: {
         relevantUserTags: function() {
-            let filteredUserTagsAsObjects = this.userTags
+            const filteredUserTagsAsObjects = this.userTags
                 .map(userTag => ({text: userTag, tagIdx: userTag.indexOf(this.tag.toLowerCase())}))
                 .filter(userTagObj => userTagObj.tagIdx !== -1);
             filteredUserTagsAsObjects.sort((userTagObj1, userTagObj2) => userTagObj1.tagIdx - userTagObj2.tagIdx);

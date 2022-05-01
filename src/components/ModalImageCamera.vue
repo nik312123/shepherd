@@ -2,23 +2,21 @@
     <div class="modal base-modal">
         <div class="modal-background" @click="emitClose"></div>
         <div class="modal-content card">
-
             <header class="card-header">
                 <p class="title card-header-title is-centered">Camera</p>
                 <button class="delete" aria-label="close" @click="emitClose"></button>
             </header>
-
+            
             <div class="card-content body-container">
-
                 <div v-show="showVideo">
                     <video ref="video" @canplay="initCanvas()" playsinline>Stream unavailable</video>
                 </div>
                 <div v-show="!showVideo" class="canvas-container">
                     <canvas ref="canvas" class="canvas"/>
                 </div>
-
+            
             </div>
-
+            
             <footer class="card-footer">
                 <button v-show="showVideo && videoAvailable" class="card-footer-item create" @click="clickPicture()">
                     <span class="title is-5">Click</span>
@@ -29,16 +27,14 @@
                 <button v-show="!showVideo" class="card-footer-item create" @click="retakePicture()">
                     <span class="title is-5">Retake</span>
                 </button>
-
             </footer>
-
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'CameraImageModal',
+    name: 'ModalImageCamera',
     data: function() {
         return {
             video: null,
@@ -56,50 +52,45 @@ export default {
     },
     methods: {
         startCapture: function() {
-            navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(
-                stream => {
-                    this.video.srcObject = stream;
-                    this.video.play();
-                    this.videoAvailable = true;
-                },
-                error => {
-
-                    if((error.name === 'NotAllowedError') ||
-                        (error.name === 'PermissionDismissedError')) {
-                        alert('You need to allow camera access');
-                        this.$emit('close');
+            navigator.mediaDevices.getUserMedia({video: true, audio: false})
+                .then(
+                    stream => {
+                        this.video.srcObject = stream;
+                        this.video.play();
+                        this.videoAvailable = true;
+                    },
+                    error => {
+                        if(error.name === 'NotAllowedError' ||
+                            error.name === 'PermissionDismissedError') {
+                            alert('You need to allow camera access');
+                            this.$emit('close');
+                        }
                     }
-                }
-            ).catch(err => {
-
-                console.log(err);
-                alert('You need to allow camera access');
-                this.$emit('close');
-            });
+                )
+                .catch(err => {
+                    console.log(err);
+                    alert('You need to allow camera access');
+                    this.$emit('close');
+                });
         },
         initCanvas: function() {
-
             this.canvas.setAttribute('width', this.video.videoWidth);
             this.canvas.setAttribute('height', this.video.videoHeight);
             this.showCanvas = false;
         },
         clickPicture: function() {
-
-            let context = this.canvas.getContext('2d');
+            const context = this.canvas.getContext('2d');
             context.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
             this.showVideo = false;
-
+            
             this.imageSrc = this.canvas.toDataURL('image/png');
             this.$emit('picture-taken', this.imageSrc);
-
         },
         retakePicture: function() {
             this.showVideo = true;
         },
         emitClose: function() {
-
-            let tracks = this.$refs.video.srcObject.getTracks();
-
+            const tracks = this.$refs.video.srcObject.getTracks();
             tracks.forEach(track => {
                 track.stop();
             });
@@ -121,13 +112,7 @@ export default {
     max-height: 100%;
     overflow: hidden;
 }
-</style>
 
-<style>
-
-</style>
-
-<style scoped>
 .modal-background {
     backdrop-filter: blur(10px);
     background-color: rgba(10, 10, 10, .5);

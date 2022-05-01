@@ -7,17 +7,16 @@
                     <p class="title card-header-title is-centered">Select Image</p>
                     <button class="delete" aria-label="close" @click="$emit('close')"></button>
                 </header>
+                
                 <div class="card-content">
                     <div class="body-container">
                         <div class="field" v-show="showButtons">
                             <button @click="showCamera=true; showButtons=false" class="card-footer-item create">
-
                                 <span class="title is-5">Camera</span>
                             </button>
                         </div>
                         <div class="field" v-show="showButtons">
                             <button class="card-footer-item create" @click="triggerChooseFile">
-
                                 <span class="title is-5">Browse</span>
                             </button>
                             <input
@@ -25,13 +24,13 @@
                                 accept="image/png, image/gif, image/jpeg" @change="onFilePicked"
                             >
                         </div>
-                        <camera-image-modal
+                        <ModalImageCamera
                             v-if="showCamera" @close="closeImageModal()" :class="{ 'is-active': showCamera }"
                             @picture-taken="emitImage"
                         />
                     </div>
                     <div class="image-container" v-show="showImage">
-                        <img :src="imageSrc" class="image" alt="Note image"/>
+                        <img :src="imageSrc" class="image" alt="Selected image"/>
                     </div>
                     <div v-if="showProgressBar" class="progress-bar-container">
                         <p class="title is-5"> Uploading </p>
@@ -40,13 +39,14 @@
                         </progress>
                     </div>
                 </div>
+                
                 <footer v-show="imageSrc !== null" class="card-footer">
                     <button class="card-footer-item create" @click="uploadImage()">
-
+                        
                         <span class="title is-5">Save</span>
                     </button>
                     <button class="card-footer-item create" @click="showButtons=true;showImage=false; imageSrc=null">
-
+                        
                         <span class="title is-5">Reselect</span>
                     </button>
                 </footer>
@@ -56,11 +56,11 @@
 </template>
 
 <script>
-import CameraImageModal from '@/components/CameraImageModal.vue';
+import ModalImageCamera from '@/components/ModalImageCamera.vue';
 
 export default {
-    components: {CameraImageModal},
-    name: 'SelectImageModal',
+    components: {ModalImageCamera},
+    name: 'ModalImageSelect',
     props: {
         uploadValue: Number,
         showProgressBar: Boolean
@@ -82,28 +82,23 @@ export default {
             this.$refs.fileInput.click();
         },
         onFilePicked: function(event) {
-
             const files = event.target.files;
             const fileTypes = ['jpg', 'jpeg', 'png'];
-
+            
             if(files && files[0]) {
                 const extension = files[0].name.split('.').pop().toLowerCase(),
                     isSuccess = fileTypes.indexOf(extension) > -1;
-
                 if(isSuccess) {
                     this.showImage = true;
                     const reader = new FileReader();
                     reader.addEventListener('load', () => {
-
                         this.imageSrc = reader.result;
                         this.showButtons = false;
                         this.showImage = true;
                     });
-
                     reader.readAsDataURL(files[0]);
                 }
                 else {
-
                     alert('invalid file type');
                 }
             }
@@ -173,7 +168,6 @@ export default {
 }
 
 .progress-bar-container {
-
     margin: 4% 0 1% 0;
 }
 

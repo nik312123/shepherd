@@ -54,7 +54,7 @@ export default {
         computeDisplayedTagsAndRemainingCount: function(tags) {
             let totalChars = this.computeTotalChars(this.currentWidth);
             
-            let displayedTags = [];
+            const displayedTags = [];
             for(let i = 0; totalChars > 0 && i < tags.length; ++i) {
                 const expectedRemainingTotalChars = totalChars - tags[i].length;
                 if(expectedRemainingTotalChars < 0) {
@@ -64,7 +64,7 @@ export default {
                 displayedTags.push(tags[i]);
             }
             
-            let remainingTagCount = tags.length - displayedTags.length;
+            const remainingTagCount = tags.length - displayedTags.length;
             
             return {
                 displayedTags,

@@ -33,22 +33,22 @@ export default {
     },
     methods: {
         getDate: function() {
-            let d = new Date();
+            const d = new Date();
             d.setDate(d.getDate() + this.offset);
             return d.getDate();
         },
         getDayOfTheWeek: function() {
-            let d = new Date();
+            const d = new Date();
             d.setDate(d.getDate() + this.offset);
             return this.dayOfWeekArr[d.getDay()];
         }
     },
     firestore: function() {
-        let start = new Date();
+        const start = new Date();
         start.setDate(start.getDate() + this.offset);
         start.setHours(0, 0, 0, 0);
         
-        let end = new Date(start);
+        const end = new Date(start);
         end.setDate(end.getDate() + 1);
         
         return {

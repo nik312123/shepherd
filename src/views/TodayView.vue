@@ -58,9 +58,9 @@ export default {
         }
     },
     firestore: function() {
-        let today = new Date();
+        const today = new Date();
         today.setHours(0, 0, 0);
-        let tomorrow = new Date(today);
+        const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
         return {
             notes: db.collection('notes')

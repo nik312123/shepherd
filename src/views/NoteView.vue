@@ -27,7 +27,7 @@
                 </div>
             </div>
             <TagList :tag-array="Object.keys(note.tags)" class="tags"/>
-
+            
             <div>
                 <p v-if="note.reminderDateTime" class="note-info">
                     Reminder: {{ dateToString(note.reminderDateTime.toDate(), false, true) }}
@@ -35,7 +35,7 @@
                 <p class="note-info">Created: {{ dateToString(note.createdDateTime.toDate(), false, false) }}</p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
                 <div class="toggle-image-container">
-                    <add-image/>
+                    <ButtonNoteImageAdd/>
                     <div class="control" v-if="note.imageUrl !== undefined && note.imageUrl !== '' ">
                         <ToggleButton
                             v-model="showImage"
@@ -52,15 +52,14 @@
                         class="button is-focused delete-image-button" @click="deleteImage"
                     >
                         <span class="icon">
-                            <i class="fas fa-trash"></i>
+                            <span class="fas fa-trash"></span>
                         </span>
                         <span>Image</span>
                     </button>
-
                 </div>
             </div>
             <div class="image-container">
-                <img :src="note.imageUrl" v-if="showImage" class="image"/>
+                <img :src="note.imageUrl" v-if="showImage" class="image" alt="Note Image"/>
             </div>
             <NoteBody :default-tab="defaultTab" :body="note.body" :id="note.id"/>
         </div>
@@ -75,13 +74,13 @@ import PageHeader from '@/components/PageHeader';
 import TagList from '@/components/TagList';
 import HomeView from '@/views/HomeView';
 import {dateToString} from '@/helpers/dateFormatter';
-import AddImage from '@/components/AddImage';
-import ModalDeletePermanently from '@/components/ModalDeletePermanently';
+import ButtonNoteImageAdd from '@/components/ButtonNoteImageAdd';
+import ModalDeletePermanently from '@/components/ModalNoteDeletePermanently';
 import {ToggleButton} from 'vue-js-toggle-button';
 
 export default {
     name: 'NoteView',
-    components: {TagList, PageHeader, ModalNoteEdit, NoteBody, AddImage, ModalDeletePermanently, ToggleButton},
+    components: {TagList, PageHeader, ModalNoteEdit, NoteBody, ButtonNoteImageAdd, ModalDeletePermanently, ToggleButton},
     props: {
         id: String,
         defaultTab: String
@@ -125,16 +124,16 @@ export default {
             if(typeof date !== 'object') {
                 date = new Date(date);
             }
-
+            
             const seconds = Math.floor((new Date() - date) / 1000);
-
+            
             let interval;
             let intervalType;
-
+            
             const secondsInMinute = 60;
             const secondsInHour = 60 * secondsInMinute;
             const secondsInDay = 24 * secondsInHour;
-
+            
             if(seconds >= secondsInDay) {
                 return dateToString(date, false, false);
             }
@@ -150,34 +149,31 @@ export default {
                 intervalType = 'second';
                 interval = seconds;
             }
-
+            
             if(interval !== 1) {
                 intervalType += 's';
             }
-
+            
             return interval + ' ' + intervalType + ' ago';
         },
-        dateToString: dateToString,
-
+        dateToString,
         deleteImage: function() {
             storage.ref('notes/' + this.$route.params.id).delete().then(() => {
-
                 //Delete from db
-                db.collection('notes').doc(this.$route.params.id).update({
-                    'imageUrl': '',
-                    lastModifiedDateTime: new Date()
-                }).then(() => {
-
-                }).catch(err => {
-                    alert('Something went wrong');
-                    console.log(err);
-                });
+                db.collection('notes').doc(this.$route.params.id)
+                    .update({
+                        'imageUrl': '',
+                        lastModifiedDateTime: new Date()
+                    })
+                    .then(() => {})
+                    .catch(err => {
+                        alert('Something went wrong');
+                        console.log(err);
+                    });
                 this.showImage = false;
             });
-
         }
     }
-
 };
 
 </script>
