@@ -9,7 +9,10 @@
                 </li>
             </ul>
         </nav>
-        <h1 class="title is-2">🗄 All Notes</h1>
+        <div class="row">
+            <h1 class="title is-2">🗄 All Notes</h1>
+            <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]"/>
+        </div>
         <div class="section">
             <article v-for="noteObj in notes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
@@ -23,14 +26,16 @@ import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
 import HomeView from '@/views/HomeView';
+import ModalNoteCreate from '@/components/ModalNoteCreate';
 
 const allNotesViewName = 'AllNotesView';
 
 export default {
     name: allNotesViewName,
-    components: {NoteListItem, PageHeader},
+    components: {NoteListItem, PageHeader, ModalNoteCreate},
     data: function() {
         return {
+            user: false,
             allNotesViewName: allNotesViewName,
             homeViewName: HomeView.name,
             notes: []
@@ -38,6 +43,7 @@ export default {
     },
     firestore: function() {
         return {
+            user: db.collection('users').doc(auth.currentUser.uid),
             notes: db.collection('notes')
                 .where('userId', '==', auth.currentUser.uid)
                 .where('isTrash', '==', false)
@@ -46,3 +52,10 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+</style>

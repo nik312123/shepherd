@@ -1,7 +1,7 @@
 <template>
     <base-modal
         id="modal-note-create"
-        button-classes="is-add is-large"
+        button-classes="is-add is-medium"
         modal-header="New Note"
         :modal-buttons="[{buttonText: 'Create', actionName: 'create'}]"
         @create="createNote"
@@ -17,7 +17,7 @@
             
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="[]" @updateTags="updateTags" ref="inputTagManager"
+                    :user-tags="userTags" :initial-tags="tags" @updateTags="updateTags" ref="inputTagManager"
                 />
             </div>
             
@@ -70,14 +70,18 @@ export default {
     components: {InputTagManager, BaseModal, DatePicker, ToggleButton},
     props: {
         userTags: Array,
-        views: Array
+        startingTags: Array,
+        startingDate: {
+            type: Date,
+            default: null
+        }
     },
     data: function() {
         return {
             title: '',
-            tags: [],
+            tags: this.startingTags.map((tag) => ({text: tag})),
             reminder: false,
-            reminderDate: null,
+            reminderDate: this.startingDate,
             isPublic: false
         };
     },
@@ -88,12 +92,12 @@ export default {
     },
     methods: {
         onOpenModal: function() {
-            this.tags = [];
+            this.tags = this.startingTags.map((tag) => ({text: tag}));
             this.title = '';
-            this.reminderDate = null;
+            this.reminderDate = this.startingDate;
             this.reminder = false;
             this.isPublic = false;
-            this.$refs.inputTagManager.reset();
+            this.$refs.inputTagManager.reset(this.startingTags);
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
@@ -155,18 +159,16 @@ export default {
     font-weight: 800;
     border-radius: 99999px;
     padding: 5px;
-    margin-bottom: 20px;
-    height: auto;
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%);
-    width: 200px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    z-index: 30;
+    width: 80px;
+    height: 40px;
 }
 
 #modal-note-create >>> .fa-solid {
     padding: 10px;
+}
+
+#modal-note-create {
+    display: flex;
+    justify-content: end;
 }
 </style>

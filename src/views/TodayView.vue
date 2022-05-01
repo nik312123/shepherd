@@ -9,7 +9,10 @@
                 </li>
             </ul>
         </nav>
-        <h1 id="today-date" :class="'title is-mobile is-' + todayTextSizeDenominator">☀️ {{ todayString }}</h1>
+        <div class="row">
+            <h1 id="today-date" :class="'title is-mobile is-' + todayTextSizeDenominator">☀️ {{ todayString }}</h1>
+            <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]" :starting-date="new Date()"/>
+        </div>
         <div class="section">
             <article v-for="noteObj in notes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
@@ -23,14 +26,16 @@ import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
 import HomeView from '@/views/HomeView';
+import ModalNoteCreate from '@/components/ModalNoteCreate';
 
 const todayViewName = 'TodayView';
 
 export default {
     name: todayViewName,
-    components: {NoteListItem, PageHeader},
+    components: {NoteListItem, PageHeader, ModalNoteCreate},
     data: function() {
         return {
+            user: false,
             todayViewName: todayViewName,
             homeViewName: HomeView.name,
             notes: [],
@@ -63,6 +68,7 @@ export default {
         let tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
         return {
+            user: db.collection('users').doc(auth.currentUser.uid),
             notes: db.collection('notes')
                 .where('userId', '==', auth.currentUser.uid)
                 .where('isTrash', '==', false)
@@ -76,5 +82,10 @@ export default {
 <style scoped>
 #today-date {
     white-space: nowrap;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
 }
 </style>
