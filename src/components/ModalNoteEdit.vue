@@ -6,8 +6,7 @@
         :modal-buttons="[{buttonText: 'Update', actionName: 'update'}]"
         @update="updateNote"
         @modalOpen="onOpenModal"
-        ref="baseModal"
-    >
+        ref="baseModal">
         <template v-slot:button-contents>
             <span class="fa-solid fa-edit view-button"></span>
         </template>

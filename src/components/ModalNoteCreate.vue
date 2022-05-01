@@ -59,7 +59,6 @@
 <script>
 import {auth, db, fieldValue, messaging} from '@/firebaseConfig';
 import DatePicker from 'v-calendar/lib/components/date-picker.umd';
-import NoteView from '@/views/NoteView';
 import BaseModal from '@/components/BaseModal';
 import InputTagManager from '@/components/InputTagManager';
 import {ToggleButton} from 'vue-js-toggle-button';
@@ -135,7 +134,7 @@ export default {
                   messageToken: messageToken,
                   notified: false
               }).then(docRef => {
-                  this.$router.push({name: NoteView.name, params: {id: docRef.id, defaultTab: 'write'}});
+                  this.$router.push({name: "note", params: {id: docRef.id, defaultTab: 'write'}});
               })
             });
             

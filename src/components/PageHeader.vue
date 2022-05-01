@@ -18,7 +18,6 @@
 
 <script>
 import ButtonAuthenticationGoogle from '@/components/ButtonAuthenticationGoogle';
-import HomeView from '@/views/HomeView';
 
 export default {
     name: 'PageHeader',
@@ -36,7 +35,7 @@ export default {
     },
     methods: {
         redirectToHome: function() {
-            this.$router.push({name: HomeView.name});
+            this.$router.push({name: "home"});
         },
         onResize: function() {
             const windowWidth = window.screen.width;

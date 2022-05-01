@@ -7,15 +7,15 @@
                 <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]"/>
             </div>
             <div class="row stretch">
-                <HomeSection title="📮 Inbox" viewName="InboxView" :count="inboxNotes.length"/>
-                <HomeSection title="☀️ Today" viewName="TodayView" :count="todayNotes.length"/>
+                <HomeSection title="📮 Inbox" viewName="inbox" :count="inboxNotes.length"/>
+                <HomeSection title="☀️ Today" viewName="today" :count="todayNotes.length"/>
             </div>
             <div class="row stretch">
-                <HomeSection title="🗄 All Notes" viewName="AllNotesView" :count="allNotes.length"/>
-                <HomeSection title="🗓 Upcoming" viewName="UpcomingView" :count="upcomingNotes.length"/>
+                <HomeSection title="🗄 All Notes" viewName="all-notes" :count="allNotes.length"/>
+                <HomeSection title="🗓 Upcoming" viewName="upcoming" :count="upcomingNotes.length"/>
             </div>
             <div class="row stretch">
-                <HomeSection title="🗑 Trash" viewName="TrashView" :count="trashNotes.length"/>
+                <HomeSection title="🗑 Trash" viewName="trash" :count="trashNotes.length"/>
             </div>
         </div>
         
@@ -26,7 +26,7 @@
             </div>
             
             <article v-for="view in views" :key="view.id">
-                <HomeSection :title="view.name" viewName="ViewView" :id="view.id" :count="1"/>
+                <HomeSection :title="view.name" viewName="view" :id="view.id" :count="1"/>
             </article>
         </div>
     </div>

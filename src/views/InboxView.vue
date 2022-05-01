@@ -3,9 +3,9 @@
         <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
+                <li @click="$router.push({name: 'home'})"><a>Home</a></li>
                 <li class="is-active">
-                    <router-link :to="{name: inboxViewName}" aria-current="page">Inbox</router-link>
+                    <router-link :to="{name: $route.name}" aria-current="page">Inbox</router-link>
                 </li>
             </ul>
         </nav>
@@ -25,19 +25,15 @@
 import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
-import HomeView from '@/views/HomeView';
 import ModalNoteCreate from '@/components/ModalNoteCreate';
 
-const inboxViewName = 'InboxView';
 
 export default {
-    name: inboxViewName,
+    name: "InboxView",
     components: {NoteListItem, PageHeader, ModalNoteCreate},
     data: function() {
         return {
             user: false,
-            inboxViewName: inboxViewName,
-            homeViewName: HomeView.name,
             notes: []
         };
     },

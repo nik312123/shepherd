@@ -12,7 +12,6 @@
 
 <script>
 import router from '@/router';
-import ViewView from '@/views/ViewView';
 import {auth, db} from '@/firebaseConfig';
 
 export default {
@@ -45,8 +44,8 @@ export default {
     },
     methods: {
         goToView: function() {
-            if(this.viewName === ViewView.name) {
-                router.push({name: ViewView.name, params: {id: this.id}});
+            if(this.viewName === "view") {
+                router.push({name: "view", params: {id: this.id}});
             }
             else {
                 router.push({name: this.viewName});

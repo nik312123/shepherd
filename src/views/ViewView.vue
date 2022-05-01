@@ -3,7 +3,7 @@
         <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
+                <li @click="$router.push({name: 'home'})"><a>Home</a></li>
                 <li v-if="view" class="is-active"><a aria-current="page">{{ view.name }}</a></li>
             </ul>
         </nav>
@@ -32,7 +32,6 @@ import {auth, db} from '@/firebaseConfig';
 import TagList from '@/components/TagList';
 import NoteListItem from '@/components/NoteListItem';
 import ModalViewEdit from '@/components/ModalViewEdit';
-import HomeView from '@/views/HomeView';
 import ModalNoteCreate from '@/components/ModalNoteCreate';
 
 export default {
@@ -40,7 +39,6 @@ export default {
     components: {ModalViewEdit, NoteListItem, TagList, PageHeader, ModalNoteCreate},
     data: function() {
         return {
-            homeViewName: HomeView.name,
             view: null,
             notes: [],
             user: null,
@@ -73,7 +71,7 @@ export default {
     methods: {
         deleteView: function() {
             db.collection('views').doc(this.view.id).delete();
-            this.$router.push({name: HomeView.name});
+            this.$router.push({name: "home"});
         }
     }
 };

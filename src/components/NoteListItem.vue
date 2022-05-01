@@ -30,7 +30,6 @@
 <script>
 
 import TagList from '@/components/TagList';
-import NoteView from '@/views/NoteView';
 
 export default {
     name: 'NoteListItem',
@@ -38,12 +37,12 @@ export default {
     props: {
         note: Object,
         viewName: String,
-        viewId: String
+        viewId: String,
     },
     methods: {
         goToNote: function() {
             this.$router.push({
-              name: NoteView.name,
+              name: "note",
               params: {
                 id: this.note.id,
                 from: this.$route.name,
