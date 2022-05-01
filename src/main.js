@@ -4,6 +4,7 @@ import router from '@/router';
 import {auth} from '@/firebaseConfig';
 import {firestorePlugin} from 'vuefire';
 import 'no-darkreader';
+import '@/registerServiceWorker'
 
 Vue.config.productionTip = false;
 

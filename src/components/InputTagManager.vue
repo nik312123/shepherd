@@ -23,7 +23,6 @@ export default {
     data: function() {
         return {
             tag: '',
-            originalTags: this.initialTags.slice(),
             tags: this.initialTags.slice()
         };
     },
@@ -37,9 +36,9 @@ export default {
         }
     },
     methods: {
-        reset: function() {
+        reset: function(tags) {
             this.tag = '';
-            this.tags = this.originalTags.slice();
+            this.tags = tags.slice();
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
