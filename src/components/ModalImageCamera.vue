@@ -14,12 +14,11 @@
                 <div v-show="!showVideo" class="canvas-container">
                     <canvas ref="canvas" class="canvas"/>
                 </div>
-            
             </div>
             
             <footer class="card-footer">
-                <button v-show="showVideo && videoAvailable" class="card-footer-item create" @click="clickPicture()">
-                    <span class="title is-5">Click</span>
+                <button v-show="showVideo && videoAvailable" class="card-footer-item create" @click="takePicture()">
+                    <span class="title is-5">Take Picture</span>
                 </button>
                 <button v-show="!showVideo" class="card-footer-item create" @click="emitClose">
                     <span class="title is-5">Looks good!</span>
@@ -57,7 +56,9 @@ export default {
                     stream => {
                         this.video.srcObject = stream;
                         this.video.play();
-                        this.videoAvailable = true;
+                        return new Promise(resolve => {
+                            this.video.onplaying = resolve;
+                        });
                     },
                     error => {
                         if(error.name === 'NotAllowedError' ||
@@ -67,6 +68,9 @@ export default {
                         }
                     }
                 )
+                .then(() => {
+                    this.videoAvailable = true;
+                })
                 .catch(err => {
                     console.log(err);
                     alert('You need to allow camera access');
@@ -78,7 +82,7 @@ export default {
             this.canvas.setAttribute('height', this.video.videoHeight);
             this.showCanvas = false;
         },
-        clickPicture: function() {
+        takePicture: function() {
             const context = this.canvas.getContext('2d');
             context.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
             this.showVideo = false;
