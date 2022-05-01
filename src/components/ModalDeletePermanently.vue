@@ -1,5 +1,6 @@
 <template>
     <base-modal
+        id="modal-delete-permanently"
         button-classes="is-small delete-button"
         modal-header="Are you sure you want to permanently delete this note?"
         :modal-buttons="[
