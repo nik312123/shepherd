@@ -32,9 +32,9 @@
                 <p v-if="note.reminderDateTime && owner" class="note-info">
                     Reminder: {{ dateToString(note.reminderDateTime.toDate(), false, true) }}
                 </p>
-                <p class="note-info" v-if="owner">Created: {{
-                        dateToString(note.createdDateTime.toDate(), false, false)
-                                                  }}</p>
+                <p class="note-info" v-if="owner">
+                    Created: {{ dateToString(note.createdDateTime.toDate(), false, false) }}
+                </p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
             </div>
             <NoteBody :default-tab="defaultTab" :body="note.body" :id="note.id" :owner="owner"/>
