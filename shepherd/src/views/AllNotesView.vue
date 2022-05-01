@@ -21,7 +21,7 @@
 import HeaderBar from "@/components/HeaderBar";
 import {auth, db} from "@/firebaseConfig";
 import NoteComponent from "@/components/NoteComponent";
-import SearchBar from '../components/SearchBar.vue';
+import SearchBar from '@/components/SearchBar.vue';
 
 export default {
   name: "AllNotesView",

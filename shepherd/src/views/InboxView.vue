@@ -11,7 +11,7 @@
     <search-bar :notes="notes" :returnResults="setResults" />
     <div class="section">
       <article v-for="noteObj in searchNotes" :key="noteObj.id">
-        
+
         <note-component :note="noteObj"></note-component>
       </article>
     </div>
@@ -22,7 +22,7 @@
 import HeaderBar from "@/components/HeaderBar";
 import {auth, db} from "@/firebaseConfig";
 import NoteComponent from "@/components/NoteComponent";
-import SearchBar from '../components/SearchBar.vue';
+import SearchBar from '@/components/SearchBar.vue';
 
 export default {
   name: "InboxView",

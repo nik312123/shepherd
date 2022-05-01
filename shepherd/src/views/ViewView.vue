@@ -14,7 +14,7 @@
       </button>
     </div>
     <tag-component v-if="view && view.length > 0" :tag-array="view[0].tags"></tag-component>
-    
+
     <div class="section">
       <search-bar :notes="notes" :returnResults="setResults"/>
       <article v-for="noteObj in notes" :key="noteObj.id">
@@ -29,7 +29,7 @@ import HeaderBar from "@/components/HeaderBar";
 import {auth, db} from "@/firebaseConfig";
 import TagComponent from "@/components/TagComponent";
 import NoteComponent from "@/components/NoteComponent";
-import SearchBar from '../components/SearchBar.vue';
+import SearchBar from '@/components/SearchBar.vue';
 
 export default {
   name: "ViewView",
