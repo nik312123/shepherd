@@ -27,7 +27,7 @@
                 </div>
             </div>
             <TagList :tag-array="Object.keys(note.tags)" class="tags"/>
-            
+
             <div>
                 <p v-if="note.reminderDateTime" class="note-info">
                     Reminder: {{ dateToString(note.reminderDateTime.toDate(), false, true) }}
@@ -47,13 +47,16 @@
                             :margin="5"
                         />
                     </div>
-                    <button v-show="note.imageUrl !== undefined && note.imageUrl !== '' && showImage" class="button is-focused delete-image-button" @click="deleteImage">
+                    <button
+                        v-show="note.imageUrl !== undefined && note.imageUrl !== '' && showImage"
+                        class="button is-focused delete-image-button" @click="deleteImage"
+                    >
                         <span class="icon">
                             <i class="fas fa-trash"></i>
                         </span>
                         <span>Image</span>
                     </button>
-                    
+
                 </div>
             </div>
             <div class="image-container">
@@ -75,6 +78,7 @@ import {dateToString} from '@/helpers/dateFormatter';
 import AddImage from '@/components/AddImage';
 import ModalDeletePermanently from '@/components/ModalDeletePermanently';
 import {ToggleButton} from 'vue-js-toggle-button';
+
 export default {
     name: 'NoteView',
     components: {TagList, PageHeader, ModalNoteEdit, NoteBody, AddImage, ModalDeletePermanently, ToggleButton},
@@ -88,8 +92,8 @@ export default {
             note: false,
             showModal: false,
             userId: auth.currentUser.uid,
-            image : null,
-            uploadValue : 0,
+            image: null,
+            uploadValue: 0,
             user: false,
             showImage: false
         };
@@ -121,16 +125,16 @@ export default {
             if(typeof date !== 'object') {
                 date = new Date(date);
             }
-            
+
             const seconds = Math.floor((new Date() - date) / 1000);
-            
+
             let interval;
             let intervalType;
-            
+
             const secondsInMinute = 60;
             const secondsInHour = 60 * secondsInMinute;
             const secondsInDay = 24 * secondsInHour;
-            
+
             if(seconds >= secondsInDay) {
                 return dateToString(date, false, false);
             }
@@ -146,34 +150,34 @@ export default {
                 intervalType = 'second';
                 interval = seconds;
             }
-            
+
             if(interval !== 1) {
                 intervalType += 's';
             }
-            
+
             return interval + ' ' + intervalType + ' ago';
         },
         dateToString: dateToString,
 
-        deleteImage(){
-            storage.ref('notes/'+this.$route.params.id).delete().then(() => {
-                
+        deleteImage() {
+            storage.ref('notes/' + this.$route.params.id).delete().then(() => {
+
                 //Delete from db
                 db.collection('notes').doc(this.$route.params.id).update({
-                  'imageUrl' : '',
-                   lastModifiedDateTime: new Date()
+                    'imageUrl': '',
+                    lastModifiedDateTime: new Date()
                 }).then(() => {
-                    
+
                 }).catch(err => {
-                    alert("Something went wrong")
-                    console.log(err)
-                })
+                    alert('Something went wrong');
+                    console.log(err);
+                });
                 this.showImage = false;
-            })
+            });
 
         }
-    },
-    
+    }
+
 };
 
 </script>
@@ -211,25 +215,25 @@ export default {
     color: #AABBD5;
 }
 
-.toggle-image-container{
+.toggle-image-container {
     display: flex;
 }
 
-.control{
-    margin: auto 0%;
-    padding: auto 0%;
+.control {
+    margin: auto 0;
 }
 
-.image-container{
+.image-container {
     display: flex;
     justify-content: space-around;
     width: 100%;
 }
 
-.image{
+.image {
     max-width: 70%;
     max-height: 400px;
 }
+
 .title {
     margin-bottom: 0;
 }
@@ -295,9 +299,8 @@ export default {
     margin-left: 6px;
 }
 
-.delete-image-button{
+.delete-image-button {
     background-color: red !important;
-    padding: auto 1%;
     font-weight: 400;
     color: white;
     margin: auto 10px;
