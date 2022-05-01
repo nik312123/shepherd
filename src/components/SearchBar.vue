@@ -78,6 +78,7 @@ export default {
     letter-spacing: 1px;
     caret-color: white;
     font-size: 18px;
+    font-family: "Inter", sans-serif;
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
