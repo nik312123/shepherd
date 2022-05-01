@@ -14,7 +14,7 @@
             <div class="row">
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
                 <div v-if="!note.isTrash" class="row smaller-gap">
-                    <button @click="moveToTrash" class="button is-info is-small delete-button">
+                    <button @click="moveToTrash" class="button is-info is-small delete-image-button">
                         <span class="fa-solid fa-trash view-button"></span>
                     </button>
                     <ModalNoteEdit v-if="user" :userTags="user.tags" :noteObj="this.note"/>
@@ -34,6 +34,32 @@
                 </p>
                 <p class="note-info">Created: {{ dateToString(note.createdDateTime.toDate(), false, false) }}</p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
+                <div class="toggle-image-container">
+                    <ButtonNoteImageAdd/>
+                    <div class="control" v-if="note.imageUrl !== undefined && note.imageUrl !== '' ">
+                        <ToggleButton
+                            v-model="showImage"
+                            :color="{checked: '#089D7B', unchecked: '#2A3444'}"
+                            :labels="{checked: 'Hide', unchecked: 'Show'}"
+                            :width="98"
+                            :height="35"
+                            :font-size="15"
+                            :margin="5"
+                        />
+                    </div>
+                    <button
+                        v-show="note.imageUrl !== undefined && note.imageUrl !== '' && showImage"
+                        class="button is-focused delete-image-button" @click="deleteImage"
+                    >
+                        <span class="icon">
+                            <span class="fas fa-trash"></span>
+                        </span>
+                        <span>Image</span>
+                    </button>
+                </div>
+            </div>
+            <div class="image-container">
+                <img :src="note.imageUrl" v-if="showImage" class="image" alt="Note Image"/>
             </div>
             <NoteBody :default-tab="defaultTab" :body="note.body" :id="note.id"/>
         </div>
@@ -41,18 +67,20 @@
 </template>
 
 <script>
-import {auth, db} from '@/firebaseConfig';
+import {auth, db, storage} from '@/firebaseConfig';
 import NoteBody from '@/components/NoteBody';
 import ModalNoteEdit from '@/components/ModalNoteEdit';
 import PageHeader from '@/components/PageHeader';
 import TagList from '@/components/TagList';
 import HomeView from '@/views/HomeView';
 import {dateToString} from '@/helpers/dateFormatter';
-import ModalDeletePermanently from '@/components/ModalDeletePermanently';
+import ButtonNoteImageAdd from '@/components/ButtonNoteImageAdd';
+import ModalDeletePermanently from '@/components/ModalNoteDeletePermanently';
+import {ToggleButton} from 'vue-js-toggle-button';
 
 export default {
     name: 'NoteView',
-    components: {ModalDeletePermanently, TagList, PageHeader, ModalNoteEdit, NoteBody},
+    components: {TagList, PageHeader, ModalNoteEdit, NoteBody, ButtonNoteImageAdd, ModalDeletePermanently, ToggleButton},
     props: {
         id: String,
         defaultTab: String
@@ -62,8 +90,11 @@ export default {
             homeViewName: HomeView.name,
             note: false,
             showModal: false,
+            userId: auth.currentUser.uid,
+            image: null,
+            uploadValue: 0,
             user: false,
-            userId: auth.currentUser.uid
+            showImage: false
         };
     },
     firestore: function() {
@@ -125,7 +156,23 @@ export default {
             
             return interval + ' ' + intervalType + ' ago';
         },
-        dateToString: dateToString
+        dateToString,
+        deleteImage: function() {
+            storage.ref('notes/' + this.$route.params.id).delete().then(() => {
+                //Delete from db
+                db.collection('notes').doc(this.$route.params.id)
+                    .update({
+                        'imageUrl': '',
+                        lastModifiedDateTime: new Date()
+                    })
+                    .then(() => {})
+                    .catch(err => {
+                        alert('Something went wrong');
+                        console.log(err);
+                    });
+                this.showImage = false;
+            });
+        }
     }
 };
 
@@ -162,6 +209,25 @@ export default {
     margin-bottom: 7px;
     font-weight: 700;
     color: #AABBD5;
+}
+
+.toggle-image-container {
+    display: flex;
+}
+
+.control {
+    margin: auto 0;
+}
+
+.image-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.image {
+    max-width: 70%;
+    max-height: 400px;
 }
 
 .title {
@@ -227,5 +293,12 @@ export default {
 .fa-paste {
     color: #91A9D7;
     margin-left: 6px;
+}
+
+.delete-image-button {
+    background-color: red !important;
+    font-weight: 400;
+    color: white;
+    margin: auto 10px;
 }
 </style>

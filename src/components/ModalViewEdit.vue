@@ -71,7 +71,7 @@ export default {
             return true;
         },
         updateView: function() {
-            let curName = this.title.trim();
+            const curName = this.title.trim();
             
             if(!this.isViewNameValid(curName, this.viewObj.name, this.views)) {
                 return;

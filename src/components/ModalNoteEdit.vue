@@ -74,7 +74,7 @@ export default {
     data: function() {
         return {
             title: this.noteObj.title,
-            tags: Object.keys(this.noteObj.tags).map((tag) => ({text: tag})),
+            tags: Object.keys(this.noteObj.tags).map(tag => ({text: tag})),
             reminder: false,
             reminderDate: this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null,
             isPublic: this.noteObj.isPublic
@@ -87,7 +87,7 @@ export default {
     },
     methods: {
         onOpenModal: function() {
-            this.tags = Object.keys(this.noteObj.tags).map((tag) => ({text: tag}));
+            this.tags = Object.keys(this.noteObj.tags).map(tag => ({text: tag}));
             this.title = this.noteObj.title;
             this.reminderDate = this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null;
             this.reminder = false;
@@ -98,7 +98,7 @@ export default {
             this.tags = updatedTags;
         },
         updateNote: function() {
-            let name = this.title.trim();
+            const name = this.title.trim();
             if(name.length === 0 || name.length > 30) {
                 alert('View title has to be between 1 and 30 characters long');
                 return;
