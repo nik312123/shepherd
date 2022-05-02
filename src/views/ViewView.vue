@@ -53,7 +53,8 @@ export default {
     watch: {
         view: function() {
             if(this.view) {
-                let notesQuery = db.collection('notes').where('userId', '==', auth.currentUser.uid)
+                let notesQuery = db.collection('notes')
+                    .where('userId', '==', auth.currentUser.uid)
                     .where('isTrash', '==', false);
                 const tags = this.view.tags;
                 tags.forEach(function(tag) {

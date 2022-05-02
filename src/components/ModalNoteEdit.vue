@@ -74,7 +74,7 @@ export default {
     data: function() {
         return {
             title: this.noteObj.title,
-            tags: Object.keys(this.noteObj.tags).map((tag) => ({text: tag})),
+            tags: Object.keys(this.noteObj.tags).map(tag => ({text: tag})),
             reminder: false,
             reminderDateTime: this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null,
             isPublic: this.noteObj.isPublic
@@ -87,7 +87,7 @@ export default {
     },
     methods: {
         onOpenModal: function() {
-            this.tags = Object.keys(this.noteObj.tags).map((tag) => ({text: tag}));
+            this.tags = Object.keys(this.noteObj.tags).map(tag => ({text: tag}));
             this.title = this.noteObj.title;
             this.reminderDateTime = this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null;
             this.reminder = false;
