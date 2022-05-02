@@ -48,7 +48,7 @@ db.collection('notes')
                 },
                 webpush: {
                     fcmOptions: {
-                        link: 'https://shepherd-be6df.firebaseapp.com/notes/' + data.id
+                        link: 'https://shepherd-be6df.firebaseapp.com/note/' + data.id
                     }
                 },
                 data: {
