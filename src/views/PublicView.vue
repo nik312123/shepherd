@@ -46,7 +46,7 @@ export default {
                 .where('isPublic', '==', true)
                 .orderBy('lastModifiedDateTime', 'desc')
         };
-    },
+    }
 };
 </script>
 
