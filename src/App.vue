@@ -1,7 +1,8 @@
 <template>
     <div id="app" class="container is-max-desktop">
-        <notifications v-bind:closeOnClick=false>
-            <template slot="body" slot-scope="props">
+        <!--suppress HtmlUnknownTag -->
+        <notifications :closeOnClick=false>
+            <template v-slot:body="props">
                 <div class="vue-notification" @click="handleNotificationOnClick(props)">
                     <a class="close" @click.stop="props.close">
                         <span class="fa fa-fw fa-close"></span>
@@ -14,18 +15,16 @@
                     </div>
                 </div>
             </template>
-        </Notifications>
+        </notifications>
         <RouterView/>
     </div>
 </template>
 
 <script>
 import {messaging} from '@/firebaseConfig';
-import Notifications from 'vue-notification';
 
 export default {
-    components: {Notifications},
-    mounted() {
+    mounted: function() {
         messaging.onMessage(payload => {
             this.$notify({
                 title: payload.notification.title,
