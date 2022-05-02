@@ -138,13 +138,13 @@ export default {
                 messaging.getToken({
                     vapidKey: '***REMOVED***'
                 }).then(messageToken => {
-                    this.updateNoteQuery(tagsMap, name, true, messageToken);
+                    this.updateNoteQuery(tagsMap, name, false, messageToken);
                 }).catch(() => {
-                    this.updateNoteQuery(tagsMap, name, false);
+                    this.updateNoteQuery(tagsMap, name, true);
                 });
             }
             else {
-                this.updateNoteQuery(tagsMap, name, false);
+                this.updateNoteQuery(tagsMap, name, true);
             }
             
             this.$refs.baseModal.hideModal();
