@@ -39,7 +39,6 @@
             </div>
             
             <NoteBody v-if="note" :default-tab="defaultTab" :body="note.body" :id="note.id" :owner="owner"/>
-        
         </div>
     </div>
 </template>
