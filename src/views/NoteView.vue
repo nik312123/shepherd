@@ -168,7 +168,7 @@ export default {
     methods: {
         remove: function() {
             db.collection('notes').doc(this.id).update({isTrash: true});
-            this.$router.push({name: 'TrashView'});
+            this.$router.push({name: this.from ? this.from : 'AllNotesView'});
         },
         removePermanently: function() {
             db.collection('notes').doc(this.id).delete();
