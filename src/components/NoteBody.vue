@@ -1,5 +1,6 @@
 <template>
     <div class="note-body">
+        
         <button class="button is-info save" v-if="showSave && owner" @click="saveNote">Save</button>
         <Editor
             class="editor"
