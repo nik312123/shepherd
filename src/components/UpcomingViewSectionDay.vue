@@ -71,4 +71,9 @@ p.title.is-5 {
     display: flex;
     flex-direction: row;
 }
+
+>>> .card {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
 </style>
