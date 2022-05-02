@@ -125,16 +125,16 @@ export default {
     firestore: function() {
         return {
             user: db.collection('users').doc(auth.currentUser.uid),
-            note: db.collection('notes').doc(this.$route.params.id)
+            note: db.collection('notes').doc(this.id)
         };
     },
     methods: {
         moveToTrash: function() {
-            db.collection('notes').doc(this.note.id).update({isTrash: true});
+            db.collection('notes').doc(this.id).update({isTrash: true});
             this.$router.push({name: 'TrashView'});
         },
         recover: function() {
-            db.collection('notes').doc(this.note.id).update({isTrash: false});
+            db.collection('notes').doc(this.id).update({isTrash: false});
         },
         copyURL: async function() {
             try {
@@ -183,12 +183,12 @@ export default {
         },
         dateToString,
         goToView: function() {
-            this.$router.push({name: 'ViewView', params: {id: this.$route.params.viewId}});
+            this.$router.push({name: 'ViewView', params: {id: this.id}});
         },
         deleteImage: function() {
-            storage.ref('notes/' + this.$route.params.id).delete().then(() => {
+            storage.ref('notes/' + this.id).delete().then(() => {
                 //Delete from db
-                db.collection('notes').doc(this.$route.params.id)
+                db.collection('notes').doc(this.id)
                     .update({
                         'imageUrl': '',
                         lastModifiedDateTime: new Date()

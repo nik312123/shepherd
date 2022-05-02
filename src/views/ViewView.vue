@@ -64,7 +64,7 @@ export default {
     },
     firestore: function() {
         return {
-            view: db.collection('views').doc(this.$route.params.id),
+            view: db.collection('views').doc(this.id),
             views: db.collection('views')
                 .where('userId', '==', auth.currentUser.uid)
                 .orderBy('lastModifiedDate', 'desc'),
@@ -73,7 +73,7 @@ export default {
     },
     methods: {
         deleteView: function() {
-            db.collection('views').doc(this.view.id).delete();
+            db.collection('views').doc(this.id).delete();
             this.$router.push({name: 'HomeView'});
         }
     }
