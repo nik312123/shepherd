@@ -54,10 +54,7 @@ There are 4 main different page types on the app. There are the home page with a
 
 ## Screenshots of Site (complete)
 
-**[Add a screenshot of each key page](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository)
-along with a very brief caption:**
-
-![](https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif)
+![A decent looking landing Page](https://user-images.githubusercontent.com/26149148/166229575-87520e83-c344-49f2-be92-0b667a6fc914.png)
 
 
 
