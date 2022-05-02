@@ -36,7 +36,7 @@
                     :available-dates="{start: new Date(), end: null}"
                     mode="datetime"
                     v-if="reminder"
-                    v-model="reminderDate"
+                    v-model="reminderDateTime"
                     is-dark
                 />
             </div>
@@ -76,20 +76,20 @@ export default {
             title: this.noteObj.title,
             tags: Object.keys(this.noteObj.tags).map(tag => ({text: tag})),
             reminder: false,
-            reminderDate: this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null,
+            reminderDateTime: this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null,
             isPublic: this.noteObj.isPublic
         };
     },
     computed: {
         formattedDate: function() {
-            return this.reminderDate === null ? null : dateToString(this.reminderDate, false, true);
+            return this.reminderDateTime === null ? null : dateToString(this.reminderDateTime, false, true);
         }
     },
     methods: {
         onOpenModal: function() {
             this.tags = Object.keys(this.noteObj.tags).map(tag => ({text: tag}));
             this.title = this.noteObj.title;
-            this.reminderDate = this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null;
+            this.reminderDateTime = this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null;
             this.reminder = false;
             this.isPublic = this.noteObj.isPublic;
             this.$refs.inputTagManager.reset(this.tags);
@@ -118,7 +118,7 @@ export default {
                 isPublic: this.isPublic,
                 tags: tagsMap,
                 lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDate === null ? null : this.reminderDate
+                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime
             });
             this.$refs.baseModal.hideModal();
         }

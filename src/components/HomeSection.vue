@@ -35,7 +35,7 @@ export default {
                 let notesQuery = db.collection('notes')
                     .where('userId', '==', auth.currentUser.uid)
                     .where('isTrash', '==', false);
-                let tags = this.view.tags;
+                const tags = this.view.tags;
                 tags.forEach(function(tag) {
                     notesQuery = notesQuery.where('tags.' + tag, '==', true);
                 });
