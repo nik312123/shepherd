@@ -3,9 +3,9 @@
         <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
+                <li @click="$router.push({name: 'HomeView'})"><a>Home</a></li>
                 <li class="is-active">
-                    <router-link :to="{name: publicViewName}" aria-current="page">Public</router-link>
+                    <router-link :to="{name: 'PublicView'}" aria-current="page">Public</router-link>
                 </li>
             </ul>
         </nav>
