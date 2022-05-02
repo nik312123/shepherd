@@ -137,9 +137,6 @@ export default {
     max-height: 350px;
 }
 </style>
-<style>
-
-</style>
 
 <style scoped>
 .modal-background {

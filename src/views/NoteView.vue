@@ -211,7 +211,6 @@ export default {
         }
     }
 };
-
 </script>
 
 <style>

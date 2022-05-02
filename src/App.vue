@@ -3,11 +3,8 @@
         <notifications v-bind:closeOnClick=false>
             <template slot="body" slot-scope="props">
                 <div class="vue-notification" @click="handleNotificationOnClick(props)">
-                    <a
-                        class="close" @click.stop="props.close"
-                        style="top: 0; right: 0; position: relative; float: right"
-                    >
-                        <i class="fa fa-fw fa-close"></i>
+                    <a class="close" @click.stop="props.close">
+                        <span class="fa fa-fw fa-close"></span>
                     </a>
                     <a class="title">
                         {{ props.item.title }}
@@ -17,10 +14,41 @@
                     </div>
                 </div>
             </template>
-        </notifications>
+        </Notifications>
         <RouterView/>
     </div>
 </template>
+
+<script>
+import {messaging} from '@/firebaseConfig';
+import Notifications from 'vue-notification';
+
+export default {
+    components: {Notifications},
+    mounted() {
+        messaging.onMessage(payload => {
+            console.log('Message received. ', payload);
+            new Audio(require('@/assets/pristine-609.mp3')).play();
+            this.$notify({
+                title: payload.notification.title,
+                duration: -1,
+                data: {
+                    noteId: payload.data.noteId,
+                    noteBody: payload.notification.body
+                }
+            });
+        });
+    },
+    methods: {
+        handleNotificationOnClick(passedProp) {
+            console.log('Got passed prop: ', JSON.stringify(passedProp));
+            this.$router.push({name: 'note', params: {id: passedProp.item.data.noteId}}).then(() => {
+                passedProp.close();
+            });
+        }
+    }
+};
+</script>
 
 <style>
 /* Imports the Inter font from Google */
@@ -80,34 +108,10 @@ html {
     border-radius: 5px;
 }
 
+.close {
+    top: 0;
+    right: 0;
+    position: relative;
+    float: right;
+}
 </style>
-
-<script>
-import {messaging} from '@/firebaseConfig';
-
-export default {
-    mounted() {
-        messaging.onMessage(payload => {
-            console.log('Message received. ', payload);
-            new Audio(require('@/assets/pristine-609.mp3')).play();
-            this.$notify({
-                title: payload.notification.title,
-                duration: -1,
-                data: {
-                    noteId: payload.data.noteId,
-                    noteBody: payload.notification.body
-                }
-            });
-        });
-    },
-    methods: {
-        handleNotificationOnClick(passedProp) {
-            console.log('Got passed prop: ', JSON.stringify(passedProp));
-            this.$router.push({name: 'note', params: {id: passedProp.item.data.noteId}}).then(() => {
-                passedProp.close();
-            });
-        }
-    }
-};
-
-</script>
