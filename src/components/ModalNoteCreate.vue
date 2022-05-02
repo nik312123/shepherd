@@ -44,6 +44,7 @@
             <div class="control">
                 <ToggleButton
                     v-model="isPublic"
+                    :sync="true"
                     :color="{checked: '#68778F', unchecked: '#2A3444'}"
                     :labels="{checked: 'Public', unchecked: 'Private'}"
                     :width="98"
