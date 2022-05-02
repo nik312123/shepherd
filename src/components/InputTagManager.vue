@@ -26,19 +26,14 @@ export default {
             tag: '',
             originalTags: this.initialTags.slice(),
             tags: this.initialTags.slice(),
-            validation: [{
-              classes: 'min-length',
-              rule: tag => tag.text.length < 3,
-              disableAdd: true
-              }, {
-              classes: 'max-length',
-              rule: tag => tag.text.length > 15,
-              disableAdd: true
-              }, {
-              classes: 'no-commas',
-              rule: ({ text }) => text.indexOf(',') !== -1 || text.indexOf(',') !== -1,
-              disableAdd: true
-            }]
+            maxTagLength: 15,
+            validation: [
+                {
+                    classes: 'max-length',
+                    rule: tag => tag.text.length > this.maxTagLength,
+                    disableAdd: true
+                }
+            ]
         };
     },
     computed: {
@@ -58,12 +53,19 @@ export default {
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
             this.$emit('updateTags', this.tags.slice());
+        },
+        formatInput() {
+            let input = this.$el.getElementsByClassName('ti-new-tag-input')[0];
+            input.value = input.value.toLowerCase();
+            this.tag = this.tag.toLowerCase();
+            if(input.value.length > this.maxTagLength) {
+                input.value = input.value.substring(0, this.maxTagLength);
+                this.tag = input.value.substring(0, this.maxTagLength);
+            }
         }
     },
-    watch: {
-        tag: function() {
-            this.tag = this.tag.toLowerCase();
-        }
+    updated: function() {
+        this.formatInput();
     }
 };
 </script>
