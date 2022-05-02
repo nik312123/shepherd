@@ -13,7 +13,8 @@
             <h1 class="title is-2">🌐 Public</h1>
         </div>
         <div class="section">
-            <article v-for="noteObj in notes" :key="noteObj.id">
+            <SearchBar :notes="notes" :return-results="setResults"/>
+            <article v-for="noteObj in searchNotes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
             </article>
         </div>
@@ -25,17 +26,19 @@ import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
 import HomeView from '@/views/HomeView';
+import SearchBar from '@/components/SearchBar';
 
 const publicViewName = 'PublicView';
 
 export default {
     name: publicViewName,
-    components: {PageHeader, NoteListItem},
+    components: {PageHeader, NoteListItem, SearchBar},
     data: function() {
         return {
             publicViewName: publicViewName,
             homeViewName: HomeView.name,
-            notes: []
+            notes: [],
+            searchNotes: []
         };
     },
     firestore: function() {
@@ -46,6 +49,11 @@ export default {
                 .where('isPublic', '==', true)
                 .orderBy('lastModifiedDateTime', 'desc')
         };
+    },
+    methods: {
+        setResults: function(value) {
+            this.searchNotes = value;
+        }
     }
 };
 </script>
