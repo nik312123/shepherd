@@ -3,9 +3,8 @@
         <img id="shepherd-logo" src="../assets/shepherd-icon.png" alt="logo">
         <h1 class="title is-1"><strong>Welcome to Shepherd</strong></h1>
         <hr class="solid">
-        <h2 class="title is-3"><strong>Are you ready to <span class="blue"> organize </span> your life?</strong></h2>
+        <h2 class="title is-3"><strong>Are you ready to <span class="blue">organize</span> your life?</strong></h2>
         <ButtonAuthenticationGoogle/>
-    
     </div>
 </template>
 
@@ -30,10 +29,6 @@ img {
     margin-bottom: 20px;
 }
 
-.title {
-    /*padding-bottom: 15px;*/
-}
-
 .home {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -56,7 +51,6 @@ img {
     background: linear-gradient(to top, #419AE8 0%, #25C1E8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    
 }
 
 hr.solid {
