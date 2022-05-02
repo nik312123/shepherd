@@ -59,7 +59,7 @@ export default {
                 this.todayTextSizeDenominator = 4;
             }
         },
-        getOneHourFromNowUpToMidnight() {
+        getOneHourFromNowUpToMidnight: function() {
             const oneHourFromNow = new Date();
             oneHourFromNow.setHours(oneHourFromNow.getHours() + 1);
             oneHourFromNow.setMinutes(roundToNearestMultiple(oneHourFromNow.getMinutes(), 15));
