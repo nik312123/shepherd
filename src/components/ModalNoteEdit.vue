@@ -147,8 +147,8 @@ export default {
                     vapidKey: '***REMOVED***'
                 }).then(messageToken => {
                     this.updateNoteQuery(tagsMap, name, this.reminderDateTimeUnchanged, messageToken);
-                }).catch(err => {
-                    console.log(err);
+                }).catch(() => {
+                    this.updateNoteQuery(tagsMap, name, this.reminderDateTimeUnchanged);
                 });
             }
             

@@ -131,7 +131,7 @@ export default {
                         params:
                             {
                                 id: docRef.id,
-                                from: this.$route.name,
+                                from: this.viewName,
                                 viewName: this.viewName,
                                 viewId: this.viewId,
                                 defaultTab: 'write'
@@ -171,8 +171,8 @@ export default {
                     vapidKey: '***REMOVED***'
                 }).then(messageToken => {
                     this.createNoteQuery(tagsMap, name, curTimestamp, messageToken);
-                }).catch(error => {
-                    console.log(error);
+                }).catch(() => {
+                    this.createNoteQuery(tagsMap, name, curTimestamp);
                 });
             }
             
