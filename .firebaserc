@@ -1,0 +1,7 @@
+{
+    "projects": {
+        "staging": "shepherd-be6df",
+        "default": "shepherd-be6df"
+    },
+    "targets": {}
+}
