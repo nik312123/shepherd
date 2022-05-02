@@ -134,7 +134,7 @@ export default {
             let tagsMap = this.tags.map(tag => ({[tag.text]: true}));
             tagsMap = Object.assign({}, ...tagsMap);
             
-            if(this.reminderDateTimeChanged || messaging !== null) {
+            if(this.reminderDateTimeChanged && messaging !== null) {
                 messaging.getToken({
                     vapidKey: '***REMOVED***'
                 }).then(messageToken => {
