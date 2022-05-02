@@ -27,8 +27,6 @@ export default {
     components: {Notifications},
     mounted() {
         messaging.onMessage(payload => {
-            console.log('Message received. ', payload);
-            new Audio(require('@/assets/pristine-609.mp3')).play();
             this.$notify({
                 title: payload.notification.title,
                 duration: -1,
@@ -40,8 +38,7 @@ export default {
         });
     },
     methods: {
-        handleNotificationOnClick(passedProp) {
-            console.log('Got passed prop: ', JSON.stringify(passedProp));
+        handleNotificationOnClick: function(passedProp) {
             this.$router.push({name: 'note', params: {id: passedProp.item.data.noteId}}).then(() => {
                 passedProp.close();
             });
