@@ -74,7 +74,9 @@ export default {
         startingDate: {
             type: Date,
             default: null
-        }
+        },
+        viewName: String,
+        viewId: String
     },
     data: function() {
         return {
@@ -112,7 +114,7 @@ export default {
                 tags: tagsMap,
                 createdDateTime: curTimestamp,
                 lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
+                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime
             };
             
             if(messageToken) {
@@ -121,7 +123,27 @@ export default {
             }
             
             db.collection('notes').add(createData).then(docRef => {
-                this.$router.push({name: 'NoteView', params: {id: docRef.id, defaultTab: 'write'}});
+                const textTags = this.tags.map(tag => tag.text);
+                
+                if(this.startingTags.every(tag => textTags.indexOf(tag) !== -1)) {
+                    this.$router.push({
+                        name: 'NoteView',
+                        params:
+                            {
+                                id: docRef.id,
+                                from: this.$route.name,
+                                viewName: this.viewName,
+                                viewId: this.viewId,
+                                defaultTab: 'write'
+                            }
+                    });
+                }
+                else {
+                    this.$router.push({
+                        name: 'NoteView',
+                        params: {id: docRef.id, defaultTab: 'write'}
+                    });
+                }
             });
         },
         createNote: function() {

@@ -10,7 +10,9 @@
         <div class="row">
             <h1 v-if="view" class="title is-2">{{ view.name }}</h1>
             
-            <ModalNoteCreate v-if="user" :user-tags="user.tags" :starting-tags="view.tags"/>
+            <ModalNoteCreate
+                v-if="user" :user-tags="user.tags" :starting-tags="view.tags" :view-id="id" :view-name="view.name"
+            />
         </div>
         <div class="row smaller-gap">
             <button @click="deleteView" class="button is-info is-small">
