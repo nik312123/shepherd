@@ -27,22 +27,22 @@
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
                 <div v-if="!note.isTrash && owner" class="row smaller-gap">
                     <button @click="remove" class="button is-info is-small delete-button">
-                        <span class="fa-solid fa-trash view-button" title="Move to trash"></span>
+                        <span class="fa-solid fa-trash view-button"></span>
                     </button>
                     <ModalNoteEdit v-if="user" :user-tags="user.tags" :note-obj="this.note"/>
                 </div>
                 <div v-if="note.isTrash && owner" class="row smaller-gap">
                     <button @click="recover" class="button is-info is-small recover-button">
-                        <span class="fa-solid fa-rotate-left view-button" title="Recover note"></span>
+                        <span class="fa-solid fa-rotate-left view-button"></span>
                     </button>
                     <modal-confirm
-                        modal-text="Are you sure you want to permanently delete this note?"
+                        modal-text="Are you sure you want to permanently remove this note?"
                         button-classes="is-small delete-button"
                         @confirm="removePermanently"
                         ref="modalConfirm"
                     >
                         <template v-slot:button-contents>
-                            <span title="Permanently delete" class="fa-solid fa-file-circle-xmark view-button"></span>
+                            <span class="fa-solid fa-file-circle-xmark view-button"></span>
                         </template>
                     </modal-confirm>
                 </div>
@@ -50,7 +50,7 @@
             <TagList v-if="owner" :tag-array="Object.keys(note.tags)" class="tags"/>
             
             <div v-if="note && owner">
-                <p v-if="note.reminderDateTime" class="note-info">
+                <p class="note-info">
                     Reminder: {{ dateToString(note.reminderDateTime.toDate(), false, true) }}
                 </p>
                 <p class="note-info">
@@ -128,13 +128,19 @@ export default {
                 'InboxView': 'Inbox',
                 'TrashView': 'Trash',
                 'TodayView': 'Today',
-                'UpcomingView': 'Upcoming',
-                'PublicView': 'Public'
+                'UpcomingView': 'Upcoming'
             },
             userId: auth.currentUser ? auth.currentUser.uid : null,
             owner: false,
             showImage: false
         };
+    },
+    created: function() {
+        this.$firestoreRefs.note.onSnapshot({
+            error: () => {
+                this.$router.push({name: 'HomeView'});
+            }
+        });
     },
     firestore: function() {
         if(!auth.currentUser) {
