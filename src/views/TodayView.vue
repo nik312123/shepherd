@@ -15,7 +15,7 @@
                 v-if="user" :userTags="user.tags" :starting-tags="[]" :starting-date="getOneHourFromNowUpToMidnight()"
             />
         </div>
-
+        
         <div class="section">
             <search-bar :notes="notes" :returnResults="setResults"/>
             <article v-for="noteObj in searchNotes" :key="noteObj.id">

@@ -13,7 +13,7 @@
             <h1 class="title is-2">🗄 All Notes</h1>
             <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]"/>
         </div>
-
+        
         <div class="section">
             <search-bar :notes="notes" :returnResults="setResults"/>
             <article v-for="noteObj in searchNotes" :key="noteObj.id">

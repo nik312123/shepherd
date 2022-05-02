@@ -1,6 +1,6 @@
 <template>
     <div class="search-container">
-
+        
         <input
             class="input is-rounded search-input" type="text" placeholder="Search" v-model="searchQuery"
             @input="getSearchResults"
@@ -33,12 +33,12 @@ export default {
     },
     methods: {
         getSearchResults: function() {
-
+            
             if(this.searchQuery === '') {
                 this.returnResults(this.notes);
                 return;
             }
-
+            
             const options = {
                 includeScore: true,
                 keys: [
@@ -47,13 +47,13 @@ export default {
                 ],
                 threshold: 0.3
             };
-
+            
             const fuse = new Fuse(this.notes, options);
             const result = fuse.search(this.searchQuery);
             const searchResults = result.map((note) => {return note.item;});
-
+            
             this.returnResults(searchResults);
-
+            
         }
     }
 };
