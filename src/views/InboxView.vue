@@ -15,7 +15,7 @@
         </div>
         
         <div class="section">
-            <search-bar :notes="notes" :returnResults="setResults"/>
+            <SearchBar :notes="notes" :return-results="setResults"/>
             <article v-for="noteObj in notes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
             </article>

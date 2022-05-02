@@ -23,7 +23,7 @@
             </modal-confirm>
         </div>
         <div class="section">
-            <search-bar :notes="notes" :returnResults="setResults"/>
+            <SearchBar :notes="notes" :return-results="setResults"/>
             <article v-for="noteObj in searchNotes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
             </article>
