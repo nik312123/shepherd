@@ -118,7 +118,8 @@ export default {
                 isPublic: this.isPublic,
                 tags: tagsMap,
                 lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDate === null ? null : this.reminderDate
+                reminderDateTime: this.reminderDate === null ? null : this.reminderDate,
+                notified: this.reminderDate !== this.noteObj.reminderDateTime.toDate()
             });
             this.$refs.baseModal.hideModal();
         }
