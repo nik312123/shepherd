@@ -76,7 +76,10 @@ There are 4 main different page types on the app. There are the home page with a
 Please do not document required libraries (e.g., Vue, Vuefire, Firebase).**
 
 * Library or service name: description of use
-* ...
+* Toast-UI Editor: A markdown editor for notes
+* V-Calendar: A datetime picker plugin for creating and editing notes
+* vue-tags-input: A tags input component for adding and editing tags on notes and views
+* vue-js-toggle-button: A nice looking toggle button vue component for switching values on and off.
 
 **If there's anything else you would like to disclose about how your project
 relied on external code, expertise, or anything else, please disclose that
