@@ -59,20 +59,22 @@ export default {
     border-radius: 10px;
 }
 
->>> .ti-input {
-    border: 0;
-    color: #2A3444;
-}
-
 >>> .vue-tags-input .ti-new-tag-input {
     background: transparent;
     color: #F8FAFC;
-    font-size: large;
+    font-size: 1.25rem;
     font-weight: 700;
 }
 
+>>> .vue-tags-input .ti-new-tag-input-wrapper {
+    padding: 0;
+    margin: 0;
+}
+
 >>> .vue-tags-input .ti-input {
-    padding: 10px 10px;
+    border: 0;
+    color: #2A3444;
+    padding: 12px 15px;
     font-size: large;
     font-weight: 700;
 }
@@ -101,13 +103,10 @@ export default {
 
 >>> .vue-tags-input ::-moz-placeholder {
     color: #A4B1B6;
+    opacity: 1;
 }
 
 >>> .vue-tags-input :-ms-input-placeholder {
-    color: #A4B1B6;
-}
-
->>> .vue-tags-input :-moz-placeholder {
     color: #A4B1B6;
 }
 
