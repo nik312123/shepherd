@@ -23,7 +23,7 @@
                             v-for="modalButton in modalButtons"
                             :key="modalButton.buttonText"
                             @click="$emit(modalButton.actionName)"
-                            class="card-footer-item create"
+                            :class="'card-footer-item create ' + ('classes' in modalButton ? modalButton.classes : '')"
                         >
                             <!--suppress JSUnresolvedVariable -->
                             <span class="title is-5">{{ modalButton.buttonText }}</span>
