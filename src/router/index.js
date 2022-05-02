@@ -13,6 +13,17 @@ import NoteView from '@/views/NoteView';
 
 Vue.use(VueRouter);
 
+const {isNavigationFailure, NavigationFailureType} = VueRouter;
+
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function(location) {
+    return originalPush.call(this, location).catch(error => {
+        if(!isNavigationFailure(error, NavigationFailureType.duplicated)) {
+            throw Error(error);
+        }
+    });
+};
+
 const routes = [
     {
         path: '/',
