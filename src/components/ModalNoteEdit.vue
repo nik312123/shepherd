@@ -89,7 +89,7 @@ export default {
             if(this.noteObj.reminderDateTime === null) {
                 return this.reminderDateTime === null;
             }
-            return this.reminderDateTime === this.noteObj.reminderDateTime.toDate();
+            return this.reminderDateTime.getTime() === this.noteObj.reminderDateTime.toDate().getTime();
         }
     },
     methods: {
@@ -114,11 +114,12 @@ export default {
                 reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime
             };
             if(messageToken) {
-                if(this.noteObj.notified === true) {
-                    updateData.notified = reminderDateTimeUnchanged;
+                updateData.messageToken = messageToken;
+                if(this.noteObj.notified === undefined) {
+                    updateData.notified = false;
                 }
-                if(this.noteObj.notified !== undefined) {
-                    updateData.messageToken = messageToken;
+                else if(this.noteObj.notified === true) {
+                    updateData.notified = reminderDateTimeUnchanged;
                 }
             }
             db.collection('notes').doc(this.noteObj.id).update(updateData);
