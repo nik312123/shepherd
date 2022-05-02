@@ -1,6 +1,5 @@
 <template>
     <div class="search-container">
-        
         <input
             class="input is-rounded search-input" type="text" placeholder="Search" v-model="searchQuery"
             @input="getSearchResults"
@@ -9,7 +8,6 @@
 </template>
 
 <script>
-
 import Fuse from 'fuse.js';
 
 export default {
@@ -33,7 +31,6 @@ export default {
     },
     methods: {
         getSearchResults: function() {
-            
             if(this.searchQuery === '') {
                 this.returnResults(this.notes);
                 return;
@@ -50,10 +47,9 @@ export default {
             
             const fuse = new Fuse(this.notes, options);
             const result = fuse.search(this.searchQuery);
-            const searchResults = result.map((note) => {return note.item;});
+            const searchResults = result.map(note => note.item);
             
             this.returnResults(searchResults);
-            
         }
     }
 };
