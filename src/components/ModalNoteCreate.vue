@@ -141,13 +141,18 @@ export default {
             
             const curTimestamp = new Date();
             
-            messaging.getToken({
-                vapidKey: '***REMOVED***'
-            }).then(messageToken => {
-                this.createNoteQuery(tagsMap, name, curTimestamp, messageToken);
-            }).catch(() => {
+            if(messaging === null) {
                 this.createNoteQuery(tagsMap, name, curTimestamp);
-            });
+            }
+            else {
+                messaging.getToken({
+                    vapidKey: '***REMOVED***'
+                }).then(messageToken => {
+                    this.createNoteQuery(tagsMap, name, curTimestamp, messageToken);
+                }).catch(() => {
+                    this.createNoteQuery(tagsMap, name, curTimestamp);
+                });
+            }
             
             this.$refs.baseModal.hideModal();
         }

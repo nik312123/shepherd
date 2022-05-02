@@ -25,16 +25,18 @@ import {messaging} from '@/firebaseConfig';
 
 export default {
     mounted: function() {
-        messaging.onMessage(payload => {
-            this.$notify({
-                title: payload.notification.title,
-                duration: -1,
-                data: {
-                    noteId: payload.data.noteId,
-                    noteBody: payload.notification.body
-                }
+        if(messaging !== null) {
+            messaging.onMessage(payload => {
+                this.$notify({
+                    title: payload.notification.title,
+                    duration: -1,
+                    data: {
+                        noteId: payload.data.noteId,
+                        noteBody: payload.notification.body
+                    }
+                });
             });
-        });
+        }
     },
     methods: {
         handleNotificationOnClick: function(passedProp) {

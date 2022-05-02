@@ -22,4 +22,11 @@ export const provider = new firebase.auth.GoogleAuthProvider();
 export const db = firebase.firestore();
 export const storage = firebase.storage();
 export const fieldValue = firebase.firestore.FieldValue;
-export const messaging = firebase.messaging();
+let messagingTmp;
+try {
+    messagingTmp = firebase.messaging();
+}
+catch(ignored) {
+    messagingTmp = null;
+}
+export const messaging = messagingTmp;
