@@ -83,13 +83,12 @@ export default {
     },
     watch: {
         note: function() {
-            if(this.note) {
-                this.owner = this.userId === this.note.userId;
-                if(!this.owner && (!this.note.isPublic || this.note.isTrash)) {
-                    this.$router.push({name: 'HomeView'});
-                }
+            if(!this.note) {
+                this.$router.push({name: 'HomeView'});
+                return;
             }
-            else {
+            this.owner = this.userId === this.note.userId;
+            if(!this.owner && (!this.note.isPublic || this.note.isTrash)) {
                 this.$router.push({name: 'HomeView'});
             }
         }
