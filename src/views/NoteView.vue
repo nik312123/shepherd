@@ -9,19 +9,19 @@
             </div>
             <span @click="copyURL" v-if="note.isPublic && !note.isTrash" class="tag is-medium public">
                 Copy link
-                <span class="fa-solid fa-paste"></span>
+                <span class="fa-solid fa-paste" title="Copy Link"></span>
             </span>
             <div class="row">
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
                 <div v-if="!note.isTrash" class="row smaller-gap">
                     <button @click="moveToTrash" class="button is-info is-small delete-image-button">
-                        <span class="fa-solid fa-trash view-button"></span>
+                        <span class="fa-solid fa-trash view-button" title="Move to Trash"></span>
                     </button>
                     <ModalNoteEdit v-if="user" :userTags="user.tags" :noteObj="this.note"/>
                 </div>
                 <div v-if="note.isTrash" class="row smaller-gap">
                     <button @click="recover" class="button is-info is-small recover-button">
-                        <span class="fa-solid fa-rotate-left view-button"></span>
+                        <span class="fa-solid fa-rotate-left view-button" title="Recover note"></span>
                     </button>
                     <ModalDeletePermanently :note-id="note.id"/>
                 </div>
@@ -52,7 +52,7 @@
                         class="button is-focused delete-image-button" @click="deleteImage"
                     >
                         <span class="icon">
-                            <span class="fas fa-trash"></span>
+                            <span class="fas fa-trash" title="Delete Image"></span>
                         </span>
                         <span>Image</span>
                     </button>

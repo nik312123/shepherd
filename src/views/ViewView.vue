@@ -11,7 +11,7 @@
             <h1 v-if="view" class="title is-2">{{ view.name }}</h1>
             <div class="row smaller-gap">
                 <button @click="deleteView" class="button is-info is-small">
-                    <span class="fa-solid fa-trash view-button"></span>
+                    <span class="fa-solid fa-trash view-button" title="Delete View"></span>
                 </button>
                 <ModalViewEdit v-if="user && view" :userTags="user.tags" :views="views" :viewObj="view"/>
             </div>

@@ -13,9 +13,9 @@
         ref="baseModal"
     >
         <template v-slot:button-contents>
-            <span class="fa-solid fa-file-circle-xmark view-button"></span>
+            <span class="fa-solid fa-file-circle-xmark view-button" title="Delete permanently"></span>
         </template>
-        
+
         <template v-slot:modal-content></template>
     </base-modal>
 </template>

@@ -9,7 +9,7 @@
         ref="baseModal"
     >
         <template v-slot:button-contents>
-            <span class="fa-solid fa-file-circle-plus"></span>
+            <span class="fa-solid fa-file-circle-plus" title="Add note"></span>
         </template>
         
         <template v-slot:modal-content>
