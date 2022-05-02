@@ -35,11 +35,16 @@
                     <button @click="recover" class="button is-info is-small recover-button">
                         <span class="fa-solid fa-rotate-left view-button"></span>
                     </button>
-                    <ModalConfirm
+                    <modal-confirm
                         modal-text="Are you sure you want to permanently remove this note?"
+                        button-classes="is-small delete-button"
                         @confirm="removePermanently"
                         ref="modalConfirm"
-                    />
+                    >
+                        <template v-slot:button-contents>
+                            <span class="fa-solid fa-file-circle-xmark view-button"></span>
+                        </template>
+                    </modal-confirm>
                 </div>
             </div>
             <TagList :tag-array="Object.keys(note.tags)" class="tags"/>

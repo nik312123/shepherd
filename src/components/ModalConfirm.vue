@@ -1,7 +1,7 @@
 <template>
     <base-modal
         id="modal-confirm"
-        button-classes="is-small delete-button"
+        :button-classes="buttonClasses"
         :modal-header="modalText"
         :modal-buttons="[
             {buttonText: 'Yes', actionName: 'confirm', classes: 'red-color'},
@@ -13,7 +13,7 @@
         ref="baseModal"
     >
         <template v-slot:button-contents>
-            <span class="fa-solid fa-file-circle-xmark view-button"></span>
+            <slot name="button-contents"></slot>
         </template>
         
         <template v-slot:modal-content></template>
@@ -29,8 +29,7 @@ export default {
     props: {
         modalText: String,
         from: String,
-        yesClasses: String,
-        noClasses: String
+        buttonClasses: String
     },
     methods: {
         hideModal: function() {
