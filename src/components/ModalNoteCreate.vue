@@ -101,6 +101,28 @@ export default {
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
         },
+        createNoteQuery: function(tagsMap, name, curTimestamp, messageToken) {
+            const createData = {
+                userId: auth.currentUser.uid,
+                title: name,
+                body: '# New note',
+                isPublic: this.isPublic,
+                isTrash: false,
+                tags: tagsMap,
+                createdDateTime: curTimestamp,
+                lastModifiedDateTime: curTimestamp,
+                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
+                notified: false
+            };
+            
+            if(messageToken) {
+                createData.messageToken = messageToken;
+            }
+            
+            db.collection('notes').add(createData).then(docRef => {
+                this.$router.push({name: 'NoteView', params: {id: docRef.id, defaultTab: 'write'}});
+            });
+        },
         createNote: function() {
             const name = this.title.trim();
             if(name.length === 0 || name.length > 30) {
@@ -120,22 +142,10 @@ export default {
             
             messaging.getToken({
                 vapidKey: '***REMOVED***'
-            }).then((messageToken) => {
-                db.collection('notes').add({
-                    userId: auth.currentUser.uid,
-                    title: name,
-                    body: '# New note',
-                    isPublic: this.isPublic,
-                    isTrash: false,
-                    tags: tagsMap,
-                    createdDateTime: curTimestamp,
-                    lastModifiedDateTime: curTimestamp,
-                    reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
-                    messageToken,
-                    notified: false
-                }).then(docRef => {
-                    this.$router.push({name: 'NoteView', params: {id: docRef.id, defaultTab: 'write'}});
-                });
+            }).then(messageToken => {
+                this.createNoteQuery(tagsMap, name, curTimestamp, messageToken);
+            }).catch(() => {
+                this.createNoteQuery(tagsMap, name, curTimestamp)
             });
             
             this.$refs.baseModal.hideModal();

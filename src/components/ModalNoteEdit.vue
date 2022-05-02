@@ -103,7 +103,7 @@ export default {
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
         },
-        updateNoteQuery: function(tagsMap, reminderDateChanged, messageToken) {
+        updateNoteQuery: function(tagsMap, name, reminderDateChanged, messageToken) {
             const curTimestamp = new Date();
             const updateData = {
                 title: name,
@@ -116,7 +116,7 @@ export default {
             if(messageToken) {
                 updateData.messageToken = messageToken;
             }
-            db.collection('notes').doc(this.noteObj.id).update();
+            db.collection('notes').doc(this.noteObj.id).update(updateData);
         },
         updateNote: function() {
             const name = this.title.trim();
@@ -132,16 +132,18 @@ export default {
             
             let tagsMap = this.tags.map(tag => ({[tag.text]: true}));
             tagsMap = Object.assign({}, ...tagsMap);
-    
+            
             if(this.reminderDateTimeChanged) {
                 messaging.getToken({
                     vapidKey: '***REMOVED***'
-                }).then((messageToken) => {
-                    this.updateNoteQuery(tagsMap, true, messageToken);
-                })
+                }).then(messageToken => {
+                    this.updateNoteQuery(tagsMap, name, true, messageToken);
+                }).catch(() => {
+                    this.updateNoteQuery(tagsMap, name, false);
+                });
             }
             else {
-                this.updateNoteQuery(tagsMap, false);
+                this.updateNoteQuery(tagsMap, name, false);
             }
             
             this.$refs.baseModal.hideModal();
