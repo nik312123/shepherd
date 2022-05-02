@@ -83,7 +83,7 @@ const routes = [
         component: NoteView,
         props: true,
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
             title: 'Shepherd Note'
         }
     }

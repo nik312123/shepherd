@@ -65,11 +65,16 @@ export default {
             note: false,
             showModal: false,
             user: false,
-            userId: auth.currentUser.uid,
+            userId: auth.currentUser ? auth.currentUser.uid : null,
             owner: false
         };
     },
     firestore: function() {
+        if(!auth.currentUser) {
+            return {
+                note: db.collection('notes').doc(this.$route.params.id)
+            };
+        }
         return {
             user: db.collection('users').doc(auth.currentUser.uid),
             note: db.collection('notes').doc(this.$route.params.id)
