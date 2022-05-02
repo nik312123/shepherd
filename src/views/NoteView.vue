@@ -14,7 +14,7 @@
             <div class="row">
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
                 <div v-if="!note.isTrash" class="row smaller-gap">
-                    <button @click="moveToTrash" class="button is-info is-small delete-image-button">
+                    <button @click="moveToTrash" class="button is-info is-small delete-button">
                         <span class="fa-solid fa-trash view-button"></span>
                     </button>
                     <ModalNoteEdit v-if="user" :userTags="user.tags" :noteObj="this.note"/>
