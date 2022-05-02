@@ -83,6 +83,12 @@ export default {
     computed: {
         formattedDate: function() {
             return this.reminderDateTime === null ? null : dateToString(this.reminderDateTime, false, true);
+        },
+        reminderDateTimeChanged: function() {
+            if(this.noteObj.reminderDateTime === null) {
+                return this.reminderDateTime !== null;
+            }
+            return this.reminderDateTime !== this.noteObj.reminderDateTime.toDate();
         }
     },
     methods: {
@@ -119,7 +125,7 @@ export default {
                 tags: tagsMap,
                 lastModifiedDateTime: curTimestamp,
                 reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
-                notified: this.reminderDateTime !== this.noteObj.reminderDateTime.toDate()
+                notified: this.reminderDateTimeChanged
             });
             this.$refs.baseModal.hideModal();
         }
