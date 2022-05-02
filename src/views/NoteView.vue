@@ -1,12 +1,24 @@
 <template>
     <div>
         <PageHeader/>
+        <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
+            <ul v-if="$route.params.from !== undefined">
+                <li @click="$router.push({name: 'HomeView'})"><a> Home </a></li>
+                <li @click="$router.push({name: $route.params.from})" v-if="$route.params.viewName === undefined"><a>
+                    {{ getPathName }} </a></li>
+                <li
+                    @click="goToView"
+                    v-if="$route.params.viewName !== undefined"
+                ><a> {{ $route.params.viewName }} </a></li>
+                <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
+            </ul>
+            <ul v-else>
+                <li @click="$router.push({name: 'HomeView'})"><a> Home </a></li>
+                <li @click="$router.push({name: 'AllNotesView'})"><a> All Notes </a></li>
+                <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
+            </ul>
+        </nav>
         <div>
-            <div>
-                <router-link :to="{name: homeViewName}">
-                    <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
-                </router-link>
-            </div>
             <span @click="copyURL" v-if="note.isPublic && !note.isTrash && owner" class="tag is-medium public">
                 Copy link
                 <span class="fa-solid fa-paste"></span>
@@ -14,16 +26,25 @@
             <div class="row">
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
                 <div v-if="!note.isTrash && owner" class="row smaller-gap">
-                    <button @click="moveToTrash" class="button is-info is-small delete-button">
+                    <button @click="remove" class="button is-info is-small delete-button">
                         <span class="fa-solid fa-trash view-button"></span>
                     </button>
-                    <ModalNoteEdit v-if="user" :userTags="user.tags" :noteObj="this.note"/>
+                    <ModalNoteEdit v-if="user" :user-tags="user.tags" :note-obj="this.note"/>
                 </div>
                 <div v-if="note.isTrash && owner" class="row smaller-gap">
                     <button @click="recover" class="button is-info is-small recover-button">
                         <span class="fa-solid fa-rotate-left view-button"></span>
                     </button>
-                    <ModalDeletePermanently :note-id="note.id"/>
+                    <modal-confirm
+                        modal-text="Are you sure you want to permanently remove this note?"
+                        button-classes="is-small delete-button"
+                        @confirm="removePermanently"
+                        ref="modalConfirm"
+                    >
+                        <template v-slot:button-contents>
+                            <span class="fa-solid fa-file-circle-xmark view-button"></span>
+                        </template>
+                    </modal-confirm>
                 </div>
             </div>
             <TagList v-if="owner" :tag-array="Object.keys(note.tags)" class="tags"/>
@@ -75,10 +96,9 @@ import NoteBody from '@/components/NoteBody';
 import ModalNoteEdit from '@/components/ModalNoteEdit';
 import PageHeader from '@/components/PageHeader';
 import TagList from '@/components/TagList';
-import HomeView from '@/views/HomeView';
 import {dateToString} from '@/helpers/dateFormatter';
 import ButtonNoteImageAdd from '@/components/ButtonNoteImageAdd';
-import ModalDeletePermanently from '@/components/ModalNoteDeletePermanently';
+import ModalConfirm from '@/components/ModalConfirm';
 import {ToggleButton} from 'vue-js-toggle-button';
 
 export default {
@@ -89,7 +109,7 @@ export default {
         ModalNoteEdit,
         NoteBody,
         ButtonNoteImageAdd,
-        ModalDeletePermanently,
+        ModalConfirm,
         ToggleButton
     },
     props: {
@@ -98,12 +118,18 @@ export default {
     },
     data: function() {
         return {
-            homeViewName: HomeView.name,
             note: false,
             showModal: false,
             image: null,
             uploadValue: 0,
             user: false,
+            pathMapping: {
+                'HomeView': 'Home',
+                'InboxView': 'Inbox',
+                'TrashView': 'Trash',
+                'TodayView': 'Today',
+                'UpcomingView': 'Upcoming'
+            },
             userId: auth.currentUser ? auth.currentUser.uid : null,
             owner: false,
             showImage: false
@@ -117,7 +143,7 @@ export default {
         }
         return {
             user: db.collection('users').doc(auth.currentUser.uid),
-            note: db.collection('notes').doc(this.$route.params.id)
+            note: db.collection('notes').doc(this.id)
         };
     },
     watch: {
@@ -133,12 +159,17 @@ export default {
         }
     },
     methods: {
-        moveToTrash: function() {
-            db.collection('notes').doc(this.note.id).update({isTrash: true});
+        remove: function() {
+            db.collection('notes').doc(this.id).update({isTrash: true});
             this.$router.push({name: 'TrashView'});
         },
+        removePermanently: function() {
+            db.collection('notes').doc(this.id).delete();
+            this.$router.push({name: this.from ? this.from : 'AllNotesView'});
+            this.$refs.modalConfirm.hideModal();
+        },
         recover: function() {
-            db.collection('notes').doc(this.note.id).update({isTrash: false});
+            db.collection('notes').doc(this.id).update({isTrash: false});
         },
         copyURL: async function() {
             try {
@@ -186,10 +217,13 @@ export default {
             return interval + ' ' + intervalType + ' ago';
         },
         dateToString,
+        goToView: function() {
+            this.$router.push({name: 'ViewView', params: {id: this.id}});
+        },
         deleteImage: function() {
-            storage.ref('notes/' + this.$route.params.id).delete().then(() => {
+            storage.ref('notes/' + this.id).delete().then(() => {
                 //Delete from db
-                db.collection('notes').doc(this.$route.params.id)
+                db.collection('notes').doc(this.id)
                     .update({
                         'imageUrl': '',
                         lastModifiedDateTime: new Date()
@@ -202,9 +236,16 @@ export default {
                 this.showImage = false;
             });
         }
+    },
+    computed: {
+        getPathName: function() {
+            if(Object.prototype.hasOwnProperty.call(this.pathMapping, this.$route.params.from)) {
+                return this.pathMapping[this.$route.params.from];
+            }
+            return 'All Notes';
+        }
     }
 };
-
 </script>
 
 <style>
@@ -325,7 +366,14 @@ export default {
 }
 
 .delete-image-button {
-    background-color: red !important;
+    background-color: #DC3F58 !important;
+    font-weight: 400;
+    color: white;
+    margin: auto 10px;
+}
+
+.delete-image-button:hover {
+    background-color: #B23247 !important;
     font-weight: 400;
     color: white;
     margin: auto 10px;

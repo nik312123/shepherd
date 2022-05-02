@@ -3,15 +3,22 @@
         <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
+                <li @click="$router.push({name: 'HomeView'})"><a>Home</a></li>
                 <li class="is-active">
-                    <router-link :to="{name: trashViewName}" aria-current="page">Trash</router-link>
+                    <router-link :to="{name: 'TrashView'}" aria-current="page">Trash</router-link>
                 </li>
             </ul>
         </nav>
         <div class="row">
             <h1 class="title is-2">🗑 Trash</h1>
-            <button @click="emptyTrash" class="button is-info is-small">Empty</button>
+            <modal-confirm
+                modal-text="Are you sure you want to empty the trash?"
+                button-classes="is-small"
+                @confirm="emptyTrash"
+                ref="modalConfirm"
+            >
+                <template v-slot:button-contents>Empty</template>
+            </modal-confirm>
         </div>
         <div class="section">
             <article v-for="noteObj in notes" :key="noteObj.id">
@@ -25,17 +32,13 @@
 import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
-import HomeView from '@/views/HomeView';
-
-const trashViewName = 'TrashView';
+import ModalConfirm from '@/components/ModalConfirm';
 
 export default {
-    name: trashViewName,
-    components: {PageHeader, NoteListItem},
+    name: 'TrashView',
+    components: {ModalConfirm, PageHeader, NoteListItem},
     data: function() {
         return {
-            trashViewName: trashViewName,
-            homeViewName: HomeView.name,
             notes: []
         };
     },
@@ -52,19 +55,20 @@ export default {
             this.notes.forEach(function(note) {
                 db.collection('notes').doc(note.id).delete();
             });
+            this.$refs.modalConfirm.hideModal();
         }
     }
 };
 </script>
 
 <style scoped>
-.is-info {
+>>> .is-info {
     background-color: #DC3F58;
     font-weight: 800;
     border-radius: 10px !important;
 }
 
-.is-info:hover {
+>>> .is-info:hover {
     background-color: #B23247;
     font-weight: 800;
     border-radius: 10px !important;

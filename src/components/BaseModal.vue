@@ -54,7 +54,7 @@ export default {
     methods: {
         openModal: function() {
             this.showModal = true;
-            this.$emit('modalOpen');
+            this.$emit('modal-open');
         },
         hideModal: function() {
             this.showModal = false;

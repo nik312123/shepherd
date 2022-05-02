@@ -5,7 +5,7 @@
         modal-header="Edit Note"
         :modal-buttons="[{buttonText: 'Update', actionName: 'update'}]"
         @update="updateNote"
-        @modalOpen="onOpenModal"
+        @modal-open="onOpenModal"
         ref="baseModal"
     >
         <template v-slot:button-contents>
@@ -17,7 +17,7 @@
             
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="tags" @updateTags="updateTags" ref="inputTagManager"
+                    :user-tags="userTags" :initial-tags="tags" @update-tags="updateTags" ref="inputTagManager"
                 />
             </div>
             
@@ -83,6 +83,12 @@ export default {
     computed: {
         formattedDate: function() {
             return this.reminderDateTime === null ? null : dateToString(this.reminderDateTime, false, true);
+        },
+        reminderDateTimeChanged: function() {
+            if(this.noteObj.reminderDateTime === null) {
+                return this.reminderDateTime !== null;
+            }
+            return this.reminderDateTime !== this.noteObj.reminderDateTime.toDate();
         }
     },
     methods: {
@@ -118,13 +124,13 @@ export default {
                 isPublic: this.isPublic,
                 tags: tagsMap,
                 lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime
+                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
+                notified: this.reminderDateTimeChanged
             });
             this.$refs.baseModal.hideModal();
         }
     }
 };
-
 </script>
 
 <style scoped>

@@ -3,7 +3,7 @@
         <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
+                <li @click="$router.push({name: 'HomeView'})"><a>Home</a></li>
                 <li v-if="view" class="is-active"><a aria-current="page">{{ view.name }}</a></li>
             </ul>
         </nav>
@@ -13,14 +13,14 @@
                 <button @click="deleteView" class="button is-info is-small">
                     <span class="fa-solid fa-trash view-button"></span>
                 </button>
-                <ModalViewEdit v-if="user && view" :userTags="user.tags" :views="views" :viewObj="view"/>
+                <ModalViewEdit v-if="user && view" :user-tags="user.tags" :views="views" :view-obj="view"/>
             </div>
         </div>
         <TagList v-if="view" :tag-array="view.tags"/>
         <div class="section">
-            <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="view.tags"/>
+            <ModalNoteCreate v-if="user" :user-tags="user.tags" :starting-tags="view.tags"/>
             <article v-for="noteObj in notes" :key="noteObj.id">
-                <NoteListItem :note="noteObj"/>
+                <NoteListItem :note="noteObj" :view-name="view.name" :view-id="id"/>
             </article>
         </div>
     </div>
@@ -32,7 +32,6 @@ import {auth, db} from '@/firebaseConfig';
 import TagList from '@/components/TagList';
 import NoteListItem from '@/components/NoteListItem';
 import ModalViewEdit from '@/components/ModalViewEdit';
-import HomeView from '@/views/HomeView';
 import ModalNoteCreate from '@/components/ModalNoteCreate';
 
 export default {
@@ -40,7 +39,6 @@ export default {
     components: {ModalViewEdit, NoteListItem, TagList, PageHeader, ModalNoteCreate},
     data: function() {
         return {
-            homeViewName: HomeView.name,
             view: null,
             notes: [],
             user: null,
@@ -66,7 +64,7 @@ export default {
     },
     firestore: function() {
         return {
-            view: db.collection('views').doc(this.$route.params.id),
+            view: db.collection('views').doc(this.id),
             views: db.collection('views')
                 .where('userId', '==', auth.currentUser.uid)
                 .orderBy('lastModifiedDate', 'desc'),
@@ -75,8 +73,8 @@ export default {
     },
     methods: {
         deleteView: function() {
-            db.collection('views').doc(this.view.id).delete();
-            this.$router.push({name: HomeView.name});
+            db.collection('views').doc(this.id).delete();
+            this.$router.push({name: 'HomeView'});
         }
     }
 };

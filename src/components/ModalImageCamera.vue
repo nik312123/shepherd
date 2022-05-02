@@ -88,7 +88,7 @@ export default {
             this.showVideo = false;
             
             this.imageSrc = this.canvas.toDataURL('image/png');
-            this.$emit('pictureTaken', this.imageSrc);
+            this.$emit('picture-taken', this.imageSrc);
         },
         retakePicture: function() {
             this.showVideo = true;
