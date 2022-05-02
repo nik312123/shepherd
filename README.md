@@ -6,7 +6,7 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 
 * Team Name: TODO
 * App Name: Shepherd
-* App Link: <https://TODO.firebaseapp.com/>
+* App Link: <https://shepherd-be6df.firebaseapp.com/>
 
 ### Students
 
@@ -22,15 +22,16 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 **Describe the most challenging features you implemented
 (one sentence per bullet, maximum 4 bullets):**
 
-* ...
+* 
 
 Which (if any) device integration(s) does your app support?
 
-* ...
+* Ability take photos with device camera and upload photos
 
 Which (if any) progressive web app feature(s) does your app support?
 
-* ...
+* Adding app to home screen on mobile and desktops.
+* Push notifications for reminders.
 
 
 
