@@ -16,7 +16,7 @@
             <input v-model="title" class="input is-medium" type="text" placeholder="Add title" maxlength="30">
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="[]" @update-type="updateTags" ref="inputTagManager"
+                    :user-tags="userTags" :initial-tags="[]" @update-tags="updateTags" ref="inputTagManager"
                 />
             </div>
         </template>
@@ -45,7 +45,7 @@ export default {
         onOpenModal: function() {
             this.tags = [];
             this.title = '';
-            this.$refs.inputTagManager.reset([]);
+            this.$refs.inputTagManager.reset(this.tags);
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
