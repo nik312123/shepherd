@@ -18,20 +18,20 @@
                 <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
             </ul>
         </nav>
-        <div v-if="note.userId === userId">
-            <span @click="copyURL" v-if="note.isPublic && !note.isTrash" class="tag is-medium public">
+        <div>
+            <span @click="copyURL" v-if="note.isPublic && !note.isTrash && owner" class="tag is-medium public">
                 Copy link
                 <span class="fa-solid fa-paste"></span>
             </span>
             <div class="row">
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
-                <div v-if="!note.isTrash" class="row smaller-gap">
+                <div v-if="!note.isTrash && owner" class="row smaller-gap">
                     <button @click="remove" class="button is-info is-small delete-button">
                         <span class="fa-solid fa-trash view-button"></span>
                     </button>
                     <ModalNoteEdit v-if="user" :user-tags="user.tags" :note-obj="this.note"/>
                 </div>
-                <div v-if="note.isTrash" class="row smaller-gap">
+                <div v-if="note.isTrash && owner" class="row smaller-gap">
                     <button @click="recover" class="button is-info is-small recover-button">
                         <span class="fa-solid fa-rotate-left view-button"></span>
                     </button>
@@ -47,13 +47,15 @@
                     </modal-confirm>
                 </div>
             </div>
-            <TagList :tag-array="Object.keys(note.tags)" class="tags"/>
+            <TagList v-if="owner" :tag-array="Object.keys(note.tags)" class="tags"/>
             
-            <div>
-                <p v-if="note.reminderDateTime" class="note-info">
+            <div v-if="note && owner">
+                <p class="note-info">
                     Reminder: {{ dateToString(note.reminderDateTime.toDate(), false, true) }}
                 </p>
-                <p class="note-info">Created: {{ dateToString(note.createdDateTime.toDate(), false, false) }}</p>
+                <p class="note-info">
+                    Created: {{ dateToString(note.createdDateTime.toDate(), false, false) }}
+                </p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
                 <div class="toggle-image-container">
                     <ButtonNoteImageAdd/>
@@ -82,7 +84,8 @@
             <div class="image-container">
                 <img :src="note.imageUrl" v-if="showImage" class="image" alt="Note Image"/>
             </div>
-            <NoteBody :default-tab="defaultTab" :body="note.body" :id="note.id"/>
+            
+            <NoteBody v-if="note" :default-tab="defaultTab" :body="note.body" :id="note.id" :owner="owner"/>
         </div>
     </div>
 </template>
@@ -117,7 +120,6 @@ export default {
         return {
             note: false,
             showModal: false,
-            userId: auth.currentUser.uid,
             image: null,
             uploadValue: 0,
             user: false,
@@ -128,14 +130,33 @@ export default {
                 'TodayView': 'Today',
                 'UpcomingView': 'Upcoming'
             },
+            userId: auth.currentUser ? auth.currentUser.uid : null,
+            owner: false,
             showImage: false
         };
     },
     firestore: function() {
+        if(!auth.currentUser) {
+            return {
+                note: db.collection('notes').doc(this.$route.params.id)
+            };
+        }
         return {
             user: db.collection('users').doc(auth.currentUser.uid),
             note: db.collection('notes').doc(this.id)
         };
+    },
+    watch: {
+        note: function() {
+            if(!this.note) {
+                this.$router.push({name: 'HomeView'});
+                return;
+            }
+            this.owner = this.userId === this.note.userId;
+            if(!this.owner && (!this.note.isPublic || this.note.isTrash)) {
+                this.$router.push({name: 'HomeView'});
+            }
+        }
     },
     methods: {
         remove: function() {
