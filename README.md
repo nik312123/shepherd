@@ -22,7 +22,9 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 **Describe the most challenging features you implemented
 (one sentence per bullet, maximum 4 bullets):**
 
+* Markdown editor with WYSIWYG preview as you type.
 * 
+
 
 Which (if any) device integration(s) does your app support?
 
@@ -31,8 +33,7 @@ Which (if any) device integration(s) does your app support?
 Which (if any) progressive web app feature(s) does your app support?
 
 * Adding app to home screen on mobile and desktops.
-* Push notifications for reminders.
-
+* Push notifications for reminders.(limited support for iOS and Safari)
 
 
 ## Mockup images
@@ -69,7 +70,6 @@ There are 4 main different page types on the app. There are the home page with a
 ![How a public note looks for a visitor](https://user-images.githubusercontent.com/26149148/166231383-b621b152-9760-4f73-b2cb-b59273d3f434.png)
 
 
-
 ## External Dependencies
 
 **Document integrations with 3rd Party code or services here.
@@ -80,6 +80,9 @@ Please do not document required libraries (e.g., Vue, Vuefire, Firebase).**
 * V-Calendar: A datetime picker plugin for creating and editing notes
 * vue-tags-input: A tags input component for adding and editing tags on notes and views
 * vue-js-toggle-button: A nice looking toggle button vue component for switching values on and off.
+* fuse.js: for client-side searching
+* no-darkreader: disables darkmode extention on our app
+* 
 
 **If there's anything else you would like to disclose about how your project
 relied on external code, expertise, or anything else, please disclose that
