@@ -41,7 +41,7 @@ img {
     padding-top: 60px;
 }
 
-.is-3{
+.is-3 {
     max-width: 300px;
     margin: auto;
 }
@@ -51,7 +51,7 @@ img {
     float: none;
 }
 
-.blue{
+.blue {
     background: #419AE8;
     background: linear-gradient(to top, #419AE8 0%, #25C1E8 100%);
     -webkit-background-clip: text;
