@@ -3,7 +3,7 @@
         <VueTagsInput
             v-model="tag"
             :placeholder="tags.length === 0 ? 'Add tag' : ''"
-            :tags.sync="tags"
+            :tags="tags"
             :validation="validation"
             :autocomplete-items="relevantUserTags"
             @tags-changed="updateTags"
