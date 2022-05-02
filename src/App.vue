@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         handleNotificationOnClick: function(passedProp) {
-            this.$router.push({name: 'note', params: {id: passedProp.item.data.noteId}}).then(() => {
+            this.$router.push({name: 'NoteView', params: {id: passedProp.item.data.noteId}}).then(() => {
                 passedProp.close();
             });
         }
