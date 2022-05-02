@@ -104,7 +104,7 @@ export default {
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
         },
-        updateNoteQuery: function(tagsMap, name, reminderDateUnchanged, messageToken) {
+        updateNoteQuery: function(tagsMap, name, reminderDateTimeUnchanged, messageToken) {
             const curTimestamp = new Date();
             const updateData = {
                 title: name,
@@ -114,8 +114,12 @@ export default {
                 reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime
             };
             if(messageToken) {
-                updateData.notified = reminderDateUnchanged;
-                updateData.messageToken = messageToken;
+                if(this.noteObj.notified === true) {
+                    updateData.notified = reminderDateTimeUnchanged;
+                }
+                if(this.noteObj.notified !== undefined) {
+                    updateData.messageToken = messageToken;
+                }
             }
             db.collection('notes').doc(this.noteObj.id).update(updateData);
         },
@@ -134,17 +138,17 @@ export default {
             let tagsMap = this.tags.map(tag => ({[tag.text]: true}));
             tagsMap = Object.assign({}, ...tagsMap);
             
-            if(!this.reminderDateTimeUnchanged && messaging !== null) {
+            if(messaging === null) {
+                this.updateNoteQuery(tagsMap, name, this.reminderDateTimeUnchanged);
+            }
+            else {
                 messaging.getToken({
                     vapidKey: '***REMOVED***'
                 }).then(messageToken => {
-                    this.updateNoteQuery(tagsMap, name, false, messageToken);
-                }).catch(() => {
-                    this.updateNoteQuery(tagsMap, name, true);
+                    this.updateNoteQuery(tagsMap, name, this.reminderDateTimeUnchanged, messageToken);
+                }).catch(err => {
+                    console.log(err);
                 });
-            }
-            else {
-                this.updateNoteQuery(tagsMap, name, true);
             }
             
             this.$refs.baseModal.hideModal();

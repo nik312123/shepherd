@@ -113,11 +113,11 @@ export default {
                 createdDateTime: curTimestamp,
                 lastModifiedDateTime: curTimestamp,
                 reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
-                notified: false
             };
             
             if(messageToken) {
                 createData.messageToken = messageToken;
+                createData.notified = false;
             }
             
             db.collection('notes').add(createData).then(docRef => {
@@ -149,8 +149,8 @@ export default {
                     vapidKey: '***REMOVED***'
                 }).then(messageToken => {
                     this.createNoteQuery(tagsMap, name, curTimestamp, messageToken);
-                }).catch(() => {
-                    this.createNoteQuery(tagsMap, name, curTimestamp);
+                }).catch(error => {
+                    console.log(error);
                 });
             }
             
