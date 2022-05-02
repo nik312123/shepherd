@@ -11,7 +11,14 @@
         </nav>
         <div class="row">
             <h1 class="title is-2">🗑 Trash</h1>
-            <button @click="emptyTrash" class="button is-info is-small">Empty</button>
+            <modal-confirm
+                modal-text="Are you sure you want to empty the trash?"
+                button-classes="is-small"
+                @confirm="emptyTrash"
+                ref="modalConfirm"
+            >
+                <template v-slot:button-contents>Empty</template>
+            </modal-confirm>
         </div>
         <div class="section">
             <article v-for="noteObj in notes" :key="noteObj.id">
@@ -25,10 +32,11 @@
 import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
+import ModalConfirm from '@/components/ModalConfirm';
 
 export default {
     name: 'TrashView',
-    components: {PageHeader, NoteListItem},
+    components: {ModalConfirm, PageHeader, NoteListItem},
     data: function() {
         return {
             notes: []
@@ -47,19 +55,20 @@ export default {
             this.notes.forEach(function(note) {
                 db.collection('notes').doc(note.id).delete();
             });
+            this.$refs.modalConfirm.hideModal();
         }
     }
 };
 </script>
 
 <style scoped>
-.is-info {
+>>> .is-info {
     background-color: #DC3F58;
     font-weight: 800;
     border-radius: 10px !important;
 }
 
-.is-info:hover {
+>>> .is-info:hover {
     background-color: #B23247;
     font-weight: 800;
     border-radius: 10px !important;
