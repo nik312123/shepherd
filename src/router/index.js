@@ -106,6 +106,12 @@ const routes = [
             requiresAuth: false,
             title: 'Shepherd Note'
         }
+    },
+    {
+        path: '*',
+        redirect: {
+            name: 'HomeView'
+        }
     }
 ];
 
