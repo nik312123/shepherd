@@ -5,11 +5,11 @@
         modal-header="Edit Note"
         :modal-buttons="[{buttonText: 'Update', actionName: 'update'}]"
         @update="updateNote"
-        @modalOpen="onOpenModal"
+        @modal-open="onOpenModal"
         ref="baseModal"
     >
         <template v-slot:button-contents>
-            <span class="fa-solid fa-edit view-button"></span>
+            <span class="fa-solid fa-edit view-button" title="Edit note"></span>
         </template>
         
         <template v-slot:modal-content>
@@ -17,7 +17,7 @@
             
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="tags" @updateTags="updateTags" ref="inputTagManager"
+                    :user-tags="userTags" :initial-tags="tags" @update-tags="updateTags" ref="inputTagManager"
                 />
             </div>
             
@@ -36,7 +36,7 @@
                     :available-dates="{start: new Date(), end: null}"
                     mode="datetime"
                     v-if="reminder"
-                    v-model="reminderDate"
+                    v-model="reminderDateTime"
                     is-dark
                 />
             </div>
@@ -44,6 +44,7 @@
             <div class="control">
                 <ToggleButton
                     v-model="isPublic"
+                    :sync="true"
                     :color="{checked: '#68778F', unchecked: '#2A3444'}"
                     :labels="{checked: 'Public', unchecked: 'Private'}"
                     :width="98"
@@ -57,7 +58,7 @@
 </template>
 
 <script>
-import {auth, db, fieldValue} from '@/firebaseConfig';
+import {auth, db, fieldValue, messaging} from '@/firebaseConfig';
 import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import BaseModal from '@/components/BaseModal';
 import InputTagManager from '@/components/InputTagManager';
@@ -74,22 +75,28 @@ export default {
     data: function() {
         return {
             title: this.noteObj.title,
-            tags: Object.keys(this.noteObj.tags).map((tag) => ({text: tag})),
+            tags: Object.keys(this.noteObj.tags).map(tag => ({text: tag})),
             reminder: false,
-            reminderDate: this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null,
+            reminderDateTime: this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null,
             isPublic: this.noteObj.isPublic
         };
     },
     computed: {
         formattedDate: function() {
-            return this.reminderDate === null ? null : dateToString(this.reminderDate, false, true);
+            return this.reminderDateTime === null ? null : dateToString(this.reminderDateTime, false, true);
+        },
+        reminderDateTimeChanged: function() {
+            if(this.noteObj.reminderDateTime === null) {
+                return this.reminderDateTime !== null;
+            }
+            return this.reminderDateTime !== this.noteObj.reminderDateTime.toDate();
         }
     },
     methods: {
         onOpenModal: function() {
-            this.tags = Object.keys(this.noteObj.tags).map((tag) => ({text: tag}));
+            this.tags = Object.keys(this.noteObj.tags).map(tag => ({text: tag}));
             this.title = this.noteObj.title;
-            this.reminderDate = this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null;
+            this.reminderDateTime = this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null;
             this.reminder = false;
             this.isPublic = this.noteObj.isPublic;
             this.$refs.inputTagManager.reset(this.tags);
@@ -97,8 +104,23 @@ export default {
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
         },
+        updateNoteQuery: function(tagsMap, name, reminderDateChanged, messageToken) {
+            const curTimestamp = new Date();
+            const updateData = {
+                title: name,
+                isPublic: this.isPublic,
+                tags: tagsMap,
+                lastModifiedDateTime: curTimestamp,
+                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
+                notified: reminderDateChanged
+            };
+            if(messageToken) {
+                updateData.messageToken = messageToken;
+            }
+            db.collection('notes').doc(this.noteObj.id).update(updateData);
+        },
         updateNote: function() {
-            let name = this.title.trim();
+            const name = this.title.trim();
             if(name.length === 0 || name.length > 30) {
                 alert('View title has to be between 1 and 30 characters long');
                 return;
@@ -112,19 +134,23 @@ export default {
             let tagsMap = this.tags.map(tag => ({[tag.text]: true}));
             tagsMap = Object.assign({}, ...tagsMap);
             
-            const curTimestamp = new Date();
-            db.collection('notes').doc(this.noteObj.id).update({
-                title: name,
-                isPublic: this.isPublic,
-                tags: tagsMap,
-                lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDate === null ? null : this.reminderDate
-            });
+            if(this.reminderDateTimeChanged) {
+                messaging.getToken({
+                    vapidKey: '***REMOVED***'
+                }).then(messageToken => {
+                    this.updateNoteQuery(tagsMap, name, true, messageToken);
+                }).catch(() => {
+                    this.updateNoteQuery(tagsMap, name, false);
+                });
+            }
+            else {
+                this.updateNoteQuery(tagsMap, name, false);
+            }
+            
             this.$refs.baseModal.hideModal();
         }
     }
 };
-
 </script>
 
 <style scoped>

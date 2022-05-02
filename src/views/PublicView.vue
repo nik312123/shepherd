@@ -5,18 +5,16 @@
             <ul>
                 <li @click="$router.push({name: 'HomeView'})"><a>Home</a></li>
                 <li class="is-active">
-                    <router-link :to="{name: $route.name}" aria-current="page">Inbox</router-link>
+                    <router-link :to="{name: 'PublicView'}" aria-current="page">Public</router-link>
                 </li>
             </ul>
         </nav>
         <div class="row">
-            <h1 class="title is-2">📮 Inbox</h1>
-            <ModalNoteCreate v-if="user" :user-tags="user.tags" :starting-tags="[]"/>
+            <h1 class="title is-2">🌐 Public</h1>
         </div>
-        
         <div class="section">
             <SearchBar :notes="notes" :return-results="setResults"/>
-            <article v-for="noteObj in notes" :key="noteObj.id">
+            <article v-for="noteObj in searchNotes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
             </article>
         </div>
@@ -27,33 +25,35 @@
 import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
-import ModalNoteCreate from '@/components/ModalNoteCreate';
-import SearchBar from '@/components/SearchBar.vue';
+import HomeView from '@/views/HomeView';
+import SearchBar from '@/components/SearchBar';
+
+const publicViewName = 'PublicView';
 
 export default {
-    name: 'InboxView',
-    components: {NoteListItem, PageHeader, ModalNoteCreate, SearchBar},
+    name: publicViewName,
+    components: {PageHeader, NoteListItem, SearchBar},
     data: function() {
         return {
-            user: false,
+            publicViewName: publicViewName,
+            homeViewName: HomeView.name,
             notes: [],
             searchNotes: []
+        };
+    },
+    firestore: function() {
+        return {
+            notes: db.collection('notes')
+                .where('userId', '==', auth.currentUser.uid)
+                .where('isTrash', '==', false)
+                .where('isPublic', '==', true)
+                .orderBy('lastModifiedDateTime', 'desc')
         };
     },
     methods: {
         setResults: function(value) {
             this.searchNotes = value;
         }
-    },
-    firestore: function() {
-        return {
-            user: db.collection('users').doc(auth.currentUser.uid),
-            notes: db.collection('notes')
-                .where('userId', '==', auth.currentUser.uid)
-                .where('isTrash', '==', false)
-                .where('tags', '==', {})
-                .orderBy('lastModifiedDateTime', 'desc')
-        };
     }
 };
 </script>
@@ -61,6 +61,15 @@ export default {
 <style scoped>
 .row {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.is-2 {
+    margin: 0;
+}
+
+.section {
+    padding-top: 15px;
 }
 </style>

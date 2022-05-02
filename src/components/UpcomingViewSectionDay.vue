@@ -37,7 +37,7 @@ export default {
         }
     },
     firestore: function() {
-        let end = new Date(this.startDate);
+        const end = new Date(this.startDate);
         end.setDate(end.getDate() + 1);
         
         return {
@@ -70,5 +70,10 @@ p.title.is-5 {
 .row {
     display: flex;
     flex-direction: row;
+}
+
+>>> .card {
+    margin-top: 5px;
+    margin-bottom: 10px;
 }
 </style>

@@ -10,8 +10,20 @@ import AllNotesView from '@/views/AllNotesView';
 import TrashView from '@/views/TrashView';
 import ViewView from '@/views/ViewView';
 import NoteView from '@/views/NoteView';
+import PublicView from '@/views/PublicView';
 
 Vue.use(VueRouter);
+
+const {isNavigationFailure, NavigationFailureType} = VueRouter;
+
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function(location) {
+    return originalPush.call(this, location).catch(error => {
+        if(!isNavigationFailure(error, NavigationFailureType.duplicated)) {
+            throw Error(error);
+        }
+    });
+};
 
 const routes = [
     {
@@ -62,6 +74,14 @@ const routes = [
         }
     },
     {
+        path: '/public-notes',
+        component: PublicView,
+        meta: {
+            requiresAuth: true,
+            title: 'Shepherd Public'
+        }
+    },
+    {
         path: '/trash',
         component: TrashView,
         meta: {
@@ -83,8 +103,14 @@ const routes = [
         component: NoteView,
         props: true,
         meta: {
-            requiresAuth: true,
+            requiresAuth: false,
             title: 'Shepherd Note'
+        }
+    },
+    {
+        path: '*',
+        redirect: {
+            name: 'HomeView'
         }
     }
 ];
@@ -105,7 +131,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     // noinspection JSUnresolvedVariable
-    let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
     
     if(requiresAuth && !auth.currentUser) {
         next('/');

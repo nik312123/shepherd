@@ -4,17 +4,18 @@
         <div class="section">
             <div class="row section-header">
                 <h1 class="title is-3">Home</h1>
-                <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]"/>
+                <ModalNoteCreate v-if="user" :user-tags="user.tags" :starting-tags="[]"/>
             </div>
             <div class="row stretch">
-                <HomeSection title="📮 Inbox" viewName="InboxView" :count="inboxNotes.length"/>
-                <HomeSection title="☀️ Today" viewName="TodayView" :count="todayNotes.length"/>
+                <HomeSection title="📮 Inbox" view-name="InboxView" :count="inboxNotes.length"/>
+                <HomeSection title="☀️ Today" view-name="TodayView" :count="todayNotes.length"/>
             </div>
             <div class="row stretch">
-                <HomeSection title="🗄 All Notes" viewName="AllNotesView" :count="allNotes.length"/>
-                <HomeSection title="🗓 Upcoming" viewName="UpcomingView" :count="upcomingNotes.length"/>
+                <HomeSection title="🗄 All Notes" view-name="AllNotesView" :count="allNotes.length"/>
+                <HomeSection title="🗓 Upcoming" view-name="UpcomingView" :count="upcomingNotes.length"/>
             </div>
             <div class="row stretch">
+                <HomeSection title="🌐 Public" viewName="PublicView" :count="publicNotes.length"/>
                 <HomeSection title="🗑 Trash" viewName="TrashView" :count="trashNotes.length"/>
             </div>
         </div>
@@ -22,11 +23,11 @@
         <div class="section">
             <div class="row section-header">
                 <h1 class="title is-3">Views</h1>
-                <ModalViewCreate v-if="user" :userTags="user.tags" :views="views"/>
+                <ModalViewCreate v-if="user" :user-tags="user.tags" :views="views"/>
             </div>
             
             <article v-for="view in views" :key="view.id">
-                <HomeSection :title="view.name" viewName="ViewView" :id="view.id" :count="1"/>
+                <HomeSection :title="view.name" view-name="ViewView" :id="view.id" :count="1"/>
             </article>
         </div>
     </div>
@@ -50,15 +51,16 @@ export default {
             todayNotes: [],
             upcomingNotes: [],
             allNotes: [],
-            trashNotes: []
+            trashNotes: [],
+            publicNotes: []
         };
     },
     firestore: function() {
-        let today = new Date();
+        const today = new Date();
         today.setHours(0, 0, 0);
-        let tomorrow = new Date(today);
+        const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
-        let endOfWeek = new Date(tomorrow);
+        const endOfWeek = new Date(tomorrow);
         endOfWeek.setDate(endOfWeek.getDate() + 7);
         
         return {
@@ -88,7 +90,12 @@ export default {
             
             trashNotes: db.collection('notes')
                 .where('userId', '==', auth.currentUser.uid)
-                .where('isTrash', '==', true)
+                .where('isTrash', '==', true),
+            
+            publicNotes: db.collection('notes')
+                .where('userId', '==', auth.currentUser.uid)
+                .where('isTrash', '==', false)
+                .where('isPublic', '==', true)
         };
     },
     watch: {

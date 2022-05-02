@@ -1,84 +1,182 @@
 <template>
     <div>
         <PageHeader/>
-        <div v-if="note.userId === userId">
-            <div>
-                <router-link :to="{name: homeViewName}">
-                    <span class="fa fa-angle-left fa-2x" aria-hidden="true"></span>
-                </router-link>
-            </div>
-            <span @click="copyURL" v-if="note.isPublic && !note.isTrash" class="tag is-medium public">
+        <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
+            <ul v-if="$route.params.from !== undefined">
+                <li @click="$router.push({name: 'HomeView'})"><a> Home </a></li>
+                <li @click="$router.push({name: $route.params.from})" v-if="$route.params.viewName === undefined"><a>
+                    {{ getPathName }} </a></li>
+                <li
+                    @click="goToView"
+                    v-if="$route.params.viewName !== undefined"
+                ><a> {{ $route.params.viewName }} </a></li>
+                <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
+            </ul>
+            <ul v-else>
+                <li @click="$router.push({name: 'HomeView'})"><a> Home </a></li>
+                <li @click="$router.push({name: 'AllNotesView'})"><a> All Notes </a></li>
+                <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
+            </ul>
+        </nav>
+        <div>
+            <span @click="copyURL" v-if="note.isPublic && !note.isTrash && owner" class="tag is-medium public">
                 Copy link
                 <span class="fa-solid fa-paste"></span>
             </span>
             <div class="row">
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
-                <div v-if="!note.isTrash" class="row smaller-gap">
-                    <button @click="moveToTrash" class="button is-info is-small delete-button">
+                <div v-if="!note.isTrash && owner" class="row smaller-gap">
+                    <button @click="remove" class="button is-info is-small delete-button">
                         <span class="fa-solid fa-trash view-button"></span>
                     </button>
-                    <ModalNoteEdit v-if="user" :userTags="user.tags" :noteObj="this.note"/>
+                    <ModalNoteEdit v-if="user" :user-tags="user.tags" :note-obj="this.note"/>
                 </div>
-                <div v-if="note.isTrash" class="row smaller-gap">
+                <div v-if="note.isTrash && owner" class="row smaller-gap">
                     <button @click="recover" class="button is-info is-small recover-button">
                         <span class="fa-solid fa-rotate-left view-button"></span>
                     </button>
-                    <ModalDeletePermanently :note-id="note.id"/>
+                    <modal-confirm
+                        modal-text="Are you sure you want to permanently remove this note?"
+                        button-classes="is-small delete-button"
+                        @confirm="removePermanently"
+                        ref="modalConfirm"
+                    >
+                        <template v-slot:button-contents>
+                            <span class="fa-solid fa-file-circle-xmark view-button"></span>
+                        </template>
+                    </modal-confirm>
                 </div>
             </div>
-            <TagList :tag-array="Object.keys(note.tags)" class="tags"/>
+            <TagList v-if="owner" :tag-array="Object.keys(note.tags)" class="tags"/>
             
-            <div>
+            <div v-if="note && owner">
                 <p v-if="note.reminderDateTime" class="note-info">
                     Reminder: {{ dateToString(note.reminderDateTime.toDate(), false, true) }}
                 </p>
-                <p class="note-info">Created: {{ dateToString(note.createdDateTime.toDate(), false, false) }}</p>
+                <p class="note-info">
+                    Created: {{ dateToString(note.createdDateTime.toDate(), false, false) }}
+                </p>
                 <p class="note-info">Last Modified: {{ timeSince(note.lastModifiedDateTime.toDate()) }}</p>
+                <div class="toggle-image-container">
+                    <ButtonNoteImageAdd/>
+                    <div class="control" v-if="note.imageUrl !== undefined && note.imageUrl !== '' ">
+                        <ToggleButton
+                            v-model="showImage"
+                            :color="{checked: '#089D7B', unchecked: '#2A3444'}"
+                            :labels="{checked: 'Hide', unchecked: 'Show'}"
+                            :width="98"
+                            :height="35"
+                            :font-size="15"
+                            :margin="5"
+                        />
+                    </div>
+                    <button
+                        v-show="note.imageUrl !== undefined && note.imageUrl !== '' && showImage"
+                        class="button is-focused delete-image-button" @click="deleteImage"
+                    >
+                        <span class="icon">
+                            <span class="fas fa-trash"></span>
+                        </span>
+                        <span>Image</span>
+                    </button>
+                </div>
             </div>
-            <NoteBody :default-tab="defaultTab" :body="note.body" :id="note.id"/>
+            <div class="image-container">
+                <img :src="note.imageUrl" v-if="showImage" class="image" alt="Note Image"/>
+            </div>
+            
+            <NoteBody v-if="note" :default-tab="defaultTab" :body="note.body" :id="note.id" :owner="owner"/>
         </div>
     </div>
 </template>
 
 <script>
-import {auth, db} from '@/firebaseConfig';
+import {auth, db, storage} from '@/firebaseConfig';
 import NoteBody from '@/components/NoteBody';
 import ModalNoteEdit from '@/components/ModalNoteEdit';
 import PageHeader from '@/components/PageHeader';
 import TagList from '@/components/TagList';
-import HomeView from '@/views/HomeView';
 import {dateToString} from '@/helpers/dateFormatter';
-import ModalDeletePermanently from '@/components/ModalDeletePermanently';
+import ButtonNoteImageAdd from '@/components/ButtonNoteImageAdd';
+import ModalConfirm from '@/components/ModalConfirm';
+import {ToggleButton} from 'vue-js-toggle-button';
 
 export default {
     name: 'NoteView',
-    components: {ModalDeletePermanently, TagList, PageHeader, ModalNoteEdit, NoteBody},
+    components: {
+        TagList,
+        PageHeader,
+        ModalNoteEdit,
+        NoteBody,
+        ButtonNoteImageAdd,
+        ModalConfirm,
+        ToggleButton
+    },
     props: {
         id: String,
         defaultTab: String
     },
     data: function() {
         return {
-            homeViewName: HomeView.name,
             note: false,
             showModal: false,
+            image: null,
+            uploadValue: 0,
             user: false,
-            userId: auth.currentUser.uid
+            pathMapping: {
+                'HomeView': 'Home',
+                'InboxView': 'Inbox',
+                'TrashView': 'Trash',
+                'TodayView': 'Today',
+                'UpcomingView': 'Upcoming'
+            },
+            userId: auth.currentUser ? auth.currentUser.uid : null,
+            owner: false,
+            showImage: false
         };
+    },
+    created: function() {
+        this.$firestoreRefs.note.onSnapshot({
+            error: () => {
+                this.$router.push({name: 'HomeView'});
+            }
+        });
     },
     firestore: function() {
+        if(!auth.currentUser) {
+            return {
+                note: db.collection('notes').doc(this.$route.params.id)
+            };
+        }
         return {
             user: db.collection('users').doc(auth.currentUser.uid),
-            note: db.collection('notes').doc(this.$route.params.id)
+            note: db.collection('notes').doc(this.id)
         };
     },
+    watch: {
+        note: function() {
+            if(!this.note) {
+                this.$router.push({name: 'HomeView'});
+                return;
+            }
+            this.owner = this.userId === this.note.userId;
+            if(!this.owner && (!this.note.isPublic || this.note.isTrash)) {
+                this.$router.push({name: 'HomeView'});
+            }
+        }
+    },
     methods: {
-        moveToTrash: function() {
-            db.collection('notes').doc(this.note.id).update({isTrash: true});
-            this.$router.push({name: 'TrashView'});
+        remove: function() {
+            db.collection('notes').doc(this.id).update({isTrash: true});
+            this.$router.push({name: this.from ? this.from : 'AllNotesView'});
+        },
+        removePermanently: function() {
+            db.collection('notes').doc(this.id).delete();
+            this.$router.push({name: this.from ? this.from : 'AllNotesView'});
+            this.$refs.modalConfirm.hideModal();
         },
         recover: function() {
-            db.collection('notes').doc(this.note.id).update({isTrash: false});
+            db.collection('notes').doc(this.id).update({isTrash: false});
         },
         copyURL: async function() {
             try {
@@ -125,10 +223,36 @@ export default {
             
             return interval + ' ' + intervalType + ' ago';
         },
-        dateToString: dateToString
+        dateToString,
+        goToView: function() {
+            this.$router.push({name: 'ViewView', params: {id: this.$route.params.viewId}});
+        },
+        deleteImage: function() {
+            storage.ref('notes/' + this.id).delete().then(() => {
+                //Delete from db
+                db.collection('notes').doc(this.id)
+                    .update({
+                        'imageUrl': '',
+                        lastModifiedDateTime: new Date()
+                    })
+                    .then(() => {})
+                    .catch(err => {
+                        alert('Something went wrong');
+                        console.log(err);
+                    });
+                this.showImage = false;
+            });
+        }
+    },
+    computed: {
+        getPathName: function() {
+            if(Object.prototype.hasOwnProperty.call(this.pathMapping, this.$route.params.from)) {
+                return this.pathMapping[this.$route.params.from];
+            }
+            return 'All Notes';
+        }
     }
 };
-
 </script>
 
 <style>
@@ -162,6 +286,25 @@ export default {
     margin-bottom: 7px;
     font-weight: 700;
     color: #AABBD5;
+}
+
+.toggle-image-container {
+    display: flex;
+}
+
+.control {
+    margin: auto 0;
+}
+
+.image-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.image {
+    max-width: 70%;
+    max-height: 400px;
 }
 
 .title {
@@ -227,5 +370,19 @@ export default {
 .fa-paste {
     color: #91A9D7;
     margin-left: 6px;
+}
+
+.delete-image-button {
+    background-color: #DC3F58 !important;
+    font-weight: 400;
+    color: white;
+    margin: auto 10px;
+}
+
+.delete-image-button:hover {
+    background-color: #B23247 !important;
+    font-weight: 400;
+    color: white;
+    margin: auto 10px;
 }
 </style>

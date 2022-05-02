@@ -2,7 +2,7 @@
     <div id="page-header">
         <div id="page-header-content">
             <div id="shepherd-content">
-                <img id="shepherd-logo" src="../assets/temp.png" @click="redirectToHome" alt="logo">
+                <img id="shepherd-logo" src="../assets/shepherd-icon.png" @click="redirectToHome" alt="logo">
                 <h1
                     id="shepherd-header-title"
                     :style="'visibility: ' + (shepherdHeaderTitleVisible ? 'visible' : 'hidden')"
@@ -18,7 +18,6 @@
 
 <script>
 import ButtonAuthenticationGoogle from '@/components/ButtonAuthenticationGoogle';
-import HomeView from '@/views/HomeView';
 
 export default {
     name: 'PageHeader',
@@ -36,7 +35,7 @@ export default {
     },
     methods: {
         redirectToHome: function() {
-            this.$router.push({name: HomeView.name});
+            this.$router.push({name: 'HomeView'});
         },
         onResize: function() {
             const windowWidth = window.screen.width;
@@ -72,9 +71,9 @@ export default {
 }
 
 img#shepherd-logo {
-    width: 40px;
+    width: 45px;
     margin-right: 10px;
-    padding-top: 2px;
+    padding-top: 0;
 }
 
 hr.solid {

@@ -6,7 +6,7 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 
 * Team Name: TODO
 * App Name: Shepherd
-* App Link: <https://TODO.firebaseapp.com/>
+* App Link: <https://shepherd-be6df.firebaseapp.com/>
 
 ### Students
 
@@ -22,15 +22,16 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 **Describe the most challenging features you implemented
 (one sentence per bullet, maximum 4 bullets):**
 
-* ...
+* 
 
 Which (if any) device integration(s) does your app support?
 
-* ...
+* Ability take photos with device camera and upload photos
 
 Which (if any) progressive web app feature(s) does your app support?
 
-* ...
+* Adding app to home screen on mobile and desktops.
+* Push notifications for reminders.
 
 
 
@@ -53,10 +54,19 @@ There are 4 main different page types on the app. There are the home page with a
 
 ## Screenshots of Site (complete)
 
-**[Add a screenshot of each key page](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository)
-along with a very brief caption:**
+![A decent looking landing page](https://user-images.githubusercontent.com/26149148/166230865-f4cc294e-50b7-4261-bb18-9b3b5abd2bb6.png)
 
-![](https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif)
+![The home view which shows the build-in view and custom views](https://user-images.githubusercontent.com/26149148/166230913-eeb96a57-694f-4b6a-9299-126b0913eac9.png)
+
+![The today view which shows the notes for today](https://user-images.githubusercontent.com/26149148/166231059-ed7337d2-6046-4e5b-b7ba-ce22767f0d6f.png)
+
+![The upcoming view which shows the notes for the next 7 days](https://user-images.githubusercontent.com/26149148/166231199-4deef086-5659-447a-9080-1d0e00399cec.png)
+
+![A custom view page](https://user-images.githubusercontent.com/26149148/166231274-192d97ac-ebbc-4e9d-ae35-933d735a39ea.png)
+
+![How the note page looks to the owner](https://user-images.githubusercontent.com/26149148/166231320-98ed31b8-e0e4-4901-a123-2c095c179f13.png)
+
+![How a public note looks for a visitor](https://user-images.githubusercontent.com/26149148/166231383-b621b152-9760-4f73-b2cb-b59273d3f434.png)
 
 
 
@@ -66,7 +76,10 @@ along with a very brief caption:**
 Please do not document required libraries (e.g., Vue, Vuefire, Firebase).**
 
 * Library or service name: description of use
-* ...
+* Toast-UI Editor: A markdown editor for notes
+* V-Calendar: A datetime picker plugin for creating and editing notes
+* vue-tags-input: A tags input component for adding and editing tags on notes and views
+* vue-js-toggle-button: A nice looking toggle button vue component for switching values on and off.
 
 **If there's anything else you would like to disclose about how your project
 relied on external code, expertise, or anything else, please disclose that

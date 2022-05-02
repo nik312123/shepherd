@@ -3,18 +3,22 @@
         <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
+                <li @click="$router.push({name: 'HomeView'})"><a>Home</a></li>
                 <li class="is-active">
-                    <router-link :to="{name: todayViewName}" aria-current="page">Today</router-link>
+                    <router-link :to="{name: 'TodayView'}" aria-current="page">Today</router-link>
                 </li>
             </ul>
         </nav>
         <div class="row">
             <h1 id="today-date" :class="'title is-mobile is-' + todayTextSizeDenominator">☀️ {{ todayString }}</h1>
-            <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]" :starting-date="getOneHourFromNowUpToMidnight()"/>
+            <ModalNoteCreate
+                v-if="user" :user-tags="user.tags" :starting-tags="[]" :starting-date="getOneHourFromNowUpToMidnight()"
+            />
         </div>
+        
         <div class="section">
-            <article v-for="noteObj in notes" :key="noteObj.id">
+            <SearchBar :notes="notes" :return-results="setResults"/>
+            <article v-for="noteObj in searchNotes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
             </article>
         </div>
@@ -25,24 +29,21 @@
 import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
-import HomeView from '@/views/HomeView';
 import ModalNoteCreate from '@/components/ModalNoteCreate';
 import {roundToNearestMultiple} from '@/helpers/mathUtility';
-
-const todayViewName = 'TodayView';
+import SearchBar from '@/components/SearchBar';
 
 export default {
-    name: todayViewName,
-    components: {NoteListItem, PageHeader, ModalNoteCreate},
+    name: 'TodayView',
+    components: {NoteListItem, PageHeader, ModalNoteCreate, SearchBar},
     data: function() {
         return {
             user: false,
-            todayViewName: todayViewName,
-            homeViewName: HomeView.name,
             notes: [],
             todayString: new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'}),
             todayTextSizeDenominator: 2,
-            currentlyResizing: false
+            currentlyResizing: false,
+            searchNotes: []
         };
     },
     created: function() {
@@ -62,17 +63,20 @@ export default {
                 this.todayTextSizeDenominator = 4;
             }
         },
-        getOneHourFromNowUpToMidnight() {
+        getOneHourFromNowUpToMidnight: function() {
             const oneHourFromNow = new Date();
             oneHourFromNow.setHours(oneHourFromNow.getHours() + 1);
             oneHourFromNow.setMinutes(roundToNearestMultiple(oneHourFromNow.getMinutes(), 15));
             return oneHourFromNow;
+        },
+        setResults: function(value) {
+            this.searchNotes = value;
         }
     },
     firestore: function() {
-        let today = new Date();
+        const today = new Date();
         today.setHours(0, 0, 0);
-        let tomorrow = new Date(today);
+        const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
         return {
             user: db.collection('users').doc(auth.currentUser.uid),

@@ -5,18 +5,18 @@
         modal-header="New View"
         :modal-buttons="[{buttonText: 'Create', actionName: 'create'}]"
         @create="createView"
-        @modalOpen="onOpenModal"
+        @modal-open="onOpenModal"
         ref="baseModal"
     >
         <template v-slot:button-contents>
-            <span class="fa-solid fa-folder-plus"></span>
+            <span class="fa-solid fa-folder-plus" title="Create view"></span>
         </template>
         
         <template v-slot:modal-content>
             <input v-model="title" class="input is-medium" type="text" placeholder="Add title" maxlength="30">
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="[]" @updateTags="updateTags" ref="inputTagManager"
+                    :user-tags="userTags" :initial-tags="[]" @update-tags="updateTags" ref="inputTagManager"
                 />
             </div>
         </template>
@@ -45,13 +45,13 @@ export default {
         onOpenModal: function() {
             this.tags = [];
             this.title = '';
-            this.$refs.inputTagManager.reset([]);
+            this.$refs.inputTagManager.reset(this.tags);
         },
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
         },
         createView: function() {
-            let name = this.title.trim();
+            const name = this.title.trim();
             if(name.length === 0 || name.length > 30) {
                 alert('View name has to be between 1 and 30 characters long');
                 return;
@@ -84,7 +84,6 @@ export default {
         }
     }
 };
-
 </script>
 
 <style scoped>
