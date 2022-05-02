@@ -1,14 +1,14 @@
 <template>
     <base-modal
-        id="modal-delete-permanently"
+        id="modal-confirm"
         button-classes="is-small delete-button"
-        modal-header="Are you sure you want to permanently delete this note?"
+        :modal-header="modalText"
         :modal-buttons="[
-            {buttonText: 'Yes', actionName: 'confirm'},
+            {buttonText: 'Yes', actionName: 'confirm', classes: 'red-color'},
             {buttonText: 'No', actionName: 'cancel'}
         ]"
         :additional-padding="12"
-        @confirm="deletePermanently"
+        @confirm="$emit('confirm')"
         @cancel="() => $refs.baseModal.hideModal()"
         ref="baseModal"
     >
@@ -22,20 +22,26 @@
 
 <script>
 import BaseModal from '@/components/BaseModal';
-import {db} from '@/firebaseConfig';
 
 export default {
-    name: 'ModalDeletePermanently',
+    name: 'ModalConfirm',
     components: {BaseModal},
     props: {
-        noteId: String
+        modalText: String,
+        from: String,
+        yesClasses: String,
+        noClasses: String
     },
     methods: {
-        deletePermanently: function() {
-            db.collection('notes').doc(this.noteId).delete();
-            this.$router.push({name: 'TrashView'});
-            this.$refs.baseModal.hideModal();
+        hideModal: function() {
+            this.$refs.baseModal.hideModal()
         }
     }
 };
 </script>
+
+<style scoped>
+>>> .red-color {
+    background-color: #DC3F58;
+}
+</style>

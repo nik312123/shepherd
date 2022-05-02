@@ -26,7 +26,7 @@
             <div class="row">
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
                 <div v-if="!note.isTrash" class="row smaller-gap">
-                    <button @click="moveToTrash" class="button is-info is-small delete-button">
+                    <button @click="remove" class="button is-info is-small delete-button">
                         <span class="fa-solid fa-trash view-button"></span>
                     </button>
                     <ModalNoteEdit v-if="user" :user-tags="user.tags" :note-obj="this.note"/>
@@ -35,7 +35,11 @@
                     <button @click="recover" class="button is-info is-small recover-button">
                         <span class="fa-solid fa-rotate-left view-button"></span>
                     </button>
-                    <ModalDeletePermanently :note-id="note.id"/>
+                    <ModalConfirm
+                        modal-text="Are you sure you want to permanently remove this note?"
+                        @confirm="removePermanently"
+                        ref="modalConfirm"
+                    />
                 </div>
             </div>
             <TagList :tag-array="Object.keys(note.tags)" class="tags"/>
@@ -86,7 +90,7 @@ import PageHeader from '@/components/PageHeader';
 import TagList from '@/components/TagList';
 import {dateToString} from '@/helpers/dateFormatter';
 import ButtonNoteImageAdd from '@/components/ButtonNoteImageAdd';
-import ModalDeletePermanently from '@/components/ModalNoteDeletePermanently';
+import ModalConfirm from '@/components/ModalConfirm';
 import {ToggleButton} from 'vue-js-toggle-button';
 
 export default {
@@ -97,7 +101,7 @@ export default {
         ModalNoteEdit,
         NoteBody,
         ButtonNoteImageAdd,
-        ModalDeletePermanently,
+        ModalConfirm,
         ToggleButton
     },
     props: {
@@ -129,9 +133,14 @@ export default {
         };
     },
     methods: {
-        moveToTrash: function() {
+        remove: function() {
             db.collection('notes').doc(this.id).update({isTrash: true});
             this.$router.push({name: 'TrashView'});
+        },
+        removePermanently: function() {
+            db.collection('notes').doc(this.id).delete();
+            this.$router.push({name: this.from ? this.from : 'AllNotesView'});
+            this.$refs.modalConfirm.hideModal();
         },
         recover: function() {
             db.collection('notes').doc(this.id).update({isTrash: false});
@@ -331,7 +340,14 @@ export default {
 }
 
 .delete-image-button {
-    background-color: red !important;
+    background-color: #DC3F58 !important;
+    font-weight: 400;
+    color: white;
+    margin: auto 10px;
+}
+
+.delete-image-button:hover {
+    background-color: #B23247 !important;
     font-weight: 400;
     color: white;
     margin: auto 10px;
