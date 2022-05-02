@@ -45,7 +45,9 @@
                         
                         <span class="title is-5">Save</span>
                     </button>
-                    <button class="card-footer-item create" @click="showButtons = true;showImage = false; imageSrc = null">
+                    <button
+                        class="card-footer-item create" @click="showButtons = true;showImage = false; imageSrc = null"
+                    >
                         
                         <span class="title is-5">Reselect</span>
                     </button>

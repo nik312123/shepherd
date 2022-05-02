@@ -33,7 +33,7 @@ export default {
     },
     methods: {
         hideModal: function() {
-            this.$refs.baseModal.hideModal()
+            this.$refs.baseModal.hideModal();
         }
     }
 };

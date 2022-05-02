@@ -145,7 +145,7 @@ export default {
             }).then(messageToken => {
                 this.createNoteQuery(tagsMap, name, curTimestamp, messageToken);
             }).catch(() => {
-                this.createNoteQuery(tagsMap, name, curTimestamp)
+                this.createNoteQuery(tagsMap, name, curTimestamp);
             });
             
             this.$refs.baseModal.hideModal();

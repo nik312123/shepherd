@@ -9,7 +9,7 @@
         </nav>
         <div class="row">
             <h1 v-if="view" class="title is-2">{{ view.name }}</h1>
-
+            
             <ModalNoteCreate v-if="user" :user-tags="user.tags" :starting-tags="view.tags"/>
         </div>
         <div class="row smaller-gap">
