@@ -53,6 +53,9 @@ export default {
         }
     },
     firestore: function() {
+        if(!this.id) {
+            return {};
+        }
         return {
             view: db.collection('views').doc(this.id)
         };
