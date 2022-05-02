@@ -225,7 +225,7 @@ export default {
         },
         dateToString,
         goToView: function() {
-            this.$router.push({name: 'ViewView', params: {id: this.id}});
+            this.$router.push({name: 'ViewView', params: {id: this.$route.params.viewId}});
         },
         deleteImage: function() {
             storage.ref('notes/' + this.id).delete().then(() => {
