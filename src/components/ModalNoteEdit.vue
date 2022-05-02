@@ -85,11 +85,11 @@ export default {
         formattedDate: function() {
             return this.reminderDateTime === null ? null : dateToString(this.reminderDateTime, false, true);
         },
-        reminderDateTimeChanged: function() {
+        reminderDateTimeUnchanged: function() {
             if(this.noteObj.reminderDateTime === null) {
-                return this.reminderDateTime !== null;
+                return this.reminderDateTime === null;
             }
-            return this.reminderDateTime !== this.noteObj.reminderDateTime.toDate();
+            return this.reminderDateTime === this.noteObj.reminderDateTime.toDate();
         }
     },
     methods: {
@@ -104,17 +104,17 @@ export default {
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
         },
-        updateNoteQuery: function(tagsMap, name, reminderDateChanged, messageToken) {
+        updateNoteQuery: function(tagsMap, name, reminderDateUnchanged, messageToken) {
             const curTimestamp = new Date();
             const updateData = {
                 title: name,
                 isPublic: this.isPublic,
                 tags: tagsMap,
                 lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
-                notified: reminderDateChanged
+                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime
             };
             if(messageToken) {
+                updateData.notified = reminderDateUnchanged;
                 updateData.messageToken = messageToken;
             }
             db.collection('notes').doc(this.noteObj.id).update(updateData);
@@ -134,7 +134,7 @@ export default {
             let tagsMap = this.tags.map(tag => ({[tag.text]: true}));
             tagsMap = Object.assign({}, ...tagsMap);
             
-            if(this.reminderDateTimeChanged && messaging !== null) {
+            if(this.reminderDateTimeUnchanged && messaging !== null) {
                 messaging.getToken({
                     vapidKey: '***REMOVED***'
                 }).then(messageToken => {
