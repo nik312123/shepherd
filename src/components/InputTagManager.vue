@@ -4,6 +4,7 @@
             v-model="tag"
             :placeholder="tags.length === 0 ? 'Add tag' : ''"
             :tags="tags"
+            :validation="validation"
             :autocomplete-items="relevantUserTags"
             @tags-changed="updateTags"
         />
@@ -23,7 +24,16 @@ export default {
     data: function() {
         return {
             tag: '',
-            tags: this.initialTags.slice()
+            originalTags: this.initialTags.slice(),
+            tags: this.initialTags.slice(),
+            maxTagLength: 15,
+            validation: [
+                {
+                    classes: 'max-length',
+                    rule: tag => tag.text.length > this.maxTagLength,
+                    disableAdd: true
+                }
+            ]
         };
     },
     computed: {
@@ -43,12 +53,19 @@ export default {
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
             this.$emit('updateTags', this.tags.slice());
+        },
+        formatInput() {
+            let input = this.$el.getElementsByClassName('ti-new-tag-input')[0];
+            input.value = input.value.toLowerCase();
+            this.tag = this.tag.toLowerCase();
+            if(input.value.length > this.maxTagLength) {
+                input.value = input.value.substring(0, this.maxTagLength);
+                this.tag = input.value.substring(0, this.maxTagLength);
+            }
         }
     },
-    watch: {
-        tag: function() {
-            this.tag = this.tag.toLowerCase();
-        }
+    updated: function() {
+        this.formatInput();
     }
 };
 </script>
