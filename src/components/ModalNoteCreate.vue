@@ -131,7 +131,7 @@ export default {
                     createdDateTime: curTimestamp,
                     lastModifiedDateTime: curTimestamp,
                     reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
-                    messageToken: messageToken,
+                    messageToken,
                     notified: false
                 }).then(docRef => {
                     this.$router.push({name: 'NoteView', params: {id: docRef.id, defaultTab: 'write'}});
