@@ -3,15 +3,15 @@
         <PageHeader/>
         <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
             <ul>
-                <li @click="$router.push({name: homeViewName})"><a>Home</a></li>
+                <li @click="$router.push({name: 'HomeView'})"><a>Home</a></li>
                 <li class="is-active">
-                    <router-link :to="{name: inboxViewName}" aria-current="page">Inbox</router-link>
+                    <router-link :to="{name: $route.name}" aria-current="page">Inbox</router-link>
                 </li>
             </ul>
         </nav>
         <div class="row">
             <h1 class="title is-2">📮 Inbox</h1>
-            <ModalNoteCreate v-if="user" :userTags="user.tags" :starting-tags="[]"/>
+            <ModalNoteCreate v-if="user" :user-tags="user.tags" :starting-tags="[]"/>
         </div>
         
         <div class="section">
@@ -27,20 +27,15 @@
 import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
-import HomeView from '@/views/HomeView';
 import ModalNoteCreate from '@/components/ModalNoteCreate';
 import SearchBar from '@/components/SearchBar.vue';
 
-const inboxViewName = 'InboxView';
-
 export default {
-    name: inboxViewName,
+    name: 'InboxView',
     components: {NoteListItem, PageHeader, ModalNoteCreate, SearchBar},
     data: function() {
         return {
             user: false,
-            inboxViewName: inboxViewName,
-            homeViewName: HomeView.name,
             notes: [],
             searchNotes: []
         };

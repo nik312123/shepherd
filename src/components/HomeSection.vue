@@ -12,7 +12,6 @@
 
 <script>
 import router from '@/router';
-import ViewView from '@/views/ViewView';
 import {auth, db} from '@/firebaseConfig';
 
 export default {
@@ -35,7 +34,7 @@ export default {
                 let notesQuery = db.collection('notes')
                     .where('userId', '==', auth.currentUser.uid)
                     .where('isTrash', '==', false);
-                let tags = this.view.tags;
+                const tags = this.view.tags;
                 tags.forEach(function(tag) {
                     notesQuery = notesQuery.where('tags.' + tag, '==', true);
                 });
@@ -45,8 +44,8 @@ export default {
     },
     methods: {
         goToView: function() {
-            if(this.viewName === ViewView.name) {
-                router.push({name: ViewView.name, params: {id: this.id}});
+            if(this.viewName === 'ViewView') {
+                router.push({name: 'ViewView', params: {id: this.id}});
             }
             else {
                 router.push({name: this.viewName});

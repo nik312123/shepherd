@@ -7,7 +7,6 @@
 
 <script>
 import ButtonAuthenticationGoogle from '@/components/ButtonAuthenticationGoogle';
-import HomeView from '@/views/HomeView';
 import {auth} from '@/firebaseConfig';
 
 export default {
@@ -15,7 +14,7 @@ export default {
     components: {ButtonAuthenticationGoogle},
     created: function() {
         if(auth.currentUser) {
-            this.$router.replace({name: HomeView.name});
+            this.$router.replace({name: 'HomeView'});
         }
     }
 };

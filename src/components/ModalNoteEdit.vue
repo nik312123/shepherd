@@ -5,11 +5,11 @@
         modal-header="Edit Note"
         :modal-buttons="[{buttonText: 'Update', actionName: 'update'}]"
         @update="updateNote"
-        @modalOpen="onOpenModal"
+        @modal-open="onOpenModal"
         ref="baseModal"
     >
         <template v-slot:button-contents>
-            <span class="fa-solid fa-edit view-button" title="Edit Note"></span>
+            <span class="fa-solid fa-edit view-button" title="Edit note"></span>
         </template>
         
         <template v-slot:modal-content>
@@ -17,7 +17,7 @@
             
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="tags" @updateTags="updateTags" ref="inputTagManager"
+                    :user-tags="userTags" :initial-tags="tags" @update-tags="updateTags" ref="inputTagManager"
                 />
             </div>
             
@@ -36,7 +36,7 @@
                     :available-dates="{start: new Date(), end: null}"
                     mode="datetime"
                     v-if="reminder"
-                    v-model="reminderDate"
+                    v-model="reminderDateTime"
                     is-dark
                 />
             </div>
@@ -76,20 +76,26 @@ export default {
             title: this.noteObj.title,
             tags: Object.keys(this.noteObj.tags).map(tag => ({text: tag})),
             reminder: false,
-            reminderDate: this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null,
+            reminderDateTime: this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null,
             isPublic: this.noteObj.isPublic
         };
     },
     computed: {
         formattedDate: function() {
-            return this.reminderDate === null ? null : dateToString(this.reminderDate, false, true);
+            return this.reminderDateTime === null ? null : dateToString(this.reminderDateTime, false, true);
+        },
+        reminderDateTimeChanged: function() {
+            if(this.noteObj.reminderDateTime === null) {
+                return this.reminderDateTime !== null;
+            }
+            return this.reminderDateTime !== this.noteObj.reminderDateTime.toDate();
         }
     },
     methods: {
         onOpenModal: function() {
             this.tags = Object.keys(this.noteObj.tags).map(tag => ({text: tag}));
             this.title = this.noteObj.title;
-            this.reminderDate = this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null;
+            this.reminderDateTime = this.noteObj.reminderDateTime ? this.noteObj.reminderDateTime.toDate() : null;
             this.reminder = false;
             this.isPublic = this.noteObj.isPublic;
             this.$refs.inputTagManager.reset(this.tags);
@@ -118,13 +124,13 @@ export default {
                 isPublic: this.isPublic,
                 tags: tagsMap,
                 lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDate === null ? null : this.reminderDate
+                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
+                notified: this.reminderDateTimeChanged
             });
             this.$refs.baseModal.hideModal();
         }
     }
 };
-
 </script>
 
 <style scoped>

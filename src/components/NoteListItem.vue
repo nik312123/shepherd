@@ -28,19 +28,28 @@
 </template>
 
 <script>
-
 import TagList from '@/components/TagList';
-import NoteView from '@/views/NoteView';
 
 export default {
     name: 'NoteListItem',
     components: {TagList},
     props: {
-        note: Object
+        note: Object,
+        viewName: String,
+        viewId: String
     },
     methods: {
         goToNote: function() {
-            this.$router.push({name: NoteView.name, params: {id: this.note.id, defaultTab: 'preview'}});
+            this.$router.push({
+                name: 'NoteView',
+                params: {
+                    id: this.note.id,
+                    from: this.$route.name,
+                    viewName: this.viewName,
+                    viewId: this.viewId,
+                    defaultTab: 'preview'
+                }
+            });
         }
     }
 };

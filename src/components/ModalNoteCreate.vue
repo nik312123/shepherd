@@ -5,7 +5,7 @@
         modal-header="New Note"
         :modal-buttons="[{buttonText: 'Create', actionName: 'create'}]"
         @create="createNote"
-        @modalOpen="onOpenModal"
+        @modal-open="onOpenModal"
         ref="baseModal"
     >
         <template v-slot:button-contents>
@@ -17,7 +17,7 @@
             
             <div class="control">
                 <InputTagManager
-                    :user-tags="userTags" :initial-tags="tags" @updateTags="updateTags" ref="inputTagManager"
+                    :user-tags="userTags" :initial-tags="tags" @update-tags="updateTags" ref="inputTagManager"
                 />
             </div>
             
@@ -36,7 +36,7 @@
                     :available-dates="{start: new Date(), end: null}"
                     mode="datetime"
                     v-if="reminder"
-                    v-model="reminderDate"
+                    v-model="reminderDateTime"
                     is-dark
                 />
             </div>
@@ -57,9 +57,8 @@
 </template>
 
 <script>
-import {auth, db, fieldValue} from '@/firebaseConfig';
+import {auth, db, fieldValue, messaging} from '@/firebaseConfig';
 import DatePicker from 'v-calendar/lib/components/date-picker.umd';
-import NoteView from '@/views/NoteView';
 import BaseModal from '@/components/BaseModal';
 import InputTagManager from '@/components/InputTagManager';
 import {ToggleButton} from 'vue-js-toggle-button';
@@ -81,20 +80,20 @@ export default {
             title: '',
             tags: this.startingTags.map((tag) => ({text: tag})),
             reminder: false,
-            reminderDate: this.startingDate,
+            reminderDateTime: this.startingDate,
             isPublic: false
         };
     },
     computed: {
         formattedDate: function() {
-            return this.reminderDate === null ? null : dateToString(this.reminderDate, false, true);
+            return this.reminderDateTime === null ? null : dateToString(this.reminderDateTime, false, true);
         }
     },
     methods: {
         onOpenModal: function() {
             this.tags = this.startingTags.map((tag) => ({text: tag}));
             this.title = '';
-            this.reminderDate = this.startingDate;
+            this.reminderDateTime = this.startingDate;
             this.reminder = false;
             this.isPublic = false;
             this.$refs.inputTagManager.reset(this.tags);
@@ -118,25 +117,31 @@ export default {
             tagsMap = Object.assign({}, ...tagsMap);
             
             const curTimestamp = new Date();
-            db.collection('notes').add({
-                userId: auth.currentUser.uid,
-                title: name,
-                body: '# New note',
-                isPublic: this.isPublic,
-                isTrash: false,
-                tags: tagsMap,
-                createdDateTime: curTimestamp,
-                lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDate === null ? null : this.reminderDate
-            }).then(docRef => {
-                this.$router.push({name: NoteView.name, params: {id: docRef.id, defaultTab: 'write'}});
+            
+            messaging.getToken({
+                vapidKey: '***REMOVED***'
+            }).then((messageToken) => {
+                db.collection('notes').add({
+                    userId: auth.currentUser.uid,
+                    title: name,
+                    body: '# New note',
+                    isPublic: this.isPublic,
+                    isTrash: false,
+                    tags: tagsMap,
+                    createdDateTime: curTimestamp,
+                    lastModifiedDateTime: curTimestamp,
+                    reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
+                    messageToken: messageToken,
+                    notified: false
+                }).then(docRef => {
+                    this.$router.push({name: 'NoteView', params: {id: docRef.id, defaultTab: 'write'}});
+                });
             });
             
             this.$refs.baseModal.hideModal();
         }
     }
 };
-
 </script>
 
 <style scoped>
