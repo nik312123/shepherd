@@ -52,6 +52,14 @@ export default {
     props: {
         id: String
     },
+    
+    created: function() {
+        this.$firestoreRefs.view.onSnapshot({
+            error: () => {
+                this.$router.push({name: 'HomeView'});
+            }
+        });
+    },
     watch: {
         view: function() {
             if(this.view) {
