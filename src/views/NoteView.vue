@@ -113,11 +113,11 @@ export default {
             uploadValue: 0,
             user: false,
             pathMapping: {
-                'home': 'Home',
-                'inbox': 'Inbox',
-                'trash': 'Trash',
-                'today': 'Today',
-                'upcoming': 'Upcoming'
+                'HomeView': 'Home',
+                'InboxView': 'Inbox',
+                'TrashView': 'Trash',
+                'TodayView': 'Today',
+                'UpcomingView': 'Upcoming'
             },
             showImage: false
         };
