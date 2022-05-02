@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import {auth, db, fieldValue} from '@/firebaseConfig';
+import {auth, db, fieldValue, messaging} from '@/firebaseConfig';
 import DatePicker from 'v-calendar/lib/components/date-picker.umd';
 import BaseModal from '@/components/BaseModal';
 import InputTagManager from '@/components/InputTagManager';
@@ -103,6 +103,21 @@ export default {
         updateTags: function(updatedTags) {
             this.tags = updatedTags;
         },
+        updateNoteQuery: function(tagsMap, reminderDateChanged, messageToken) {
+            const curTimestamp = new Date();
+            const updateData = {
+                title: name,
+                isPublic: this.isPublic,
+                tags: tagsMap,
+                lastModifiedDateTime: curTimestamp,
+                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
+                notified: reminderDateChanged
+            };
+            if(messageToken) {
+                updateData.messageToken = messageToken;
+            }
+            db.collection('notes').doc(this.noteObj.id).update();
+        },
         updateNote: function() {
             const name = this.title.trim();
             if(name.length === 0 || name.length > 30) {
@@ -117,16 +132,18 @@ export default {
             
             let tagsMap = this.tags.map(tag => ({[tag.text]: true}));
             tagsMap = Object.assign({}, ...tagsMap);
+    
+            if(this.reminderDateTimeChanged) {
+                messaging.getToken({
+                    vapidKey: '***REMOVED***'
+                }).then((messageToken) => {
+                    this.updateNoteQuery(tagsMap, true, messageToken);
+                })
+            }
+            else {
+                this.updateNoteQuery(tagsMap, false);
+            }
             
-            const curTimestamp = new Date();
-            db.collection('notes').doc(this.noteObj.id).update({
-                title: name,
-                isPublic: this.isPublic,
-                tags: tagsMap,
-                lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
-                notified: this.reminderDateTimeChanged
-            });
             this.$refs.baseModal.hideModal();
         }
     }

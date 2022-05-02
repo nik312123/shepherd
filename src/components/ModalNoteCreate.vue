@@ -9,7 +9,7 @@
         ref="baseModal"
     >
         <template v-slot:button-contents>
-            <span class="fa-solid fa-file-circle-plus" title="Add note"></span>
+            <span class="fa-solid fa-file-circle-plus" title="Create note"></span>
         </template>
         
         <template v-slot:modal-content>
@@ -131,7 +131,7 @@ export default {
                     createdDateTime: curTimestamp,
                     lastModifiedDateTime: curTimestamp,
                     reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
-                    messageToken: messageToken,
+                    messageToken,
                     notified: false
                 }).then(docRef => {
                     this.$router.push({name: 'NoteView', params: {id: docRef.id, defaultTab: 'write'}});
