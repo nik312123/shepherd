@@ -27,22 +27,22 @@
                 <p id="note-view-title" class="title is-3">{{ note.title }}</p>
                 <div v-if="!note.isTrash && owner" class="row smaller-gap">
                     <button @click="remove" class="button is-info is-small delete-button">
-                        <span class="fa-solid fa-trash view-button"></span>
+                        <span class="fa-solid fa-trash view-button" title="Move to trash"></span>
                     </button>
                     <ModalNoteEdit v-if="user" :user-tags="user.tags" :note-obj="this.note"/>
                 </div>
                 <div v-if="note.isTrash && owner" class="row smaller-gap">
                     <button @click="recover" class="button is-info is-small recover-button">
-                        <span class="fa-solid fa-rotate-left view-button"></span>
+                        <span class="fa-solid fa-rotate-left view-button" title="Recover note"></span>
                     </button>
                     <modal-confirm
-                        modal-text="Are you sure you want to permanently remove this note?"
+                        modal-text="Are you sure you want to permanently delete this note?"
                         button-classes="is-small delete-button"
                         @confirm="removePermanently"
                         ref="modalConfirm"
                     >
                         <template v-slot:button-contents>
-                            <span class="fa-solid fa-file-circle-xmark view-button"></span>
+                            <span title="Permanently delete" class="fa-solid fa-file-circle-xmark view-button"></span>
                         </template>
                     </modal-confirm>
                 </div>

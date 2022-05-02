@@ -15,8 +15,10 @@
                 v-if="user" :user-tags="user.tags" :starting-tags="[]" :starting-date="getOneHourFromNowUpToMidnight()"
             />
         </div>
+        
         <div class="section">
-            <article v-for="noteObj in notes" :key="noteObj.id">
+            <SearchBar :notes="notes" :return-results="setResults"/>
+            <article v-for="noteObj in searchNotes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
             </article>
         </div>
@@ -29,17 +31,19 @@ import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
 import ModalNoteCreate from '@/components/ModalNoteCreate';
 import {roundToNearestMultiple} from '@/helpers/mathUtility';
+import SearchBar from '@/components/SearchBar';
 
 export default {
     name: 'TodayView',
-    components: {NoteListItem, PageHeader, ModalNoteCreate},
+    components: {NoteListItem, PageHeader, ModalNoteCreate, SearchBar},
     data: function() {
         return {
             user: false,
             notes: [],
             todayString: new Date().toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric'}),
             todayTextSizeDenominator: 2,
-            currentlyResizing: false
+            currentlyResizing: false,
+            searchNotes: []
         };
     },
     created: function() {
@@ -64,6 +68,9 @@ export default {
             oneHourFromNow.setHours(oneHourFromNow.getHours() + 1);
             oneHourFromNow.setMinutes(roundToNearestMultiple(oneHourFromNow.getMinutes(), 15));
             return oneHourFromNow;
+        },
+        setResults: function(value) {
+            this.searchNotes = value;
         }
     },
     firestore: function() {

@@ -11,15 +11,16 @@
             <h1 v-if="view" class="title is-2">{{ view.name }}</h1>
             <div class="row smaller-gap">
                 <button @click="deleteView" class="button is-info is-small">
-                    <span class="fa-solid fa-trash view-button"></span>
+                    <span class="fa-solid fa-trash view-button" title="Delete view"></span>
                 </button>
                 <ModalViewEdit v-if="user && view" :user-tags="user.tags" :views="views" :view-obj="view"/>
             </div>
+            <ModalNoteCreate v-if="user" :user-tags="user.tags" :starting-tags="view.tags"/>
         </div>
         <TagList v-if="view" :tag-array="view.tags"/>
         <div class="section">
-            <ModalNoteCreate v-if="user" :user-tags="user.tags" :starting-tags="view.tags"/>
-            <article v-for="noteObj in notes" :key="noteObj.id">
+            <SearchBar :notes="notes" :return-results="setResults"/>
+            <article v-for="noteObj in searchNotes" :key="noteObj.id">
                 <NoteListItem :note="noteObj" :view-name="view.name" :view-id="id"/>
             </article>
         </div>
@@ -33,16 +34,18 @@ import TagList from '@/components/TagList';
 import NoteListItem from '@/components/NoteListItem';
 import ModalViewEdit from '@/components/ModalViewEdit';
 import ModalNoteCreate from '@/components/ModalNoteCreate';
+import SearchBar from '@/components/SearchBar.vue';
 
 export default {
     name: 'ViewView',
-    components: {ModalViewEdit, NoteListItem, TagList, PageHeader, ModalNoteCreate},
+    components: {ModalViewEdit, NoteListItem, TagList, PageHeader, ModalNoteCreate, SearchBar},
     data: function() {
         return {
             view: null,
             notes: [],
             user: null,
-            views: []
+            views: [],
+            searchNotes: []
         };
     },
     props: {
@@ -75,6 +78,9 @@ export default {
         deleteView: function() {
             db.collection('views').doc(this.id).delete();
             this.$router.push({name: 'HomeView'});
+        },
+        setResults: function(value) {
+            this.searchNotes = value;
         }
     }
 };

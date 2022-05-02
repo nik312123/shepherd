@@ -9,7 +9,7 @@
         ref="baseModal"
     >
         <template v-slot:button-contents>
-            <span class="fa-solid fa-folder-plus"></span>
+            <span class="fa-solid fa-folder-plus" title="Create view"></span>
         </template>
         
         <template v-slot:modal-content>

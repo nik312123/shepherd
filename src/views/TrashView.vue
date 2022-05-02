@@ -17,11 +17,14 @@
                 @confirm="emptyTrash"
                 ref="modalConfirm"
             >
-                <template v-slot:button-contents>Empty</template>
+                <template v-slot:button-contents>
+                    <span title="Empty trash">Empty</span>
+                </template>
             </modal-confirm>
         </div>
         <div class="section">
-            <article v-for="noteObj in notes" :key="noteObj.id">
+            <SearchBar :notes="notes" :return-results="setResults"/>
+            <article v-for="noteObj in searchNotes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
             </article>
         </div>
@@ -32,14 +35,16 @@
 import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
+import SearchBar from '@/components/SearchBar';
 import ModalConfirm from '@/components/ModalConfirm';
 
 export default {
     name: 'TrashView',
-    components: {ModalConfirm, PageHeader, NoteListItem},
+    components: {PageHeader, NoteListItem, SearchBar, ModalConfirm},
     data: function() {
         return {
-            notes: []
+            notes: [],
+            searchNotes: []
         };
     },
     firestore: function() {
@@ -56,6 +61,9 @@ export default {
                 db.collection('notes').doc(note.id).delete();
             });
             this.$refs.modalConfirm.hideModal();
+        },
+        setResults: function(value) {
+            this.searchNotes = value;
         }
     }
 };

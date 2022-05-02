@@ -13,7 +13,9 @@
             <h1 class="title is-2">📮 Inbox</h1>
             <ModalNoteCreate v-if="user" :user-tags="user.tags" :starting-tags="[]"/>
         </div>
+        
         <div class="section">
+            <SearchBar :notes="notes" :return-results="setResults"/>
             <article v-for="noteObj in notes" :key="noteObj.id">
                 <NoteListItem :note="noteObj"/>
             </article>
@@ -26,15 +28,22 @@ import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
 import ModalNoteCreate from '@/components/ModalNoteCreate';
+import SearchBar from '@/components/SearchBar.vue';
 
 export default {
     name: 'InboxView',
-    components: {NoteListItem, PageHeader, ModalNoteCreate},
+    components: {NoteListItem, PageHeader, ModalNoteCreate, SearchBar},
     data: function() {
         return {
             user: false,
-            notes: []
+            notes: [],
+            searchNotes: []
         };
+    },
+    methods: {
+        setResults: function(value) {
+            this.searchNotes = value;
+        }
     },
     firestore: function() {
         return {

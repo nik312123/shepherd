@@ -1,7 +1,7 @@
 <template>
     <div id="app" class="container is-max-desktop">
         <!--suppress HtmlUnknownTag -->
-        <notifications :closeOnClick=false>
+        <notifications :close-on-click=false>
             <template v-slot:body="props">
                 <div class="vue-notification" @click="handleNotificationOnClick(props)">
                     <a class="close" @click.stop="props.close">

@@ -2,7 +2,7 @@
     <div>
         <button class="button is-focused add-image-button" @click="showModal = true">
             <span class="icon">
-                <span class="fas fa-image"></span>
+                <span class="fas fa-image" title="Add image"></span>
             </span>
             <span>Add Image</span>
         </button>
