@@ -50,7 +50,7 @@
             <TagList v-if="owner" :tag-array="Object.keys(note.tags)" class="tags"/>
             
             <div v-if="note && owner">
-                <p class="note-info">
+                <p v-if="note.reminderDateTime" class="note-info">
                     Reminder: {{ dateToString(note.reminderDateTime.toDate(), false, true) }}
                 </p>
                 <p class="note-info">
