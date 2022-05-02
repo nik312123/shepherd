@@ -1,11 +1,11 @@
-let admin = require('firebase-admin');
-let serviceAccount = require('./shepherd-be6df-firebase-adminsdk-g53dz-efd58d9b21.json');
+const admin = require('firebase-admin');
+const serviceAccount = require('./shepherd-be6df-firebase-adminsdk-g53dz-efd58d9b21.json');
 
-let app = admin.initializeApp({
+const app = admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
-let messaging = app.messaging();
-let db = app.firestore();
+const messaging = app.messaging();
+const db = app.firestore();
 
 const sendNotifications = (messages, docIds) => {
     messaging.sendAll(messages)
@@ -37,11 +37,11 @@ db.collection('notes')
     .where('isTrash', '==', false)
     .get()
     .then((querySnapshot) => {
-        let messages = [];
-        let docIds = [];
+        const messages = [];
+        const docIds = [];
         querySnapshot.forEach((doc) => {
-            let data = doc.data();
-            let payload = {
+            const data = doc.data();
+            const payload = {
                 notification: {
                     title: data.title,
                     body: data.body.length > 50 ? data.body.substring(0, 50) + '...' : data.body
