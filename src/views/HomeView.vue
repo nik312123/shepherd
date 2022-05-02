@@ -15,7 +15,8 @@
                 <HomeSection title="🗓 Upcoming" view-name="UpcomingView" :count="upcomingNotes.length"/>
             </div>
             <div class="row stretch">
-                <HomeSection title="🗑 Trash" view-name="TrashView" :count="trashNotes.length"/>
+                <HomeSection title="🌐 Public" viewName="PublicView" :count="publicNotes.length"/>
+                <HomeSection title="🗑 Trash" viewName="TrashView" :count="trashNotes.length"/>
             </div>
         </div>
         
@@ -50,7 +51,8 @@ export default {
             todayNotes: [],
             upcomingNotes: [],
             allNotes: [],
-            trashNotes: []
+            trashNotes: [],
+            publicNotes: []
         };
     },
     firestore: function() {
@@ -88,7 +90,12 @@ export default {
             
             trashNotes: db.collection('notes')
                 .where('userId', '==', auth.currentUser.uid)
-                .where('isTrash', '==', true)
+                .where('isTrash', '==', true),
+            
+            publicNotes: db.collection('notes')
+                .where('userId', '==', auth.currentUser.uid)
+                .where('isTrash', '==', false)
+                .where('isPublic', '==', true)
         };
     },
     watch: {

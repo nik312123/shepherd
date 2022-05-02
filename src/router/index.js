@@ -10,6 +10,7 @@ import AllNotesView from '@/views/AllNotesView';
 import TrashView from '@/views/TrashView';
 import ViewView from '@/views/ViewView';
 import NoteView from '@/views/NoteView';
+import PublicView from '@/views/PublicView';
 
 Vue.use(VueRouter);
 
@@ -70,6 +71,14 @@ const routes = [
         meta: {
             requiresAuth: true,
             title: 'Shepherd All Notes'
+        }
+    },
+    {
+        path: '/public-notes',
+        component: PublicView,
+        meta: {
+            requiresAuth: true,
+            title: 'Shepherd Public'
         }
     },
     {
