@@ -16,13 +16,20 @@ Vue.use(VueRouter);
 
 const {isNavigationFailure, NavigationFailureType} = VueRouter;
 
+function onRouterError(error) {
+    if(!isNavigationFailure(error, NavigationFailureType.duplicated)) {
+        throw Error(error);
+    }
+}
+
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function(location) {
-    return originalPush.call(this, location).catch(error => {
-        if(!isNavigationFailure(error, NavigationFailureType.duplicated)) {
-            throw Error(error);
-        }
-    });
+    return originalPush.call(this, location).catch(onRouterError);
+};
+
+const originalReplace = VueRouter.prototype.replace;
+VueRouter.prototype.replace = function(location) {
+    return originalReplace.call(this, location).catch(onRouterError);
 };
 
 const routes = [

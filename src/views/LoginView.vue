@@ -16,9 +16,11 @@ export default {
     name: 'LoginView',
     components: {ButtonAuthenticationGoogle},
     created: function() {
-        if(auth.currentUser) {
-            this.$router.replace({name: 'HomeView'});
-        }
+        auth.onAuthStateChanged(user => {
+            if(user) {
+                this.$router.replace({name: 'HomeView'});
+            }
+        })
     }
 };
 </script>
