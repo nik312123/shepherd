@@ -128,7 +128,8 @@ export default {
                 'InboxView': 'Inbox',
                 'TrashView': 'Trash',
                 'TodayView': 'Today',
-                'UpcomingView': 'Upcoming'
+                'UpcomingView': 'Upcoming',
+                'PublicView': 'Public'
             },
             userId: auth.currentUser ? auth.currentUser.uid : null,
             owner: false,
