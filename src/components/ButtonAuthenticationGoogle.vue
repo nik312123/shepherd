@@ -17,6 +17,7 @@
 <script>
 import {auth, provider} from '@/firebaseConfig';
 import router from '@/router';
+import {isMobile} from '@/helpers/mobileDetector';
 
 export default {
     name: 'ButtonAuthenticationGoogle',
@@ -32,13 +33,26 @@ export default {
         });
     },
     methods: {
-        signIn: function() {
+        signInWithRedirect: function() {
             auth.signInWithRedirect(provider)
                 .then(result => {
                     // noinspection JSUnresolvedVariable
                     this.user = result.user;
                 })
-                .catch(err => console.log(err));
+                .catch(error => console.log(error));
+        },
+        signIn: function() {
+            if(isMobile()) {
+                this.signInWithRedirect();
+            }
+            else {
+                auth.signInWithPopup(provider)
+                    .then(result => {
+                        // noinspection JSUnresolvedVariable
+                        this.user = result.user;
+                    })
+                    .catch(() => this.signInWithRedirect());
+            }
         },
         signOut: function() {
             auth.signOut()
@@ -46,7 +60,7 @@ export default {
                     this.user = null;
                     router.push({name: 'LoginView'});
                 })
-                .catch(err => console.log(err));
+                .catch(error => console.log(error));
         }
     }
 };

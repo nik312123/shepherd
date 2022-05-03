@@ -71,8 +71,8 @@ export default {
                 .then(() => {
                     this.videoAvailable = true;
                 })
-                .catch(err => {
-                    console.log(err);
+                .catch(error => {
+                    console.log(error);
                     alert('You need to allow camera access');
                     this.$emit('close');
                 });

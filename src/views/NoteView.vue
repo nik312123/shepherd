@@ -167,7 +167,7 @@ export default {
     },
     methods: {
         remove: function() {
-            db.collection('notes').doc(this.id).update({isTrash: true});
+            db.collection('notes').doc(this.id).update({isTrash: true, isPublic: false});
             this.$router.push({name: this.from ? this.from : 'AllNotesView'});
         },
         removePermanently: function() {
@@ -236,9 +236,9 @@ export default {
                         lastModifiedDateTime: new Date()
                     })
                     .then(() => {})
-                    .catch(err => {
+                    .catch(error => {
                         alert('Something went wrong');
-                        console.log(err);
+                        console.log(error);
                     });
                 this.showImage = false;
             });

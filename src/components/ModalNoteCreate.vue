@@ -74,7 +74,9 @@ export default {
         startingDate: {
             type: Date,
             default: null
-        }
+        },
+        viewName: String,
+        viewId: String
     },
     data: function() {
         return {
@@ -112,16 +114,36 @@ export default {
                 tags: tagsMap,
                 createdDateTime: curTimestamp,
                 lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime,
-                notified: false
+                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime
             };
             
             if(messageToken) {
                 createData.messageToken = messageToken;
+                createData.notified = false;
             }
             
             db.collection('notes').add(createData).then(docRef => {
-                this.$router.push({name: 'NoteView', params: {id: docRef.id, defaultTab: 'write'}});
+                const textTags = this.tags.map(tag => tag.text);
+                
+                if(this.startingTags.every(tag => textTags.indexOf(tag) !== -1)) {
+                    this.$router.push({
+                        name: 'NoteView',
+                        params:
+                            {
+                                id: docRef.id,
+                                from: this.viewName,
+                                viewName: this.viewName,
+                                viewId: this.viewId,
+                                defaultTab: 'write'
+                            }
+                    });
+                }
+                else {
+                    this.$router.push({
+                        name: 'NoteView',
+                        params: {id: docRef.id, defaultTab: 'write'}
+                    });
+                }
             });
         },
         createNote: function() {
@@ -141,13 +163,18 @@ export default {
             
             const curTimestamp = new Date();
             
-            messaging.getToken({
-                vapidKey: '***REMOVED***'
-            }).then(messageToken => {
-                this.createNoteQuery(tagsMap, name, curTimestamp, messageToken);
-            }).catch(() => {
+            if(messaging === null) {
                 this.createNoteQuery(tagsMap, name, curTimestamp);
-            });
+            }
+            else {
+                messaging.getToken({
+                    vapidKey: '***REMOVED***'
+                }).then(messageToken => {
+                    this.createNoteQuery(tagsMap, name, curTimestamp, messageToken);
+                }).catch(() => {
+                    this.createNoteQuery(tagsMap, name, curTimestamp);
+                });
+            }
             
             this.$refs.baseModal.hideModal();
         }

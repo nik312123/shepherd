@@ -17,8 +17,8 @@ const sendNotifications = (messages, docIds) => {
                         'notified': true
                     }).then(() => {
                         console.log('Notified for docId: ', docIds[index]);
-                    }).catch((err) => {
-                        console.log('Error updating docId: ', docIds[index], err);
+                    }).catch((error) => {
+                        console.log('Error updating docId: ', docIds[index], error);
                     });
                 }
                 else {

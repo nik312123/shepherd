@@ -12,14 +12,15 @@ Vue.config.productionTip = false;
 Vue.use(firestorePlugin);
 Vue.use(Notifications);
 
-messaging
-    .getToken({
-        vapidKey: '***REMOVED***'
-    })
-    .then(() => {})
-    .catch((err) => {
-        console.log(err);
-    });
+if(messaging !== null) {
+    messaging.getToken({
+            vapidKey: '***REMOVED***'
+        })
+        .then(() => {})
+        .catch((error) => {
+            console.log(error);
+        });
+}
 
 let app;
 auth.onAuthStateChanged(() => {
