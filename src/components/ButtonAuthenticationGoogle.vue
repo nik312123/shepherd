@@ -60,7 +60,7 @@ export default {
                     this.user = null;
                     router.push({name: 'LoginView'});
                 })
-                .catch(err => console.log(err));
+                .catch(error => console.log(error));
         }
     }
 };

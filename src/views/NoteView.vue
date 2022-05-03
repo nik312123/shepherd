@@ -236,9 +236,9 @@ export default {
                         lastModifiedDateTime: new Date()
                     })
                     .then(() => {})
-                    .catch(err => {
+                    .catch(error => {
                         alert('Something went wrong');
-                        console.log(err);
+                        console.log(error);
                     });
                 this.showImage = false;
             });

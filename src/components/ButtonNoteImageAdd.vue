@@ -59,9 +59,9 @@ export default {
                             this.showModal = false;
                             this.showProgressBar = false;
                             this.progressValue = 0;
-                        }).catch(err => {
+                        }).catch(error => {
                             alert('Something went wrong. Refresh the page.');
-                            console.log(err);
+                            console.log(error);
                         });
                     });
                 }
