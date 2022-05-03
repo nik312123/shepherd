@@ -57,20 +57,33 @@ There are 4 main different page types on the app. There are the home page with a
 
 ## Screenshots of Site (complete)
 
-![A decent looking landing page](https://user-images.githubusercontent.com/26149148/166230865-f4cc294e-50b7-4261-bb18-9b3b5abd2bb6.png)
+![](https://user-images.githubusercontent.com/26149148/166230865-f4cc294e-50b7-4261-bb18-9b3b5abd2bb6.png)
 
-![The home view which shows the build-in view and custom views](https://user-images.githubusercontent.com/26149148/166230913-eeb96a57-694f-4b6a-9299-126b0913eac9.png)
+A decent looking landing page
 
-![The today view which shows the notes for today](https://user-images.githubusercontent.com/26149148/166231059-ed7337d2-6046-4e5b-b7ba-ce22767f0d6f.png)
+![](https://user-images.githubusercontent.com/26149148/166230913-eeb96a57-694f-4b6a-9299-126b0913eac9.png)
 
-![The upcoming view which shows the notes for the next 7 days](https://user-images.githubusercontent.com/26149148/166231199-4deef086-5659-447a-9080-1d0e00399cec.png)
+The home view which shows the build-in view and custom views
 
-![A custom view page](https://user-images.githubusercontent.com/26149148/166231274-192d97ac-ebbc-4e9d-ae35-933d735a39ea.png)
+![](https://user-images.githubusercontent.com/26149148/166231059-ed7337d2-6046-4e5b-b7ba-ce22767f0d6f.png)
 
-![How the note page looks to the owner](https://user-images.githubusercontent.com/26149148/166231320-98ed31b8-e0e4-4901-a123-2c095c179f13.png)
+The today view which shows the notes for today
 
-![How a public note looks for a visitor](https://user-images.githubusercontent.com/26149148/166231383-b621b152-9760-4f73-b2cb-b59273d3f434.png)
+![](https://user-images.githubusercontent.com/26149148/166231199-4deef086-5659-447a-9080-1d0e00399cec.png)
 
+The upcoming view which shows the notes for the next 7 days
+
+![](https://user-images.githubusercontent.com/26149148/166231274-192d97ac-ebbc-4e9d-ae35-933d735a39ea.png)
+
+A custom view page
+
+![](https://user-images.githubusercontent.com/26149148/166231320-98ed31b8-e0e4-4901-a123-2c095c179f13.png)
+
+How the note page looks to the owner
+
+![](https://user-images.githubusercontent.com/26149148/166231383-b621b152-9760-4f73-b2cb-b59273d3f434.png)
+
+How a public note looks for a visitor
 
 ## External Dependencies
 
