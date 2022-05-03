@@ -1,52 +1,8 @@
 <template>
     <div id="app" class="container is-max-desktop">
-        <!--suppress HtmlUnknownTag -->
-        <notifications :close-on-click=false>
-            <template v-slot:body="props">
-                <div class="vue-notification" @click="handleNotificationOnClick(props)">
-                    <a class="close" @click.stop="props.close">
-                        <span class="fa fa-fw fa-close"></span>
-                    </a>
-                    <a class="title">
-                        {{ props.item.title }}
-                    </a>
-                    <div>
-                        {{ props.item.data.noteBody }}
-                    </div>
-                </div>
-            </template>
-        </notifications>
         <RouterView/>
     </div>
 </template>
-
-<script>
-import {messaging} from '@/firebaseConfig';
-
-export default {
-    mounted: function() {
-        if(messaging !== null) {
-            messaging.onMessage(payload => {
-                this.$notify({
-                    title: payload.notification.title,
-                    duration: -1,
-                    data: {
-                        noteId: payload.data.noteId,
-                        noteBody: payload.notification.body
-                    }
-                });
-            });
-        }
-    },
-    methods: {
-        handleNotificationOnClick: function(passedProp) {
-            this.$router.push({name: 'NoteView', params: {id: passedProp.item.data.noteId}}).then(() => {
-                passedProp.close();
-            });
-        }
-    }
-};
-</script>
 
 <style>
 /* Imports the Inter font from Google */
@@ -93,23 +49,5 @@ html {
 
 .container {
     padding: 40px 5px 5px;
-}
-
-.vue-notification {
-    padding: 10px;
-    margin: 0 5px 5px;
-    
-    font-size: 12px;
-    color: #FFFFFF;
-    background: #44A4FC;
-    border: 2px solid #187FE7;
-    border-radius: 5px;
-}
-
-.close {
-    top: 0;
-    right: 0;
-    position: relative;
-    float: right;
 }
 </style>
