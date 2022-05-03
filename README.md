@@ -22,17 +22,20 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 **Describe the most challenging features you implemented
 (one sentence per bullet, maximum 4 bullets):**
 
-* 
+* Markdown editor with a WYSIWYG preview as you type (particularly the styling of this editor and getting around some of its limited functionality)
+* Making the UI as dynamic/flexible with screen width as it is (especially with the dynamic tag compression on the view pages for a note list item)
+* Getting the dynamic breadcrumbs to change correctly depending on screen navigation and considering that users can enter a page solely by link
+* Getting push notifications set up/working for the project and dealing with some of the complex logic involved in its utilization in the site
+
 
 Which (if any) device integration(s) does your app support?
 
-* Ability take photos with device camera and upload photos
+* Can take photos with the device's camera inside of the application and upload those photos
 
 Which (if any) progressive web app feature(s) does your app support?
 
-* Adding app to home screen on mobile and desktops.
-* Push notifications for reminders.
-
+* Can add app to home screen on mobile devices and to the applications section for desktop devices (e.g. Chrome apps).
+* Has opt-in push/browser notifications for reminders (limited support for iOS and the Safari browser for push notifications as they do not support the standard push notification framework)
 
 
 ## Mockup images
@@ -48,7 +51,7 @@ There are 4 main different page types on the app. There are the home page with a
 
 **Is there anything special we need to know in order to effectively test your app? (optional):**
 
-* ...
+* Not to our knowledge
 
 
 
@@ -69,17 +72,17 @@ There are 4 main different page types on the app. There are the home page with a
 ![How a public note looks for a visitor](https://user-images.githubusercontent.com/26149148/166231383-b621b152-9760-4f73-b2cb-b59273d3f434.png)
 
 
-
 ## External Dependencies
 
 **Document integrations with 3rd Party code or services here.
 Please do not document required libraries (e.g., Vue, Vuefire, Firebase).**
 
-* Library or service name: description of use
-* Toast-UI Editor: A markdown editor for notes
-* V-Calendar: A datetime picker plugin for creating and editing notes
-* vue-tags-input: A tags input component for adding and editing tags on notes and views
-* vue-js-toggle-button: A nice looking toggle button vue component for switching values on and off.
+* TOAST UI Editor for Vue: A WYSIWYG markdown editor for creating the notes with a preview section
+* V-Calendar: A date/time picker plugin used for selecting the reminder date and time
+* vue-tags-input: A tags input component used for adding and removing tags on the notes and views
+* vue-js-toggle-button: A nice-looking toggle button component used for switching between public and private for a note
+* fuse.js: Fuzzy-search library used for searching for key words in the title and body of notes
+* no-darkreader: Disables dark mode for the widely-used Dark Reader extension on our app
 
 **If there's anything else you would like to disclose about how your project
 relied on external code, expertise, or anything else, please disclose that
