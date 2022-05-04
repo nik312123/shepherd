@@ -114,10 +114,10 @@ export default {
                 tags: tagsMap,
                 createdDateTime: curTimestamp,
                 lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime
+                reminderDateTime: this.reminderDateTime
             };
             
-            if(messageToken) {
+            if(messageToken && this.reminderDateTime !== null) {
                 createData.messageToken = messageToken;
                 createData.notified = false;
             }
