@@ -15,9 +15,7 @@ if(messaging !== null) {
             vapidKey: '***REMOVED***'
         })
         .then(() => {})
-        .catch((error) => {
-            console.log(error);
-        });
+        .catch(() => {});
 }
 
 let app;
