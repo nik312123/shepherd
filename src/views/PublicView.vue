@@ -25,18 +25,13 @@
 import PageHeader from '@/components/PageHeader';
 import {auth, db} from '@/firebaseConfig';
 import NoteListItem from '@/components/NoteListItem';
-import HomeView from '@/views/HomeView';
 import SearchBar from '@/components/SearchBar';
 
-const publicViewName = 'PublicView';
-
 export default {
-    name: publicViewName,
+    name: 'PublicView',
     components: {PageHeader, NoteListItem, SearchBar},
     data: function() {
         return {
-            publicViewName: publicViewName,
-            homeViewName: HomeView.name,
             notes: [],
             searchNotes: []
         };
