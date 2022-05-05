@@ -28,20 +28,21 @@ export default {
     data: function() {
         return {
             currentWidth: window.screen.width,
-            overflowCount: 0,
-            totalNumTagsMap: Object.keys(this.tagMap).length
+            overflowCount: 0
         };
     },
     mounted() {
-        this.numOverflown();
-        window.addEventListener('resize', this.numOverflown);
+        if(this.tagMap) {
+            this.numOverflown();
+            window.addEventListener('resize', this.numOverflown);
+        }
     },
     methods: {
         numOverflown: function() {
             const parentBounds = this.$el.getElementsByClassName('note-tags-list')[0].getBoundingClientRect();
             const tags = this.$el.getElementsByClassName('note-tag');
             let counter = 0;
-            for(let tag of tags) {
+            for(const tag of tags) {
                 const bounds = tag.getBoundingClientRect();
                 if(parentBounds.bottom <= bounds.top) {
                     counter++;
