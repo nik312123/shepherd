@@ -6,9 +6,9 @@
             </div>
         </div>
         
-        <div class="row">
-            <div v-if="tagMap" class="note-tags-list">
-                <p style="width: 10px; background-color: blue;" class="note-tag">.</p>
+        <div v-if="tagMap" class="row">
+            <div class="note-tags-list">
+                <p style="width: 10px;" class="note-tag">.</p>
                 <p v-for="tag in Object.keys(tagMap)" :key="tag.key" class="tag note-tag">{{ tag }}</p>
             </div>
             <span class="tag is-info is-light is-rounded remaining-tag-counter" v-if="overflowCount > 0">
