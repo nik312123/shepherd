@@ -173,7 +173,7 @@ export default {
         },
         removePermanently: function() {
             db.collection('notes').doc(this.id).delete();
-            this.$router.push({name: this.from ? this.from : 'AllNotesView'});
+            this.$router.push({name: 'TrashView'});
             this.$refs.modalConfirm.hideModal();
         },
         recover: function() {
