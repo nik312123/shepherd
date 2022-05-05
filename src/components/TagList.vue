@@ -89,4 +89,8 @@ export default {
     position: relative;
     top: 6px;
 }
+
+.tags:last-child {
+    margin-bottom: 0;
+}
 </style>
