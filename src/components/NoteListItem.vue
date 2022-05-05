@@ -12,7 +12,7 @@
                     <p class="note-title" :style="titleStyle">
                         {{ note.title }}
                     </p>
-                    <TagList v-if="showTags" :tag-map="note.tags" ref="tagList"/>
+                    <TagList :tag-map="note.tags" ref="tagList"/>
                 </div>
                 <div class="">
                     <div class="note-body">
@@ -38,7 +38,6 @@ export default {
     },
     data: function() {
         return {
-            showTags: false,
             titleStyle: ''
         };
     },
@@ -55,14 +54,6 @@ export default {
                 }
             });
         }
-    },
-    mounted: function() {
-        const titleEl = this.$el.getElementsByClassName('note-title')[0];
-        const titleStyle = getComputedStyle(titleEl);
-        let titleWidth = titleEl.getBoundingClientRect().width;
-        titleWidth -= parseFloat(titleStyle.paddingLeft) + parseFloat(titleStyle.paddingRight);
-        this.titleStyle = `min-width: ${titleWidth}px`;
-        this.showTags = true;
     }
 };
 </script>
