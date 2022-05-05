@@ -1,9 +1,9 @@
 <template>
     <div class="tag-list">
         <div v-if="tagArray" class="tags">
-            <article v-for="tag in tagArray" :key="tag.key">
+            <div v-for="tag in tagArray" :key="tag.key">
                 <p class="tag">{{ tag }}</p>
-            </article>
+            </div>
         </div>
         
         <div class="row">
