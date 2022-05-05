@@ -1,21 +1,5 @@
 <template>
     <div id="app" class="container is-max-desktop">
-        <!--suppress HtmlUnknownTag -->
-        <notifications :close-on-click=false>
-            <template v-slot:body="props">
-                <div class="vue-notification" @click="handleNotificationOnClick(props)">
-                    <a class="close" @click.stop="props.close">
-                        <span class="fa fa-fw fa-close"></span>
-                    </a>
-                    <a class="title">
-                        {{ props.item.title }}
-                    </a>
-                    <div>
-                        {{ props.item.data.noteBody }}
-                    </div>
-                </div>
-            </template>
-        </notifications>
         <RouterView/>
     </div>
 </template>
@@ -24,26 +8,40 @@
 import {messaging} from '@/firebaseConfig';
 
 export default {
+    name: 'App',
     mounted: function() {
-        if(messaging !== null) {
-            messaging.onMessage(payload => {
-                this.$notify({
+        messaging.onMessage(payload => {
+            if(Notification.permission !== 'granted') {
+                console.log('Notification not displayed as permission not granted.');
+                console.log('Notification:');
+                console.log({
                     title: payload.notification.title,
-                    duration: -1,
-                    data: {
-                        noteId: payload.data.noteId,
-                        noteBody: payload.notification.body
-                    }
+                    body: payload.notification.body,
+                    link: 'https://shepherd-be6df.firebaseapp.com/note/' + payload.notification.data
                 });
+                return;
+            }
+            
+            const notificationTitle = payload.notification.title;
+            const notificationOptions = {
+                lang: 'en-US',
+                body: payload.notification.body,
+                icon: '/favicon.ico',
+                image: payload.notification.image,
+                data: payload.data.noteId,
+                tag: 'renotify',
+                renotify: true,
+                requireInteraction: true
+            };
+            
+            const notification = new Notification(notificationTitle, notificationOptions);
+            
+            notification.addEventListener('click', () => {
+                const noteId = notification.data;
+                notification.close();
+                window.location.href = `/note/${noteId}`;
             });
-        }
-    },
-    methods: {
-        handleNotificationOnClick: function(passedProp) {
-            this.$router.push({name: 'NoteView', params: {id: passedProp.item.data.noteId}}).then(() => {
-                passedProp.close();
-            });
-        }
+        });
     }
 };
 </script>
@@ -93,23 +91,5 @@ html {
 
 .container {
     padding: 40px 5px 5px;
-}
-
-.vue-notification {
-    padding: 10px;
-    margin: 0 5px 5px;
-    
-    font-size: 12px;
-    color: #FFFFFF;
-    background: #44A4FC;
-    border: 2px solid #187FE7;
-    border-radius: 5px;
-}
-
-.close {
-    top: 0;
-    right: 0;
-    position: relative;
-    float: right;
 }
 </style>

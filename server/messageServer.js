@@ -33,7 +33,7 @@ const sendNotifications = (messages, docIds) => {
 
 db.collection('notes')
     .where('notified', '==', false)
-    .where('reminderDateTime', '<=', new Date(Date.now()))
+    .where('reminderDateTime', '<=', new Date())
     .where('isTrash', '==', false)
     .get()
     .then((querySnapshot) => {

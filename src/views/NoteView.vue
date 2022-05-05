@@ -18,7 +18,7 @@
                 <li class="is-active" @click="$router.push($route.fullPath)"><a aria-current="page">Note </a></li>
             </ul>
         </nav>
-        <div>
+        <div v-if="note">
             <span @click="copyURL" v-if="note.isPublic && !note.isTrash && owner" class="tag is-medium public">
                 Copy link
                 <span class="fa-solid fa-paste"></span>
@@ -128,19 +128,14 @@ export default {
                 'InboxView': 'Inbox',
                 'TrashView': 'Trash',
                 'TodayView': 'Today',
-                'UpcomingView': 'Upcoming'
+                'UpcomingView': 'Upcoming',
+                'PublicView': 'Public'
             },
             userId: auth.currentUser ? auth.currentUser.uid : null,
             owner: false,
-            showImage: false
+            showImage: false,
+            deletingPermanently: false
         };
-    },
-    created: function() {
-        this.$firestoreRefs.note.onSnapshot({
-            error: () => {
-                this.$router.push({name: 'HomeView'});
-            }
-        });
     },
     firestore: function() {
         if(!auth.currentUser) {
@@ -155,7 +150,10 @@ export default {
     },
     watch: {
         note: function() {
-            if(!this.note) {
+            if(this.deletingPermanently) {
+                return;
+            }
+            if(this.note === null) {
                 this.$router.push({name: 'HomeView'});
                 return;
             }
@@ -171,9 +169,11 @@ export default {
             this.$router.push({name: this.from ? this.from : 'AllNotesView'});
         },
         removePermanently: function() {
-            db.collection('notes').doc(this.id).delete();
-            this.$router.push({name: this.from ? this.from : 'AllNotesView'});
             this.$refs.modalConfirm.hideModal();
+            this.deletingPermanently = true;
+            db.collection('notes').doc(this.id).delete().then(() => {
+                this.$router.push({name: 'TrashView'});
+            });
         },
         recover: function() {
             db.collection('notes').doc(this.id).update({isTrash: false});

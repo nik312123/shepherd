@@ -89,6 +89,9 @@ export default {
             if(this.noteObj.reminderDateTime === null) {
                 return this.reminderDateTime === null;
             }
+            else if(this.reminderDateTime === null) {
+                return false;
+            }
             return this.reminderDateTime.getTime() === this.noteObj.reminderDateTime.toDate().getTime();
         }
     },
@@ -111,9 +114,10 @@ export default {
                 isPublic: this.isPublic,
                 tags: tagsMap,
                 lastModifiedDateTime: curTimestamp,
-                reminderDateTime: this.reminderDateTime === null ? null : this.reminderDateTime
+                reminderDateTime: this.reminderDateTime
             };
-            if(messageToken) {
+            
+            if(messageToken && this.reminderDateTime !== null) {
                 updateData.messageToken = messageToken;
                 if(this.noteObj.notified === undefined) {
                     updateData.notified = false;
@@ -122,6 +126,7 @@ export default {
                     updateData.notified = reminderDateTimeUnchanged;
                 }
             }
+            
             db.collection('notes').doc(this.noteObj.id).update(updateData);
         },
         updateNote: function() {

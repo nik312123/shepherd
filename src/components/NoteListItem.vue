@@ -7,17 +7,15 @@
                     <p class="date-day">{{ note.reminderDateTime.toDate().getDate() }}</p>
                 </div>
             </div>
-            <div class="note-info">
-                <header class="card-header">
-                    <p class="card-header-title">
+            <div :class="'note-info ' + (note.reminderDateTime ? 'has-reminder' : '')">
+                <div class="row">
+                    <p class="note-title">
                         {{ note.title }}
                     </p>
-                    <button class="card-header-icon" aria-label="more options">
-                        <TagList :tag-map="note.tags"/>
-                    </button>
-                </header>
-                <div class="card-content">
-                    <div class="content">
+                    <TagList :tag-map="note.tags" ref="tagList"/>
+                </div>
+                <div>
+                    <div class="note-body">
                         {{ note.body }}
                         <br>
                     </div>
@@ -38,6 +36,11 @@ export default {
         viewName: String,
         viewId: String
     },
+    data: function() {
+        return {
+            titleStyle: ''
+        };
+    },
     methods: {
         goToNote: function() {
             this.$router.push({
@@ -56,16 +59,22 @@ export default {
 </script>
 
 <style scoped>
-.card-header-title {
+.note-title {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     color: #F8FAFC;
     font-size: 20px;
     font-weight: 800;
-    padding-top: 5px;
-    padding-bottom: 0;
-    width: 100px;
+    margin-left: 10px;
+}
+
+.note-info {
+    width: 100%;
+}
+
+.note-info.has-reminder {
+    width: calc(100% - 60px);
 }
 
 .card {
@@ -112,7 +121,7 @@ export default {
 
 .date {
     color: white;
-    min-width: 60px;
+    width: 60px;
     background-color: #1F2531;
     font-size: 1em;
     text-align: center;
@@ -128,7 +137,20 @@ export default {
     font-weight: bold;
 }
 
-.note-info {
-    width: 100%;
+.note-body {
+    color: #F8FAFC;
+    margin-top: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-left: 10px;
+    font-weight: 600;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: space-between;
 }
 </style>
