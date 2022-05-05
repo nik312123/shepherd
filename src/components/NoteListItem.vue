@@ -9,12 +9,12 @@
             </div>
             <div :class="'note-info ' + (note.reminderDateTime ? 'has-reminder' : '')">
                 <div class="row">
-                    <p class="note-title" :style="titleStyle">
+                    <p class="note-title">
                         {{ note.title }}
                     </p>
                     <TagList :tag-map="note.tags" ref="tagList"/>
                 </div>
-                <div class="">
+                <div>
                     <div class="note-body">
                         {{ note.body }}
                         <br>
@@ -137,10 +137,6 @@ export default {
     font-weight: bold;
 }
 
-/*.note-info {*/
-/*    width: 100%;*/
-/*}*/
-
 .note-body {
     color: #F8FAFC;
     margin-top: 10px;
@@ -148,7 +144,6 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     margin-left: 10px;
-    /*max-width: 200px;*/
     font-weight: 600;
 }
 

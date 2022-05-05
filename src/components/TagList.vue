@@ -68,7 +68,6 @@ export default {
     display: flex;
     flex-flow: row wrap;
     overflow: hidden;
-    flex-wrap: wrap;
     height: 30px;
     justify-content: flex-end;
     width: auto;
