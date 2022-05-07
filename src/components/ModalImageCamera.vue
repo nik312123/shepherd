@@ -44,11 +44,6 @@ export default {
             imageSrc: ''
         };
     },
-    mounted: function() {
-        this.video = this.$refs.video;
-        this.canvas = this.$refs.canvas;
-        this.startCapture();
-    },
     methods: {
         startCapture: function() {
             navigator.mediaDevices.getUserMedia({video: true, audio: false})
@@ -100,6 +95,11 @@ export default {
             });
             this.$emit('close');
         }
+    },
+    mounted: function() {
+        this.video = this.$refs.video;
+        this.canvas = this.$refs.canvas;
+        this.startCapture();
     }
 };
 </script>

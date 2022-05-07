@@ -31,12 +31,6 @@ export default {
             overflowCount: 0
         };
     },
-    mounted() {
-        if(this.tagMap) {
-            this.numOverflown();
-            window.addEventListener('resize', this.numOverflown);
-        }
-    },
     methods: {
         numOverflown: function() {
             const parentBounds = this.$el.getElementsByClassName('note-tags-list')[0].getBoundingClientRect();
@@ -50,7 +44,13 @@ export default {
             }
             this.overflowCount = counter;
         }
-    }
+    },
+    mounted: function() {
+        if(this.tagMap) {
+            this.numOverflown();
+            window.addEventListener('resize', this.numOverflown);
+        }
+    },
 };
 </script>
 

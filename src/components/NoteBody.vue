@@ -26,9 +26,7 @@ export default {
         defaultTab: String,
         owner: Boolean
     },
-    components: {
-        Editor: Editor
-    },
+    components: {Editor},
     data: function() {
         return {
             newBody: this.body,

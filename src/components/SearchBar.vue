@@ -21,14 +21,6 @@ export default {
             searchQuery: ''
         };
     },
-    watch: {
-        notes: function() {
-            this.getSearchResults();
-        }
-    },
-    mounted: function() {
-        this.getSearchResults();
-    },
     methods: {
         getSearchResults: function() {
             if(this.searchQuery === '') {
@@ -50,6 +42,14 @@ export default {
             const searchResults = result.map(note => note.item);
             
             this.returnResults(searchResults);
+        }
+    },
+    mounted: function() {
+        this.getSearchResults();
+    },
+    watch: {
+        notes: function() {
+            this.getSearchResults();
         }
     }
 };
