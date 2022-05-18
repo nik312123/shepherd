@@ -15,8 +15,13 @@
 
 <script>
 import '@toast-ui/editor/dist/toastui-editor.css';
+import 'prismjs/themes/prism.css';
+import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
+
 import {Editor} from '@toast-ui/vue-editor';
 import {db} from '@/firebaseConfig';
+import codeSyntaxHighlight
+    from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all';
 
 export default {
     name: 'NoteBody',
@@ -37,7 +42,8 @@ export default {
                     ['bold', 'italic', 'strike'],
                     ['ul', 'ol', 'task'],
                     ['link', 'code']
-                ]
+                ],
+                plugins: [codeSyntaxHighlight]
             }
         };
     },
@@ -583,5 +589,30 @@ table.ProseMirror-selectednode {
 
 strong {
     color: white;
+}
+
+/* Taken from the font families used in the preview pane */
+code > span.token {
+    font-family: Consolas, Courier, "Lucida Grande", "나눔바른고딕", "Nanum Barun Gothic", "맑은고딕", "Malgun Gothic", sans-serif;
+}
+
+/* Stop whitish background for various PrismJS tokens b/c dark mode */
+.token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string {
+    background: inherit;
+}
+
+/* Stop inheriting Bulma CSS styles for PrismJS-styled code */
+code .tag, pre .tag, code .number, pre .number {
+    display: inline;
+    padding: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: inherit;
+    vertical-align: inherit;
+    border-radius: inherit;
+    font-weight: inherit;
+    white-space: inherit;
+    background: inherit;
+    margin: inherit;
 }
 </style>
