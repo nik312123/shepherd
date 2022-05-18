@@ -591,7 +591,7 @@ strong {
     color: white;
 }
 
-/* Taken from the font families used in the preview pane */
+/* Taken from the font families used in the write pane for use in the preview pane */
 code > span.token {
     font-family: Consolas, Courier, "Lucida Grande", "나눔바른고딕", "Nanum Barun Gothic", "맑은고딕", "Malgun Gothic", sans-serif;
 }
@@ -675,7 +675,7 @@ code > span.token {
     background: inherit;
 }
 
-/* Stop inheriting Bulma CSS styles for PrismJS-styled code */
+/* Stop inheriting Bulma CSS styles for Prism-styled content */
 code .tag, pre .tag, code .number, pre .number {
     display: inline;
     padding: inherit;
