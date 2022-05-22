@@ -15,8 +15,13 @@
 
 <script>
 import '@toast-ui/editor/dist/toastui-editor.css';
+import 'prismjs/themes/prism.css';
+import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
+
 import {Editor} from '@toast-ui/vue-editor';
 import {db} from '@/firebaseConfig';
+import codeSyntaxHighlight
+    from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all';
 
 export default {
     name: 'NoteBody',
@@ -37,7 +42,8 @@ export default {
                     ['bold', 'italic', 'strike'],
                     ['ul', 'ol', 'task'],
                     ['link', 'code']
-                ]
+                ],
+                plugins: [codeSyntaxHighlight]
             }
         };
     },
@@ -583,5 +589,104 @@ table.ProseMirror-selectednode {
 
 strong {
     color: white;
+}
+
+/* Taken from the font families used in the write pane for use in the preview pane */
+code > span.token {
+    font-family: Consolas, Courier, "Lucida Grande", "나눔바른고딕", "Nanum Barun Gothic", "맑은고딕", "Malgun Gothic", sans-serif;
+}
+
+/*
+ * Toast UI editor font sizes
+ */
+
+.toastui-editor .toastui-editor-md-heading1 {
+    font-size: 36px;
+}
+
+.toastui-editor .toastui-editor-md-heading2 {
+    font-size: 33px;
+}
+
+.toastui-editor .toastui-editor-md-heading3 {
+    font-size: 30px;
+}
+
+.toastui-editor .toastui-editor-md-heading4 {
+    font-size: 27px;
+}
+
+.toastui-editor .toastui-editor-md-heading5 {
+    font-size: 24px;
+}
+
+.toastui-editor .toastui-editor-md-heading6 {
+    font-size: 21px;
+}
+
+.toastui-editor div, .toastui-editor span {
+    font-size: 19px;
+}
+
+.toastui-editor .toastui-editor-md-code,
+.toastui-editor .toastui-editor-md-code-block,
+.toastui-editor-md-code-block span {
+    font-size: 17px;
+}
+
+/*
+ * Toast UI preview font sizes
+ */
+
+.toastui-editor-contents h1 {
+    font-size: 36px;
+}
+
+.toastui-editor-contents h2 {
+    font-size: 33px;
+}
+
+.toastui-editor-contents h3 {
+    font-size: 30px;
+}
+
+.toastui-editor-contents h4 {
+    font-size: 27px;
+}
+
+.toastui-editor-contents h5 {
+    font-size: 24px;
+}
+
+.toastui-editor-contents h6 {
+    font-size: 21px;
+}
+
+.toastui-editor-contents p {
+    font-size: 19px;
+}
+
+.toastui-editor-contents code {
+    font-size: 17px;
+}
+
+/* Stop whitish background for various PrismJS tokens b/c dark mode */
+.token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string {
+    background: inherit;
+}
+
+/* Stop inheriting Bulma CSS styles for Prism-styled content */
+code .tag, pre .tag, code .number, pre .number {
+    display: inline;
+    padding: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    text-align: inherit;
+    vertical-align: inherit;
+    border-radius: inherit;
+    font-weight: inherit;
+    white-space: inherit;
+    background: inherit;
+    margin: inherit;
 }
 </style>
