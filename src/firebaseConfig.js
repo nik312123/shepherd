@@ -5,12 +5,12 @@ import 'firebase/messaging';
 import 'firebase/storage';
 
 const firebaseConfig = {
-    apiKey: '***REMOVED***',
-    authDomain: 'shepherd-be6df.firebaseapp.com',
-    projectId: 'shepherd-be6df',
-    storageBucket: 'shepherd-be6df.appspot.com',
-    messagingSenderId: '***REMOVED***',
-    appId: '***REMOVED***'
+    apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+    authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.VUE_APP_FIREBASE_APP_ID
 };
 
 // Initialize Firebase
