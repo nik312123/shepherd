@@ -149,7 +149,7 @@ export default {
             }
             else {
                 messaging.getToken({
-                    vapidKey: '***REMOVED***'
+                    vapidKey: process.env.VUE_APP_MESSAGING_VAPID_KEY
                 }).then(messageToken => {
                     this.updateNoteQuery(tagsMap, name, this.reminderDateTimeUnchanged, messageToken);
                 }).catch(() => {

@@ -12,7 +12,7 @@ Vue.use(firestorePlugin);
 
 if(messaging !== null) {
     messaging.getToken({
-            vapidKey: '***REMOVED***'
+            vapidKey: process.env.VUE_APP_MESSAGING_VAPID_KEY
         })
         .then(() => {})
         .catch(() => {});
